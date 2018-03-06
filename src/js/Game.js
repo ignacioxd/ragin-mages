@@ -1,3 +1,4 @@
+import LoaderScene from 'scenes/LoaderScene';
 import DemoScene from 'scenes/DemoScene';
 
 class Game extends Phaser.Game {
@@ -13,7 +14,7 @@ class Game extends Phaser.Game {
           gravity: { y: 200 }
         }
       },
-      scene: [DemoScene]
+      scene: [LoaderScene, DemoScene]
     });
   }
 
