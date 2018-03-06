@@ -36,7 +36,7 @@ const paths = {
 
 gulp.task('default', ['serve']);
 
-gulp.task('serve', ['build'], function() {
+gulp.task('serve', ['build-dev'], function() {
   gulp.watch(paths.styles.src + '/**/*', ['styles']);
   gulp.watch(paths.script.src + '/**/*.js', ['lint', 'scripts']);
   gulp.watch(paths.base + '/index.html', ['copy-html']);
@@ -48,7 +48,9 @@ gulp.task('serve', ['build'], function() {
   });
 });
 
-gulp.task('build', ['copy-static', 'styles', 'lint', 'scripts']);
+gulp.task('build', ['copy-static', 'styles', 'lint', 'dist']);
+
+gulp.task('build-dev', ['copy-static', 'styles', 'lint', 'scripts']);
 
 gulp.task('clean', function() {
   del([paths.build]);
@@ -91,6 +93,25 @@ gulp.task('lint', function () {
 });
 
 gulp.task('scripts', function() {
+  return browserify(
+    {
+      paths: [path.join(__dirname, paths.script.src)],
+      entries: paths.game.entry,
+      debug: true
+    })
+    .transform(babelify, {
+      babel: require('@babel/core'),
+      sourceMaps: true
+    })
+    .bundle()
+    .pipe(source(paths.game.dest))
+    .pipe(buffer())
+    .pipe(sourcemaps.init({loadMaps: true}))
+    .pipe(sourcemaps.write('./srcmaps'))
+    .pipe(gulp.dest(paths.script.dest));
+});
+
+gulp.task('dist', function() {
   return browserify(
     {
       paths: [path.join(__dirname, paths.script.src)],
