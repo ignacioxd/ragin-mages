@@ -59,7 +59,7 @@ gulp.task('clean', function() {
 gulp.task('copy-static', ['copy-html', 'copy-assets', 'copy-phaser']);
 
 gulp.task('copy-html', function() {
-  gulp.src([paths.base + '/index.html', ])
+  gulp.src([paths.base + '/index.html', paths.base + '/sw.js'])
     .pipe(gulp.dest(paths.build));
 });
 

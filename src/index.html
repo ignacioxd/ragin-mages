@@ -1,12 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<title>Google Scholarship Project</title>
-	<link rel="stylesheet" href="css/main.css">
-	<script src="js/phaser.min.js"></script>
+  <meta charset="UTF-8">
+  <title>Google Scholarship Project</title>
+  <meta name="description" content="An offline first JavaScript game!">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="css/main.css">
+  <script src="js/phaser.min.js"></script>
 </head>
 <body>
-	<script src="js/game.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/sw.js', { scope: '/' })
+        .then(reg => console.log('SW Registered'));
+      navigator.serviceWorker.ready.then(reg => console.log('SW Ready'));
+    }
+  </script>
+  <script src="js/game.js"></script>
 </body>
 </html>
