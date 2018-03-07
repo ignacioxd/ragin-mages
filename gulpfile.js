@@ -38,6 +38,7 @@ gulp.task('default', ['serve']);
 
 gulp.task('serve', ['build-dev'], function() {
   gulp.watch(paths.styles.src + '/**/*', ['styles']);
+  gulp.watch(paths.assets.src + '/**/*', ['copy-assets']);
   gulp.watch(paths.script.src + '/**/*.js', ['lint', 'scripts']);
   gulp.watch(paths.base + '/index.html', ['copy-html']);
 
@@ -116,17 +117,14 @@ gulp.task('dist', function() {
     {
       paths: [path.join(__dirname, paths.script.src)],
       entries: paths.game.entry,
-      debug: true
+      debug: false
     })
     .transform(babelify, {
       babel: require('@babel/core'),
-      sourceMaps: true
     })
     .bundle()
     .pipe(source(paths.game.dest))
     .pipe(buffer())
-    .pipe(sourcemaps.init({loadMaps: true}))
     .pipe(uglify())
-    .pipe(sourcemaps.write('./srcmaps'))
     .pipe(gulp.dest(paths.script.dest));
 });
