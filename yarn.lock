@@ -4223,7 +4223,7 @@ performance-now@^2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/performance-now/-/performance-now-2.1.0.tgz#6309f4e0e5fa913ec1c69307ae364b4b377c9e7b"
 
-phaser@^3.1.2:
+phaser@^3.2.0:
   version "3.2.0"
   resolved "https://registry.yarnpkg.com/phaser/-/phaser-3.2.0.tgz#18babfaae351142db2b8f11450f5e10f58ccf2e2"
   dependencies:
