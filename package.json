@@ -6,11 +6,13 @@
   "description": "Offline-first JavaScript Game",
   "main": "src/js/Game.js",
   "scripts": {
-    "start": "gulp"
+    "start": "gulp",
+    "build": "gulp build",
+    "build:dev": "gulp build-dev"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/ignacioxd/phaser-game"
+    "url": "https://github.com/ignacioxd/gosch-game"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0-beta.40",

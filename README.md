@@ -18,7 +18,7 @@ yarn install
 The following command will build the game and launch a browser in live-edit mode:
 
 ```bash
-gulp serve
+yarn start
 ```
 
 When this server is running, any modifications to files in the `./src` folder will automatically trigger a build and a page reload.
@@ -26,5 +26,5 @@ When this server is running, any modifications to files in the `./src` folder wi
 To build the game without running a server you can run:
 
 ```bash
-gulp build
+yarn build
 ```
