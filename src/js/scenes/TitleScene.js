@@ -37,7 +37,7 @@ export default class TitleScene extends Phaser.Scene {
 
     this.startKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER);
     this.mouseClick = this.input.on('pointerdown', function() {
-      this.scene.start('Demoscene');
+      this.scene.start('DemoScene');
     }, this)
   }
 
