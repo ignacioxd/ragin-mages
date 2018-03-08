@@ -14,8 +14,48 @@
   <script>
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('/sw.js', { scope: '/' })
-        .then(reg => console.log('SW Registered'));
-      navigator.serviceWorker.ready.then(reg => console.log('SW Ready'));
+        .then(reg => {
+          if (!navigator.serviceWorker.controller) {
+            return;
+          }
+
+          if (reg.waiting) {
+            updateReady(reg.waiting);
+            return;
+          }
+
+          if (reg.installing) {
+            trackInstalling(reg.installing);
+            return;
+          }
+
+          reg.addEventListener('updatefound', () => {
+            trackInstalling(reg.installing);
+          });
+        });
+
+      function updateReady(worker) {
+        const shouldUpdate = confirm('Game update available! Reload?');
+        if (shouldUpdate) {
+          worker.postMessage({ action: 'skipWaiting' });
+          return;
+        }
+      }
+
+      var refreshing = false;
+      function trackInstalling(worker) {
+        worker.addEventListener('statechange', () => {
+          if (worker.state === 'installed') {
+            updateReady(worker);
+          }
+
+          if (worker.state === 'activated') {
+            if (refreshing) return;
+            window.location.reload();
+            refreshing = true;
+          }
+        });
+      }
     }
   </script>
   <script src="js/game.js"></script>

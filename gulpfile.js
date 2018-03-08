@@ -40,7 +40,7 @@ gulp.task('serve', ['build-dev'], function() {
   gulp.watch(paths.styles.src + '/**/*', ['styles']);
   gulp.watch(paths.assets.src + '/**/*', ['copy-assets']);
   gulp.watch(paths.script.src + '/**/*.js', ['lint', 'scripts']);
-  gulp.watch(paths.base + '/index.html', ['copy-html']);
+  gulp.watch(paths.base + '/*.{html,js,json}', ['copy-html']);
 
   gulp.watch(paths.build + '/**/*').on('change', browserSync.reload);
 
@@ -60,7 +60,7 @@ gulp.task('clean', function() {
 gulp.task('copy-static', ['copy-html', 'copy-assets', 'copy-phaser']);
 
 gulp.task('copy-html', function() {
-  gulp.src([paths.base + '/index.html', paths.base + '/sw.js'])
+  gulp.src([paths.base + '/*.{html,js,json}'])
     .pipe(gulp.dest(paths.build));
 });
 

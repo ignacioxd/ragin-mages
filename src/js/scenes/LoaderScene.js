@@ -12,11 +12,8 @@ export default class LoaderScene extends Phaser.Scene {
     this.load.image('logo', 'http://labs.phaser.io/assets/sprites/phaser3-logo.png');
     this.load.image('red', 'http://labs.phaser.io/assets/particles/red.png');
 
-
     this.load.spritesheet('soldier', 'spritesheets/soldier.png', { frameWidth: 300, frameHeight: 300 });
 
-
-    this.load.spritesheet('grass', 'grass.png', { frameWidth: 16, frameHeight: 16 });
   }
 
   create() {
