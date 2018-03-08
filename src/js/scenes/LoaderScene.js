@@ -5,15 +5,22 @@ export default class LoaderScene extends Phaser.Scene {
   }
 
   preload() {
-    this.load.setBaseURL('http://labs.phaser.io');
+    console.log(this.constructor.name);
+    this.load.setBaseURL('./assets/');
 
-    this.load.image('sky', 'assets/skies/space3.png');
-    this.load.image('logo', 'assets/sprites/phaser3-logo.png');
-    this.load.image('red', 'assets/particles/red.png');
+    this.load.image('sky', 'http://labs.phaser.io/assets/skies/space3.png');
+    this.load.image('logo', 'http://labs.phaser.io/assets/sprites/phaser3-logo.png');
+    this.load.image('red', 'http://labs.phaser.io/assets/particles/red.png');
+
+
+    this.load.spritesheet('soldier', 'spritesheets/soldier.png', { frameWidth: 300, frameHeight: 300 });
+
+
+    this.load.spritesheet('grass', 'grass.png', { frameWidth: 16, frameHeight: 16 });
   }
 
   create() {
-    this.scene.start('DemoScene');
+    this.scene.start('TitleScene');
   }
 
 }
