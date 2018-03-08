@@ -23,7 +23,7 @@ export default class TitleScene extends Phaser.Scene {
 
     emitter.startFollow(logo);
 
-    this.add.text(230, 350, 'Press ENTER to begin', {
+    this.add.text(160, 350, 'Press ENTER or Click to begin', {
       font: '34px Arial',
       fill: '#ffffff',
       stroke: '#000000',
@@ -36,6 +36,9 @@ export default class TitleScene extends Phaser.Scene {
 
 
     this.startKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER);
+    this.mouseClick = this.input.on('pointerdown', function() {
+      this.scene.start('DemoScene');
+    }, this)
   }
 
   update() {
