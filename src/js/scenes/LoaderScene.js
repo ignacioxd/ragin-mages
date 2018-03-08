@@ -14,9 +14,7 @@ export default class LoaderScene extends Phaser.Scene {
 
 
     this.load.spritesheet('soldier', 'spritesheets/soldier.png', { frameWidth: 300, frameHeight: 300 });
-
-
-    this.load.spritesheet('grass', 'grass.png', { frameWidth: 16, frameHeight: 16 });
+    this.load.spritesheet('fire_monster', 'spritesheets/fire_monster.png', { frameWidth: 300, frameHeight: 295 });
   }
 
   create() {
