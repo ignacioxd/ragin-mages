@@ -11,7 +11,6 @@ let babelify = require('babelify');
 let source = require('vinyl-source-stream');
 let buffer = require('vinyl-buffer');
 let path = require('path');
-let es = require('event-stream');
 
 const paths = {
   phaser: './node_modules/phaser/dist/',
@@ -35,15 +34,9 @@ const paths = {
   },
   serviceWorker: {
     entry: './src/js/sw.js',
-    dest: 'sw.js',
-    destPath: './build'
+    dest: 'sw.js'
   }
 };
-
-const scriptPaths = [
-  paths.game,
-  paths.serviceWorker
-];
 
 gulp.task('default', ['serve']);
 
@@ -60,9 +53,9 @@ gulp.task('serve', ['build-dev'], function() {
   });
 });
 
-gulp.task('build', ['copy-static', 'styles', 'lint', 'dist']);
+gulp.task('build', ['copy-static', 'styles', 'lint', 'sw-dist', 'scripts-dist']);
 
-gulp.task('build-dev', ['copy-static', 'styles', 'lint', 'scripts']);
+gulp.task('build-dev', ['copy-static', 'styles', 'lint', 'sw', 'scripts']);
 
 gulp.task('clean', function() {
   del([paths.build]);
@@ -103,46 +96,54 @@ gulp.task('lint', function () {
     .pipe(eslint.format());
 });
 
+gulp.task('sw', function () {
+  return devScript(paths.base, paths.serviceWorker, paths.build);
+});
+
 gulp.task('scripts', function() {
-  const tasks = scriptPaths.map(p => {
-    return browserify(
-      {
-        paths: [path.join(__dirname, paths.script.src)],
-        entries: p.entry,
-        debug: true
-      })
-      .transform(babelify, {
-        babel: require('@babel/core'),
-        sourceMaps: true
-      })
-      .bundle()
-      .pipe(source(p.dest))
-      .pipe(buffer())
-      .pipe(sourcemaps.init({loadMaps: true}))
-      .pipe(sourcemaps.write('./srcmaps'))
-      .pipe(gulp.dest(p.destPath || paths.script.dest));
-  });
-
-  return es.merge.apply(null, tasks);
+  return devScript(paths.script.src, paths.game, paths.script.dest);
 });
 
-gulp.task('dist', function() {
-  const tasks = scriptPaths.map(p => {
-    return browserify(
-      {
-        paths: [path.join(__dirname, paths.script.src)],
-        entries: p.entry,
-        debug: false
-      })
-      .transform(babelify, {
-        babel: require('@babel/core'),
-      })
-      .bundle()
-      .pipe(source(p.dest))
-      .pipe(buffer())
-      .pipe(uglify())
-      .pipe(gulp.dest(p.destPath || paths.script.dest));
-  });
-
-  return es.merge.apply(null, tasks);
+gulp.task('sw-dist', function () {
+  return distScript(paths.base, paths.serviceWorker, paths.build);
 });
+
+gulp.task('scripts-dist', function() {
+  return distScript(paths.script.src, paths.game, paths.script.dest);
+});
+
+function devScript(basePath, scriptPath, destPath) {
+  return browserify(
+    {
+      paths: [path.join(__dirname, basePath)],
+      entries: scriptPath.entry,
+      debug: true
+    })
+    .transform(babelify, {
+      babel: require('@babel/core'),
+      sourceMaps: true
+    })
+    .bundle()
+    .pipe(source(scriptPath.dest))
+    .pipe(buffer())
+    .pipe(sourcemaps.init({loadMaps: true}))
+    .pipe(sourcemaps.write('./srcmaps'))
+    .pipe(gulp.dest(destPath));
+}
+
+function distScript(basePath, scriptPath, destPath) {
+  return browserify(
+    {
+      paths: [path.join(__dirname, basePath)],
+      entries: scriptPath.entry,
+      debug: false
+    })
+    .transform(babelify, {
+      babel: require('@babel/core'),
+    })
+    .bundle()
+    .pipe(source(scriptPath.dest))
+    .pipe(buffer())
+    .pipe(uglify())
+    .pipe(gulp.dest(destPath));
+}
