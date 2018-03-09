@@ -14,7 +14,9 @@ export default class LoaderScene extends Phaser.Scene {
 
 
     this.load.spritesheet('soldier', 'spritesheets/soldier.png', { frameWidth: 300, frameHeight: 300 });
-    this.load.spritesheet('fire_monster', 'spritesheets/fire_monster.png', { frameWidth: 300, frameHeight: 295 });
+
+    this.load.atlas('fire_monster', 'spritesheets/fire_monster.png', 'spritesheets/fire_monster.json');
+    this.load.atlas('ice_monster', 'spritesheets/ice_monster.png', 'spritesheets/ice_monster.json');
   }
 
   create() {
