@@ -24,7 +24,7 @@ export default class Character extends Phaser.GameObjects.Sprite {
         name: 'death', frames: 6
       },
       {
-        name: 'fight', frames: 8
+        name: 'fight', frames: 6
       },
       {
         name: 'walk', frames: 6
