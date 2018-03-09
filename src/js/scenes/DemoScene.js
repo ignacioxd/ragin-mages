@@ -8,7 +8,7 @@ export default class DemoScene extends Phaser.Scene {
   }
 
   preload() {
-    this.add.text(-390, -300, 'Use the arrow keys and spacebar to change the animation', {
+    this.add.text(-390, -300, 'Use the arrow keys for motion, spacebar to attack, k to die', {
       font: '16px Arial',
       fill: '#ffffff'
     });
@@ -24,6 +24,7 @@ export default class DemoScene extends Phaser.Scene {
     this.cameras.main.startFollow(this.fireMonster);
 
     this.fightKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+    this.deathKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.K);
     this.cursors = this.input.keyboard.createCursorKeys();
 
   }
@@ -61,7 +62,10 @@ export default class DemoScene extends Phaser.Scene {
 
     if(this.fightKey.isDown) {
       animation = 'fight';
-      console.log('fight');
+    }
+
+    if(this.deathKey.isDown) {
+      animation = 'death';
     }
 
     this.iceMonster.setAnimation(animation, direction);
