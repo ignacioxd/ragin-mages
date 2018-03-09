@@ -9,13 +9,15 @@ export default class DemoScene extends Phaser.Scene {
   }
 
   preload() {
+    
+    this.map1 = this.add.tilemap('grass_area');
+    this.tileset1 = this.map1.addTilesetImage('Map_tileset', 'map_tiles');
+    this.layer1 = this.map1.createStaticLayer('Grass Layer', this.tileset1, -800, -600);
+
     this.add.text(-390, -300, 'Use the arrow keys for motion, spacebar to attack, k to die', {
       font: '16px Arial',
       fill: '#ffffff'
     });
-    this.map1 = this.add.tilemap('grass_area');
-    this.tileset1 = this.map1.addTilesetImage('Map_tileset', 'map_tiles');
-    this.layer1 = this.map1.createStaticLayer('Grass Layer', this.tileset1, -800, -600);
   }
 
   create() {
@@ -30,6 +32,12 @@ export default class DemoScene extends Phaser.Scene {
     this.fightKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
     this.deathKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.K);
     this.cursors = this.input.keyboard.createCursorKeys();
+
+    this.input.on('pointerdown', function(event) {
+      if(event.buttons === 1) {
+        this.fireMonster.moveTo(this.input.x, this.input.y);
+      }
+    }, this)
 
   }
 
@@ -76,5 +84,6 @@ export default class DemoScene extends Phaser.Scene {
     this.fireMonster.setAnimation(animation, direction);
     this.spiderMonster.setAnimation(animation, direction);
 
+    this.fireMonster.update();
   }
 }
