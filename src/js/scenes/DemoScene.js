@@ -1,51 +1,80 @@
-import Character from 'objects/Character';
+import FireMonster from 'objects/FireMonster';
+import IceMonster from 'objects/IceMonster';
+import SpiderMonster from 'objects/SpiderMonster';
 
 export default class DemoScene extends Phaser.Scene {
 
   constructor() {
-    super({key: 'DemoScene'});
+    super({ key: 'DemoScene' });
   }
 
   preload() {
-    this.anims.create({
-      key: 'walk_soldier',
-      frames: [
-        { frame: 36, key: 'soldier' },
-        { frame: 37, key: 'soldier' },
-        { frame: 38, key: 'soldier' },
-        { frame: 39, key: 'soldier' },
-        { frame: 40, key: 'soldier' },
-        { frame: 41, key: 'soldier' }
-      ],
-      frameRate: 8,
-      yoyo: false,
-      repeat: -1
+    this.add.text(-390, -300, 'Use the arrow keys for motion, spacebar to attack, k to die', {
+      font: '16px Arial',
+      fill: '#ffffff'
     });
-
-    this.anims.create({
-      key: 'walk_fire_monster',
-      frames: [
-        { frame: 107, key: 'fire_monster' },
-        { frame: 108, key: 'fire_monster' },
-        { frame: 109, key: 'fire_monster' },
-        { frame: 110, key: 'fire_monster' },
-        { frame: 111, key: 'fire_monster' },
-        { frame: 112, key: 'fire_monster' }
-      ],
-      frameRate: 8,
-      yoyo: false,
-      repeat: -1
-    });
+    this.map1 = this.add.tilemap('grass_area');
+    this.tileset1 = this.map1.addTilesetImage('Map_tileset', 'map_tiles');
+    this.layer1 = this.map1.createStaticLayer('Grass Layer', this.tileset1, -800, -600);
   }
 
   create() {
+    
 
-    let char = new Character(this, 0,  0, 'soldier');
+    this.fireMonster = new FireMonster(this, -100, 0);
+    this.iceMonster = new IceMonster(this, 100, 0);
+    this.spiderMonster = new SpiderMonster(this, -300, 0);
 
+    this.cameras.main.startFollow(this.fireMonster);
 
-    new Character(this, 200,  0, 'fire_monster');
+    this.fightKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+    this.deathKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.K);
+    this.cursors = this.input.keyboard.createCursorKeys();
 
-    this.cameras.main.startFollow(char);
   }
 
+  update() {
+    let direction = null;
+    let animation = 'walk';
+    if (this.cursors.up.isDown) {
+      direction = 'N';
+      if (this.cursors.left.isDown) { //NW
+        direction += 'W';
+      }
+      else if (this.cursors.right.isDown) { //NE
+        direction += 'E';
+      }
+    }
+    else if (this.cursors.down.isDown) {
+      direction = 'S';
+      if (this.cursors.left.isDown) { //NW
+        direction += 'W';
+      }
+      else if (this.cursors.right.isDown) { //NE
+        direction += 'E';
+      }
+    }
+    else if (this.cursors.left.isDown) { //W
+      direction = 'W';
+    }
+    else if (this.cursors.right.isDown) { //E
+      direction = 'E';
+    }
+    else {
+      animation = 'stance';
+    }
+
+    if(this.fightKey.isDown) {
+      animation = 'fight';
+    }
+
+    if(this.deathKey.isDown) {
+      animation = 'death';
+    }
+
+    this.iceMonster.setAnimation(animation, direction);
+    this.fireMonster.setAnimation(animation, direction);
+    this.spiderMonster.setAnimation(animation, direction);
+
+  }
 }
