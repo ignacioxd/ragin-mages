@@ -1,0 +1,10 @@
+{
+  "background_color": "#B4D455",
+  "display": "standalone",
+  "icons": [],
+  "name": "We Need A Name",
+  "scope": "/",
+  "short_name": "short_name",
+  "start_url": "/",
+  "theme_color": "#B4D455"
+}
