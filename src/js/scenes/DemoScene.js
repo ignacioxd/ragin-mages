@@ -1,5 +1,6 @@
 import FireMonster from 'objects/FireMonster';
 import IceMonster from 'objects/IceMonster';
+import SpiderMonster from 'objects/SpiderMonster';
 
 export default class DemoScene extends Phaser.Scene {
 
@@ -12,14 +13,17 @@ export default class DemoScene extends Phaser.Scene {
       font: '16px Arial',
       fill: '#ffffff'
     });
-
+    this.map1 = this.add.tilemap('grass_area');
+    this.tileset1 = this.map1.addTilesetImage('Map_tileset', 'map_tiles');
+    this.layer1 = this.map1.createStaticLayer('Grass Layer', this.tileset1, -800, -600);
   }
 
   create() {
+    
 
     this.fireMonster = new FireMonster(this, -100, 0);
-
     this.iceMonster = new IceMonster(this, 100, 0);
+    this.spiderMonster = new SpiderMonster(this, -300, 0);
 
     this.cameras.main.startFollow(this.fireMonster);
 
@@ -70,6 +74,7 @@ export default class DemoScene extends Phaser.Scene {
 
     this.iceMonster.setAnimation(animation, direction);
     this.fireMonster.setAnimation(animation, direction);
+    this.spiderMonster.setAnimation(animation, direction);
 
   }
 }

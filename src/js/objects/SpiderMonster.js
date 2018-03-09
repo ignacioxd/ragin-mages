@@ -1,9 +1,9 @@
 import Character from './Character';
 
-export default class IceMonster extends Character {
+export default class SpiderMonster extends Character {
   constructor(scene, x, y) {
-    super(scene, x, y, 'ice_monster');
-    this.type = 'ice_monster';
+    super(scene, x, y, 'spider_monster');
+    this.type = 'spider_monster';
     
     this.buildAnimations(scene);
 

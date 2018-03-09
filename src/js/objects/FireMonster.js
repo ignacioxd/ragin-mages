@@ -7,7 +7,7 @@ export default class FireMonster extends Character {
     
     this.buildAnimations(scene);
 
-    this.setAnimation('fight', 'E');
+    this.setAnimation('stance', 'E');
     scene.add.existing(this);
 
   }
