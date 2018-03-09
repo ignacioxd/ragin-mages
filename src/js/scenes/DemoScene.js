@@ -1,6 +1,7 @@
 import FireMonster from 'objects/FireMonster';
 import IceMonster from 'objects/IceMonster';
 import SpiderMonster from 'objects/SpiderMonster';
+import GolemMonster from 'objects/GolemMonster';
 
 export default class DemoScene extends Phaser.Scene {
 
@@ -24,8 +25,9 @@ export default class DemoScene extends Phaser.Scene {
     
 
     this.fireMonster = new FireMonster(this, -100, 0);
-    this.iceMonster = new IceMonster(this, 100, 0);
-    this.spiderMonster = new SpiderMonster(this, -300, 0);
+    this.iceMonster = new IceMonster(this, 100, -100);
+    this.spiderMonster = new SpiderMonster(this, -300, 100);
+    this.golemMonster = new GolemMonster(this, -300, -100);
 
     this.cameras.main.startFollow(this.fireMonster);
 
@@ -83,6 +85,7 @@ export default class DemoScene extends Phaser.Scene {
     this.iceMonster.setAnimation(animation, direction);
     this.fireMonster.setAnimation(animation, direction);
     this.spiderMonster.setAnimation(animation, direction);
+    this.golemMonster.setAnimation(animation, direction);
 
     this.fireMonster.update();
   }
