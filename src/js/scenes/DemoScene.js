@@ -2,6 +2,7 @@ import FireMonster from 'objects/FireMonster';
 import IceMonster from 'objects/IceMonster';
 import SpiderMonster from 'objects/SpiderMonster';
 import GolemMonster from 'objects/GolemMonster';
+import Grid from 'objects/Grid';
 
 export default class DemoScene extends Phaser.Scene {
 
@@ -22,7 +23,16 @@ export default class DemoScene extends Phaser.Scene {
   }
 
   create() {
-    
+    const gridOptions = {
+      width: 100,
+      height: 100,
+      cellWidth: 32,
+      cellHeight: 32,
+      x: -784,
+      y: -584
+    };
+
+    new Grid(this, [], {}, gridOptions);
 
     this.fireMonster = new FireMonster(this, -100, 0);
     this.iceMonster = new IceMonster(this, 100, -100);
