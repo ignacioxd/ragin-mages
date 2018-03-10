@@ -12,7 +12,7 @@
 </head>
 <body>
    <div id="overlay" onclick="on()">
-   <div id="text">Arrow keys rotate character. Space to play Attack Animation. 'F' for death Animation
+   <div id="text">Arrow keys rotate character. Space to play Attack Animation. 'k' for death Animation
       Click to move! Press 'E' to hide this window.
    </div>
    <div id ="TileProps">test
@@ -25,18 +25,18 @@
     //a function for listening to keypresses
     // we use the document as the scope so it works at all times.
     //someone more experienced move this somewhere else! ;)
-    document.onkeydown = function(e){
-    e = e || window.event;
-    var key = e.which || e.keyCode;
-    if(key===69){
+    document.onkeydown = function(e) {
+      e = e || window.event;
+      var key = e.which || e.keyCode;
+      if(key===69) {
         toggleOverlay();
       }
     }
     function toggleOverlay(){
-    if(document.getElementById("overlay").style.display === "block"){
-      off();
-    }else{
-       on();
+      if(document.getElementById("overlay").style.display === "block"){
+        off();
+      } else {
+        on();
       }
     }
     /*if ('serviceWorker' in navigator) {
@@ -85,10 +85,10 @@
       }
     }*/
     function on() {
-    document.getElementById("overlay").style.display = "block";
+      document.getElementById("overlay").style.display = "block";
     }
     function off() {
-    document.getElementById("overlay").style.display = "none";
+      document.getElementById("overlay").style.display = "none";
     }
     on();
   </script>

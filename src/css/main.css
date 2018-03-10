@@ -15,7 +15,7 @@ body {
   align-items: center;
 }
 
-overlay {
+#overlay {
  position: fixed;
  display: none;
  width: 100%;
@@ -28,7 +28,8 @@ overlay {
  z-index: 2;
  cursor: pointer;
 }
-text{
+
+#text{
  position: absolute;
  top: 60%;
  left: 50%;
