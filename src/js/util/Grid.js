@@ -1,5 +1,5 @@
-import Tile from './Tile';
-import Cursor from './Cursor';
+import GridSlot from 'objects/GridSlot';
+import GridPointer from 'objects/GridPointer';
 
 export default class Grid extends Phaser.GameObjects.Group {
   /*
@@ -15,12 +15,12 @@ export default class Grid extends Phaser.GameObjects.Group {
   constructor(scene, children, config, opts) {
     super(scene, children, config);
 
-    const cursor = new Cursor(scene, 10, 10, 'cursor');
+    const cursor = new GridPointer(scene, 10, 10);
 
     const numberOfTiles = opts.height * opts.width;
 
     for (var i = 0; i < numberOfTiles; i++) {
-      const tile = new Tile(scene, 0, 0, 'tile', cursor);
+      const tile = new GridSlot(scene, 0, 0, 'grid_slot', cursor);
       this.add(tile, true);
     }
 

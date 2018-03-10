@@ -1,10 +1,10 @@
+import BaseScene from './BaseScene';
 import FireMonster from 'objects/FireMonster';
 import IceMonster from 'objects/IceMonster';
 import SpiderMonster from 'objects/SpiderMonster';
 import GolemMonster from 'objects/GolemMonster';
-import Grid from 'objects/Grid';
 
-export default class DungeonScene extends Phaser.Scene {
+export default class DungeonScene extends BaseScene {
 
   constructor() {
     super({ key: 'DungeonScene' });
@@ -20,20 +20,11 @@ export default class DungeonScene extends Phaser.Scene {
       font: '16px Arial',
       fill: '#ffffff'
     });
+
+    this.initGrid();
   }
 
   create() {
-
-    const gridOptions = {
-      width: 25,
-      height: 20,
-      cellWidth: 32,
-      cellHeight: 32,
-      x: -485,
-      y: -320
-    };  
-
-    new Grid(this, [], {}, gridOptions);
     
 
     this.fireMonster = new FireMonster(this, -100, 0);

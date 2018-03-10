@@ -1,4 +1,4 @@
-export default class Tile extends Phaser.GameObjects.Sprite {
+export default class GridPointer extends Phaser.GameObjects.Sprite {
   constructor(scene, x, y, key, cursor) {
     super(scene, x, y, key);
 
