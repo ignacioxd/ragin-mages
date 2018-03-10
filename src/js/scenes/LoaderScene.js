@@ -13,8 +13,8 @@ export default class LoaderScene extends Phaser.Scene {
     this.load.image('red', 'http://labs.phaser.io/assets/particles/red.png');
 
     // Assets from https://opengameart.org/content/dungeon-crawl-32x32-tiles
-    this.load.image('cursor', 'sprites/cursor.png');
-    this.load.image('tile', 'sprites/slot_cursed.png');
+    this.load.image('grid_pointer', 'sprites/grid_pointer.png');
+    this.load.image('grid_slot', 'sprites/slot_cursed.png');
 
     this.load.spritesheet('soldier', 'spritesheets/soldier.png', { frameWidth: 300, frameHeight: 300 });
 
