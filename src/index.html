@@ -10,7 +10,6 @@
   <link rel="stylesheet" href="css/main.css">
   <script src="js/phaser.min.js"></script>
   <style>
-  
   #overlay {
     position: fixed;
     display: none;
@@ -24,7 +23,6 @@
     z-index: 2;
     cursor: pointer;
 }
-
 #text{
     position: absolute;
     top: 60%;
@@ -34,7 +32,6 @@
     transform: translate(-50%,-50%);
     -ms-transform: translate(-50%,-50%);
 }
-  
   </style>
 </head>
 <body>
@@ -46,7 +43,8 @@
    <div style="padding:20px">
    </div>
   <script>
-
+    //a function for listening to keypresses
+    // we use the document as the scope so it works at all times.
     document.onkeydown = function(e){
     e = e || window.event;
     var key = e.which || e.keyCode;
@@ -55,14 +53,12 @@
       }
     }
     function toggleOverlay(){
-
     if(document.getElementById("overlay").style.display === "block"){
       off();
     }else{
        on();
       }
     }
-
     /*if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('/sw.js', { scope: '/' })
         .then(reg => {
@@ -111,7 +107,6 @@
     function on() {
     document.getElementById("overlay").style.display = "block";
     }
-
     function off() {
     document.getElementById("overlay").style.display = "none";
     }
