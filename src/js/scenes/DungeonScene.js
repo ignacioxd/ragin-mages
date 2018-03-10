@@ -2,6 +2,7 @@ import FireMonster from 'objects/FireMonster';
 import IceMonster from 'objects/IceMonster';
 import SpiderMonster from 'objects/SpiderMonster';
 import GolemMonster from 'objects/GolemMonster';
+import Grid from 'objects/Grid';
 
 export default class DungeonScene extends Phaser.Scene {
 
@@ -13,7 +14,7 @@ export default class DungeonScene extends Phaser.Scene {
     
     this.map1 = this.add.tilemap('dungeon_map');
     this.tileset1 = this.map1.addTilesetImage('stone-tiles', 'stone-tiles');
-    this.layer1 = this.map1.createStaticLayer('Dungeon Map', this.tileset1, -400, -300);
+    this.layer1 = this.map1.createStaticLayer('Dungeon Map', this.tileset1, -500, -340);
 
     this.add.text(-390, -300, 'Dungeon Scene - Use the arrow keys for motion, spacebar to attack, k to die', {
       font: '16px Arial',
@@ -22,6 +23,17 @@ export default class DungeonScene extends Phaser.Scene {
   }
 
   create() {
+
+    const gridOptions = {
+      width: 25,
+      height: 20,
+      cellWidth: 32,
+      cellHeight: 32,
+      x: -485,
+      y: -320
+    };  
+
+    new Grid(this, [], {}, gridOptions);
     
 
     this.fireMonster = new FireMonster(this, -100, 0);
