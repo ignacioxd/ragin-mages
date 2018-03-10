@@ -1,8 +1,8 @@
 import BaseScene from './BaseScene';
-import FireMonster from 'objects/FireMonster';
-import IceMonster from 'objects/IceMonster';
-import SpiderMonster from 'objects/SpiderMonster';
-import GolemMonster from 'objects/GolemMonster';
+import FireMonster from 'objects/characters/FireMonster';
+import IceMonster from 'objects/characters/IceMonster';
+import SpiderMonster from 'objects/characters/SpiderMonster';
+import GolemMonster from 'objects/characters/GolemMonster';
 
 export default class DungeonScene extends BaseScene {
 
