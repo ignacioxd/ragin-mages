@@ -9,9 +9,60 @@
   <link rel="manifest" href="manifest.json">
   <link rel="stylesheet" href="css/main.css">
   <script src="js/phaser.min.js"></script>
+  <style>
+  
+  #overlay {
+    position: fixed;
+    display: none;
+    width: 100%;
+    height: 8%;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0,0,0,0.5);
+    z-index: 2;
+    cursor: pointer;
+}
+
+#text{
+    position: absolute;
+    top: 60%;
+    left: 50%;
+    font-size: 14px;
+    color: white;
+    transform: translate(-50%,-50%);
+    -ms-transform: translate(-50%,-50%);
+}
+  
+  </style>
 </head>
 <body>
+   <div id="overlay" onclick="on()">
+   <div id="text">Arrow keys rotate character. Space to play Attack Animation. 'F' for death Animation
+      Click to move! Press 'E' to hide this window.
+   </div>
+   </div>
+   <div style="padding:20px">
+   </div>
   <script>
+
+    document.onkeydown = function(e){
+    e = e || window.event;
+    var key = e.which || e.keyCode;
+    if(key===69){
+        toggleOverlay();
+      }
+    }
+    function toggleOverlay(){
+
+    if(document.getElementById("overlay").style.display === "block"){
+      off();
+    }else{
+       on();
+      }
+    }
+
     /*if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('/sw.js', { scope: '/' })
         .then(reg => {
@@ -57,6 +108,14 @@
         });
       }
     }*/
+    function on() {
+    document.getElementById("overlay").style.display = "block";
+    }
+
+    function off() {
+    document.getElementById("overlay").style.display = "none";
+    }
+    on();
   </script>
   <script src="js/game.js"></script>
 </body>
