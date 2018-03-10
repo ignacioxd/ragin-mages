@@ -9,35 +9,14 @@
   <link rel="manifest" href="manifest.json">
   <link rel="stylesheet" href="css/main.css">
   <script src="js/phaser.min.js"></script>
-  <style>
-  #overlay {
-    position: fixed;
-    display: none;
-    width: 100%;
-    height: 8%;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0,0,0,0.5);
-    z-index: 2;
-    cursor: pointer;
-}
-#text{
-    position: absolute;
-    top: 60%;
-    left: 50%;
-    font-size: 14px;
-    color: white;
-    transform: translate(-50%,-50%);
-    -ms-transform: translate(-50%,-50%);
-}
-  </style>
 </head>
 <body>
    <div id="overlay" onclick="on()">
    <div id="text">Arrow keys rotate character. Space to play Attack Animation. 'F' for death Animation
       Click to move! Press 'E' to hide this window.
+   </div>
+   <div id ="TileProps">test
+
    </div>
    </div>
    <div style="padding:20px">
@@ -45,6 +24,7 @@
   <script>
     //a function for listening to keypresses
     // we use the document as the scope so it works at all times.
+    //someone more experienced move this somewhere else! ;)
     document.onkeydown = function(e){
     e = e || window.event;
     var key = e.which || e.keyCode;
