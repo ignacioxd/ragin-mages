@@ -36,6 +36,7 @@ export default class TitleScene extends Phaser.Scene {
 
 
     this.startKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER);
+    this.startKey2 = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
     this.mouseClick = this.input.on('pointerdown', function() {
       this.scene.start('DemoScene');
     }, this)
@@ -44,6 +45,10 @@ export default class TitleScene extends Phaser.Scene {
   update() {
     if(this.startKey.isDown) {
       this.scene.start('DemoScene');
+    }
+      
+    if(this.startKey2.isDown) {
+      this.scene.start('DungeonScene');
     }
   }
 }
