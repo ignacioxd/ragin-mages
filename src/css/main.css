@@ -3,7 +3,7 @@ html {
   height: 100%;
   margin: 0px;
   padding: 0px;
-  background-color: #000;
+  background-color: #333;
 }
 
 body {
@@ -14,3 +14,28 @@ body {
   justify-content: center;
   align-items: center;
 }
+
+#overlay {
+ position: fixed;
+ display: none;
+ width: 100%;
+ height: 8%;
+ top: 0;
+ left: 0;
+ right: 0;
+ bottom: 0;
+ background-color: rgba(0,0,0,0.5);
+ z-index: 2;
+ cursor: pointer;
+}
+
+#text{
+ position: absolute;
+ top: 60%;
+ left: 50%;
+ font-size: 14px;
+ color: white;
+ transform: translate(-50%,-50%);
+ -ms-transform: translate(-50%,-50%);
+}
+  

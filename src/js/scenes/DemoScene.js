@@ -1,9 +1,11 @@
-import FireMonster from 'objects/FireMonster';
-import IceMonster from 'objects/IceMonster';
-import SpiderMonster from 'objects/SpiderMonster';
-import GolemMonster from 'objects/GolemMonster';
+import BaseScene from './BaseScene';
+import FireMonster from 'objects/characters/FireMonster';
+import IceMonster from 'objects/characters/IceMonster';
+import SpiderMonster from 'objects/characters/SpiderMonster';
+import GolemMonster from 'objects/characters/GolemMonster';
+import Priest from 'objects/characters/Priest';
 
-export default class DemoScene extends Phaser.Scene {
+export default class DemoScene extends BaseScene {
 
   constructor() {
     super({ key: 'DemoScene' });
@@ -19,17 +21,17 @@ export default class DemoScene extends Phaser.Scene {
       font: '16px Arial',
       fill: '#ffffff'
     });
+    this.initGrid();
   }
 
   create() {
-    
-
-    this.fireMonster = new FireMonster(this, -100, 0);
+    this.priest = new Priest(this, -100, 0);
+    this.fireMonster = new FireMonster(this, 100, 100);
     this.iceMonster = new IceMonster(this, 100, -100);
     this.spiderMonster = new SpiderMonster(this, -300, 100);
     this.golemMonster = new GolemMonster(this, -300, -100);
 
-    this.cameras.main.startFollow(this.fireMonster);
+    this.cameras.main.startFollow(this.priest);
 
     this.fightKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
     this.deathKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.K);
@@ -37,7 +39,7 @@ export default class DemoScene extends Phaser.Scene {
 
     this.input.on('pointerdown', function(event) {
       if(event.buttons === 1) {
-        this.fireMonster.moveTo(this.input.x, this.input.y);
+        this.priest.moveTo(this.input.x, this.input.y);
       }
     }, this)
 
@@ -86,7 +88,8 @@ export default class DemoScene extends Phaser.Scene {
     this.fireMonster.setAnimation(animation, direction);
     this.spiderMonster.setAnimation(animation, direction);
     this.golemMonster.setAnimation(animation, direction);
+    this.priest.setAnimation(animation, direction);
 
-    this.fireMonster.update();
+    this.priest.update();
   }
 }
