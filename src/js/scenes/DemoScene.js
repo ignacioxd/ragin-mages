@@ -88,7 +88,6 @@ export default class DemoScene extends BaseScene {
     this.fireMonster.setAnimation(animation, direction);
     this.spiderMonster.setAnimation(animation, direction);
     this.golemMonster.setAnimation(animation, direction);
-    this.priest.setAnimation(animation, direction);
 
     this.priest.update();
   }
