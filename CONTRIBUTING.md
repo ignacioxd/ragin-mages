@@ -12,4 +12,4 @@ To contribute, fork the project and make a new branch for each feature/bug fix y
 
 3. Be mindful of caching via service workers. Increase versions when appropriate.
 
-4. If your pull request is related to an existing pull request or an issue, 
+4. If your pull request is related to an existing pull request or an issue, reference the issue or pull request as part of your PR message (see [how to do this](https://help.github.com/articles/autolinked-references-and-urls/))
