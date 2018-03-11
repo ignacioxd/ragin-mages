@@ -7,7 +7,8 @@ export default class LoaderScene extends Phaser.Scene {
   preload() {
     console.log(this.constructor.name);
     this.load.setBaseURL('./assets/');
-
+    this.load.json('assets');
+    
     this.load.image('sky', 'http://labs.phaser.io/assets/skies/space3.png');
     this.load.image('logo', 'http://labs.phaser.io/assets/sprites/phaser3-logo.png');
     this.load.image('red', 'http://labs.phaser.io/assets/particles/red.png');
@@ -31,6 +32,6 @@ export default class LoaderScene extends Phaser.Scene {
 
   create() {
     this.scene.start('TitleScene');
+    console.log(this.cache.json.get('assets'));
   }
-
 }
