@@ -23,7 +23,7 @@ export default class TitleScene extends Phaser.Scene {
 
     emitter.startFollow(logo);
 
-    this.add.text(160, 350, 'Press ENTER to begin', {
+    this.add.text(220, 350, 'Press ENTER to begin', {
       font: '34px Arial',
       fill: '#ffffff',
       stroke: '#000000',
@@ -42,6 +42,8 @@ export default class TitleScene extends Phaser.Scene {
           for(let registration of registrations) {
             registration.unregister();
           }
+        }).catch(function() {
+          console.log('Failed to delete service worker or service worker did not exist');
         })
       }
     })  
