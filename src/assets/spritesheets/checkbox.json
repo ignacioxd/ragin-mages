@@ -1,0 +1,70 @@
+{
+	"textures": [
+		{
+			"image": "checkbox.png",
+			"format": "RGBA8888",
+			"size": {
+				"w": 264,
+				"h": 132
+			},
+			"scale": 1,
+			"frames": [
+				{
+					"filename": "unchecked",
+					"frame": {
+						"x": 1,
+						"y": 1,
+						"w": 130,
+						"h": 130
+					},
+					"rotated": false,
+					"trimmed": true,
+					"spriteSourceSize": {
+						"x": 3,
+						"y": 4,
+						"w": 130,
+						"h": 130
+					},
+					"sourceSize": {
+						"w": 140,
+						"h": 136
+					},
+					"anchor": {
+						"x": 0.5,
+						"y": 0.5
+					}
+				},
+				{
+					"filename": "checked",
+					"frame": {
+						"x": 133,
+						"y": 1,
+						"w": 130,
+						"h": 130
+					},
+					"rotated": false,
+					"trimmed": true,
+					"spriteSourceSize": {
+						"x": 3,
+						"y": 4,
+						"w": 130,
+						"h": 130
+					},
+					"sourceSize": {
+						"w": 140,
+						"h": 136
+					},
+					"anchor": {
+						"x": 0.5,
+						"y": 0.5
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"app": "https://www.codeandweb.com/texturepacker",
+		"version": "3.0",
+		"smartupdate": "$TexturePacker:SmartUpdate:01d7a1daf6624b72fe1bb46185522ef8:0c6eb5a1085c222b30114f83e1165842:193735b7f778d79097dcc0977738307a$"
+	}
+}

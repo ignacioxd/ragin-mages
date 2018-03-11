@@ -1,3 +1,5 @@
+import ServiceWorker from 'util/ServiceWorker';
+import Checkbox from 'objects/ui/Checkbox';
 
 export default class TitleScene extends Phaser.Scene {
 
@@ -33,18 +35,20 @@ export default class TitleScene extends Phaser.Scene {
       shadowOffsetY: '10',
       shadowBlur: '5'
     });
-    
-    let sprite1 = this.add.sprite(700,500, 'toggle').setInteractive();
 
-    sprite1.on('pointerdown', function() {
-      if ('serviceWorker' in navigator) { 
-        navigator.serviceWorker.getRegistrations().then(function(registrations) { 
-          for(let registration of registrations) {
-            registration.unregister();
-          }
-        }).catch(function() {
-          console.log('Failed to delete service worker or service worker did not exist');
-        })
+    let serviceWorker = new ServiceWorker();
+    
+    let checkbox = new Checkbox(this, 45, 560, 'Enable offline mode', serviceWorker.isRegistered());
+
+    checkbox.onPointerDown(function(obj) {
+      //TODO: add service worker
+      console.log('checked', obj.isChecked() ? 'yes' : 'no');
+
+      if(obj.isChecked()) {
+        serviceWorker.register();
+      }
+      else {
+        serviceWorker.unregister();
       }
     })  
       
