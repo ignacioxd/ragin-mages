@@ -7,7 +7,7 @@ export default class TitleScene extends Phaser.Scene {
 
   preload() {
   }
-
+    
   create() {
     this.add.image(400, 300, 'sky');
 
@@ -23,7 +23,7 @@ export default class TitleScene extends Phaser.Scene {
 
     emitter.startFollow(logo);
 
-    this.add.text(160, 350, 'Press ENTER or Click to begin', {
+    this.add.text(220, 350, 'Press ENTER to begin', {
       font: '34px Arial',
       fill: '#ffffff',
       stroke: '#000000',
@@ -33,12 +33,22 @@ export default class TitleScene extends Phaser.Scene {
       shadowOffsetY: '10',
       shadowBlur: '5'
     });
+    
+    let sprite1 = this.add.sprite(700,500, 'toggle').setInteractive();
 
-
+    sprite1.on('pointerdown', function() {
+      if ('serviceWorker' in navigator) { 
+        navigator.serviceWorker.getRegistrations().then(function(registrations) { 
+          for(let registration of registrations) {
+            registration.unregister();
+          }
+        }).catch(function() {
+          console.log('Failed to delete service worker or service worker did not exist');
+        })
+      }
+    })  
+      
     this.startKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER);
-    this.mouseClick = this.input.on('pointerdown', function() {
-      this.scene.start('DemoScene');
-    }, this)
   }
 
   update() {
