@@ -1,4 +1,4 @@
-export default class DialogWindow{
+export default class Modal{
   constructor(scene, opts) {
     if (!opts) opts = {};
     const {
@@ -7,9 +7,8 @@ export default class DialogWindow{
       borderAlpha = 1,
       windowAlpha = 0.1,
       windowColor = 0xffffff,
-      windowHeight = 150,
-      padding = 32,
-      dialogSpeed = 3,
+      windowHeight = 344,
+      padding = 128,
       closeBtnColor = 'darkgoldenrod'
     } = opts;
 
@@ -26,13 +25,8 @@ export default class DialogWindow{
     this.graphics;
     this.closeBtn;
 
-    // Config for the text of the dialog window
-    this.dialogSpeed = dialogSpeed;
-    this.eventCounter = 0;
-    this.text;
-    this.dialog;
-
     this.visible = true;
+    this.text;
 
     this._createWindow();
   }
@@ -115,28 +109,13 @@ export default class DialogWindow{
       this.clearTint();
     });
     this.closeBtn.on('pointerdown', function () {
-      this.destroy();
-      if (self.timedEvent) self.timedEvent.remove(false);
-      if (self.text) self.text.destroy();
-      self.graphics.destroy();
+      self.toggleWindow();
     });
   }
 
-  // Slowly displays the text in the window to make it appear annimated
-  _animateText() {
-    this.eventCounter++;
-    this.text.setText(this.text.text + this.dialog[this.eventCounter - 1]);
-    if (this.eventCounter === this.dialog.length) {
-      this.timedEvent.remove(false);
-    }
-  }
-
-  // Sets the text for the dialog window
-  setText(text, animate) {
+  // Shared setText() code across modals
+  _setText(text) {
     // Reset the dialog
-    this.eventCounter = 0;
-    this.dialog = text.split('');
-    if (this.timedEvent) this.timedEvent.remove(false);
     if (this.text) this.text.destroy();
 
     const x = this.padding + 10;
@@ -145,27 +124,23 @@ export default class DialogWindow{
     this.text = this.scene.make.text({
       x,
       y,
-      text: animate ? '' : text,
+      text,
       style: {
         wordWrap: { width: this._getGameWidth() - (this.padding * 2) - 25 }
       }
     });
+  }
 
-    if (animate) {
-      this.timedEvent = this.scene.time.addEvent({
-        delay: 150 - (this.dialogSpeed * 30),
-        callback: this._animateText,
-        callbackScope: this,
-        loop: true
-      });
-    }
+  // Sets the text for the dialog window
+  setText(text) {
+    this._setText(text);
   }
 
   // Hide/Show the dialog window
   toggleWindow() {
     this.visible = !this.visible;
-    this.text.visible = this.visible;
-    this.graphics.visible = this.visible;
-    this.closeBtn.visible = this.visible;
+    if (this.text) this.text.visible = this.visible;
+    if (this.graphics) this.graphics.visible = this.visible;
+    if (this.closeBtn) this.closeBtn.visible = this.visible;
   }
 }

@@ -32,7 +32,7 @@ export default class LoaderScene extends Phaser.Scene {
   }
 
   create() {
-    this.scene.start('TestScene');
+    this.scene.start('DemoScene');
   }
 
 }
