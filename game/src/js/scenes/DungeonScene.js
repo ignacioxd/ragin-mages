@@ -20,8 +20,6 @@ export default class DungeonScene extends BaseScene {
       font: '16px Arial',
       fill: '#ffffff'
     });
-
-    this.initGrid();
   }
 
   create() {
