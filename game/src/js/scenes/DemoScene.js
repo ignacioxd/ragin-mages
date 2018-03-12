@@ -4,6 +4,7 @@ import IceMonster from 'objects/characters/IceMonster';
 import SpiderMonster from 'objects/characters/SpiderMonster';
 import GolemMonster from 'objects/characters/GolemMonster';
 import Priest from 'objects/characters/Priest';
+import Knight from 'objects/characters/Knight';
 
 export default class DemoScene extends BaseScene {
 
@@ -12,7 +13,16 @@ export default class DemoScene extends BaseScene {
   }
 
   preload() {
-    
+    this.input.keyboard.on('keydown_ESC', function () {
+      if (this.sys.isActive()) this.sys.pause();
+      else this.sys.resume();
+    }, this);
+
+    this.input.keyboard.on('keydown_Q', function () {
+      const sampleDialog = 'Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...';
+      this.sys.game.scene.keys.DialogScene.setDialogText(sampleDialog);
+    }, this);
+
     this.map1 = this.add.tilemap('grass_area');
     this.tileset1 = this.map1.addTilesetImage('Map_tileset', 'map_tiles');
     this.layer1 = this.map1.createStaticLayer('Grass Layer', this.tileset1, -800, -600);
@@ -30,6 +40,7 @@ export default class DemoScene extends BaseScene {
     this.iceMonster = new IceMonster(this, 100, -100);
     this.spiderMonster = new SpiderMonster(this, -300, 100);
     this.golemMonster = new GolemMonster(this, -300, -100);
+    this.knight = new Knight(this, -100, 100);
 
     this.cameras.main.startFollow(this.priest);
 
@@ -88,7 +99,7 @@ export default class DemoScene extends BaseScene {
     this.fireMonster.setAnimation(animation, direction);
     this.spiderMonster.setAnimation(animation, direction);
     this.golemMonster.setAnimation(animation, direction);
-    this.priest.setAnimation(animation, direction);
+    this.knight.setAnimation(animation, direction);
 
     this.priest.update();
   }

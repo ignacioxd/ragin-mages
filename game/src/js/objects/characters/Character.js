@@ -12,6 +12,7 @@ export default class Character extends Phaser.GameObjects.Sprite {
         y: y
       }
     };
+    this.setScale(.3);
   }
 
   buildAnimations(scene) {
@@ -59,16 +60,22 @@ export default class Character extends Phaser.GameObjects.Sprite {
 
   update() {
     if(this.motion.moving) {
+      let orientationNS = '';
+      let orientationEW = '';
+
       let dx = this.motion.moveTo.x - this.x;
       if(dx !== 0) {
-        this.x += Math.ceil(dx / Math.abs(dx)); 
+        this.x += Math.ceil(dx / Math.abs(dx));
+        orientationEW = dx > 0 ? 'E' : 'W';
       }
             
       let dy = this.motion.moveTo.y - this.y;
       if(dy !== 0) {
-        this.y += Math.ceil(dy / Math.abs(dy)); 
+        this.y += Math.ceil(dy / Math.abs(dy));
+        orientationNS = dy < 0 ? 'N' : 'S';
       }
       
+      this.setAnimation('walk', orientationNS + orientationEW);
 
       if(this.x == this.motion.moveTo.x && this.y == this.motion.moveTo.y) {
         this.stop();
@@ -78,6 +85,7 @@ export default class Character extends Phaser.GameObjects.Sprite {
 
   stop() {
     this.motion.moving = false;
+    this.setAnimation('stance');
   }
 
 }
