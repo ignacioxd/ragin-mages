@@ -48,6 +48,10 @@ export default class LoaderScene extends Phaser.Scene {
     loader.image('map_tiles', 'maps/map_tiles.png');
     loader.tilemapTiledJSON('dungeon_map', 'maps/dungeon_map.json')
     loader.image('stone-tiles', 'maps/stone-tiles.jpg');
+
+    //UI
+    //https://opengameart.org/content/user-interface-element-pack-panels-buttons-sliders-tables-icons
+    this.load.atlas('checkbox', 'spritesheets/checkbox.png', 'spritesheets/checkbox.json');
   }
 
   /**
