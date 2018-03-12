@@ -31,7 +31,7 @@
  ],
  "spritesheet":
  [{
-     "key:":"soldier",
+     "key":"soldier",
      "path":"spritesheets/soldier.png",
      "frameWidth":300,
      "frameHeight":300
