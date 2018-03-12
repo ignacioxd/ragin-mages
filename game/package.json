@@ -33,6 +33,6 @@
     "vinyl-source-stream": "^2.0.0"
   },
   "dependencies": {
-    "phaser": "^3.2.0"
+    "phaser": "^3.2.1"
   }
 }
