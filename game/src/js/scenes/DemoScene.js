@@ -31,7 +31,6 @@ export default class DemoScene extends BaseScene {
       font: '16px Arial',
       fill: '#ffffff'
     });
-    this.initGrid();
   }
 
   create() {
