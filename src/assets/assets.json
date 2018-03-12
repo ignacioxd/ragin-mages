@@ -2,81 +2,70 @@
  [{
 
     "key":"sky",
-    "location":"http://labs.phaser.io/assets/skies/space3.png"
+    "path":"http://labs.phaser.io/assets/skies/space3.png"
  },
  {
     "key":"logo",
-    "location":"http://labs.phaser.io/assets/sprites/phaser3-logo.png"
+    "path":"http://labs.phaser.io/assets/sprites/phaser3-logo.png"
  },
  {
     "key":"red",
-    "location":"http://labs.phaser.io/assets/particles/red.png"
+    "path":"http://labs.phaser.io/assets/particles/red.png"
  },
  {
     "key":"grid_pointer",
-    "location":"sprites/grid_pointer.png"
+    "path":"sprites/grid_pointer.png"
  },
  {
     "key":"grid_slot",
-    "location":"sprites/slot_cursed.png"
+    "path":"sprites/slot_cursed.png"
  },
  {
     "key":"map_tiles",
-    "location":"maps/map_tiles.png"
+    "path":"maps/map_tiles.png"
  },
  {
     "key":"stone-tiles",
-    "location":"maps/stone-tiles.jpg"
+    "path":"maps/stone-tiles.jpg"
  }
  ],
  "spritesheet":
  [{
      "key:":"soldier",
-     "location":"spritesheets/soldier.png",
+     "path":"spritesheets/soldier.png",
      "frameWidth":300,
      "frameHeight":300
   }],
  "atlas":
  [{
      "key":"fire_monster",
-     "location":"spritesheets/fire_monster.png",
+     "path":"spritesheets/fire_monster.png",
      "json":"spritesheets/fire_monster.json"
  },
  {
      "key":"ice_monster",
-     "location":"spritesheets/ice_monster.png",
+     "path":"spritesheets/ice_monster.png",
      "json":"spritesheets/ice_monster.json"
  },
  {
      "key":"spider_monster",
-     "location":"spritesheets/spider_monster.png",
+     "path":"spritesheets/spider_monster.png",
      "json":"spritesheets/spider_monster.json"
  },
  {
      "key":"golem_monster",
-     "location":"spritesheets/golem_monster.png",
+     "path":"spritesheets/golem_monster.png",
      "json":"spritesheets/golem_monster.json"
  }],
  "tileMaps":
  [{
-     "id":"grass_area",
+     "key":"grass_area",
      "json":"maps/map.json"
  },
  {
-     "id":"dungeon_map",
+     "key":"dungeon_map",
      "json":"maps/dungeon_map.json"
  }],
  "cache":
- [{
-    "location":"index.html"
-  },
-  {
-    "location":"js/phaser.min.js"
-  },
-  {
-    "location":"js/game.js"
-  },
-  {
-    "location":"css/main.css"
- }]
+ ["index.html","js/phaser.min.js","js/game/js","css/main.css"]
 }
