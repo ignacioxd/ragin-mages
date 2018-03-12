@@ -4,6 +4,7 @@ import IceMonster from 'objects/characters/IceMonster';
 import SpiderMonster from 'objects/characters/SpiderMonster';
 import GolemMonster from 'objects/characters/GolemMonster';
 import Priest from 'objects/characters/Priest';
+import Knight from 'objects/characters/Knight';
 
 export default class DemoScene extends BaseScene {
 
@@ -30,6 +31,7 @@ export default class DemoScene extends BaseScene {
     this.iceMonster = new IceMonster(this, 100, -100);
     this.spiderMonster = new SpiderMonster(this, -300, 100);
     this.golemMonster = new GolemMonster(this, -300, -100);
+    this.knight = new Knight(this, -100, 100);
 
     this.cameras.main.startFollow(this.priest);
 
@@ -88,6 +90,7 @@ export default class DemoScene extends BaseScene {
     this.fireMonster.setAnimation(animation, direction);
     this.spiderMonster.setAnimation(animation, direction);
     this.golemMonster.setAnimation(animation, direction);
+    this.knight.setAnimation(animation, direction);
 
     this.priest.update();
   }
