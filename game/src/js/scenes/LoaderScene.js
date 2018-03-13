@@ -7,7 +7,7 @@ export default class LoaderScene extends Phaser.Scene {
   preload() {
     console.log(this.constructor.name);
     this.load.setBaseURL('./assets/');
-
+    this.load.json('assets');
     this.progress = this.add.graphics();
 
     this.load.on('start', this.loadStart, this);
@@ -80,5 +80,6 @@ export default class LoaderScene extends Phaser.Scene {
   loadCompleted() {
     this.progress.destroy();
     this.scene.start('TitleScene');
+    console.log(this.cache.json.get('assets'));
   }
 }
