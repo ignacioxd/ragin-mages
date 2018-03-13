@@ -7,7 +7,7 @@ export default class Projectile extends Phaser.Physics.Arcade.Sprite {
     this.vector = new Phaser.Math.Vector2(x + targetX - 400, y + targetY - 300);
     this.vector = this.vector.subtract({x: x, y: y}).normalize();
     this.rotation = this.vector.angle();
-    this.scale = 0.8;
+    this.setScale(.5);
 
     this.speed = 250;
 
@@ -52,19 +52,6 @@ export default class Projectile extends Phaser.Physics.Arcade.Sprite {
       }
       this.animationsCreated = true;
     }
-
-    /*if(!this.animationsCreated) {
-      const coordinates = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'];
-
-      for (const coordinate of coordinates) {
-        let animFrames = scene.anims.generateFrameNames(type, {
-          start: 1, end: 8, zeroPad: 4,
-          prefix: `${coordinate}/`, suffix: ''
-        });
-        scene.anims.create({ key: `${type}-${coordinate}`, frames: animFrames, frameRate: 10, repeat: -1 });
-      }
-      this.animationsCreated = true;
-    }*/
   }
 
 
