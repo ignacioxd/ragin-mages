@@ -13,7 +13,14 @@ class Game extends Phaser.Game {
       pixelArt: true,
       width: 800,
       height: 600,
-      scene: [LoaderScene, TitleScene, DemoScene, DungeonScene, PauseMenuScene, DialogScene]
+      scene: [LoaderScene, TitleScene, DemoScene, DungeonScene, PauseMenuScene, DialogScene],
+      physics: {
+        default: 'impact',
+        impact: {
+            gravity: 0,
+            debug: false
+        }
+      }  
     });
   }
 
