@@ -41,7 +41,16 @@ export default class DemoScene extends BaseScene {
     this.golemMonster = new GolemMonster(this, -300, -100);
     this.knight = new Knight(this, -100, 100);
 
-    this.cameras.main.startFollow(this.priest);
+    //movePlayer stuff IE impactSprite
+    this.player = this.impact.add.sprite(60, 60, 'fire_monster', 1).setDisplaySize(100,100);
+    this.player.setBodySize(100,100);
+    this.player.setActive();
+    this.player.setMaxVelocity(100);
+    this.player.setFriction(100, 100);
+    this.player.body.accelAir = 200;
+    //
+
+    this.cameras.main.startFollow(this.player);
 
     this.fightKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
     this.deathKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.K);
@@ -53,6 +62,30 @@ export default class DemoScene extends BaseScene {
       }
     }, this)
 
+  }
+  movePlayer(){
+    var accel =  this.player.body.accelAir;
+
+    if (this.cursors.left.isDown)
+    {
+      this.player.setAccelerationX(-accel);
+    }
+    else if (this.cursors.right.isDown)
+    {
+      this.player.setAccelerationX(accel);
+    }
+    else
+    {
+      this.player.setAccelerationX(0);
+    }
+    if (this.cursors.up.isDown)
+    {
+      this.player.setAccelerationY(-accel);
+    }
+    else if(this.cursors.down.isDown){
+      this.player.setAccelerationY(accel);
+    }
+    else{this.player.setAccelerationY(0);}
   }
 
   update() {
@@ -101,5 +134,6 @@ export default class DemoScene extends BaseScene {
     this.knight.setAnimation(animation, direction);
 
     this.priest.update();
+    this.movePlayer();
   }
 }
