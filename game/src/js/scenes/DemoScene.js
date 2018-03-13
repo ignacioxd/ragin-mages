@@ -1,4 +1,5 @@
 import BaseScene from './BaseScene';
+import Controller from '../util/Controller';
 import FireMonster from 'objects/characters/FireMonster';
 import IceMonster from 'objects/characters/IceMonster';
 import SpiderMonster from 'objects/characters/SpiderMonster';
@@ -13,6 +14,7 @@ export default class DemoScene extends BaseScene {
   }
 
   preload() {
+    this.controller = new Controller(this);
     this.input.keyboard.on('keydown_ESC', function () {
       if (this.sys.isActive()) this.sys.pause();
       else this.sys.resume();
@@ -45,47 +47,18 @@ export default class DemoScene extends BaseScene {
 
     this.fightKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
     this.deathKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.K);
-    this.cursors = this.input.keyboard.createCursorKeys();
-
+    
     this.input.on('pointerdown', function(event) {
       if(event.buttons === 1) {
-        this.priest.moveTo(this.input.x, this.input.y);
         this.priest.fire(this.input.x, this.input.y);
       }
-    }, this)
+    }, this);
 
   }
 
   update() {
-    let direction = null;
-    let animation = 'walk';
-    if (this.cursors.up.isDown) {
-      direction = 'N';
-      if (this.cursors.left.isDown) { //NW
-        direction += 'W';
-      }
-      else if (this.cursors.right.isDown) { //NE
-        direction += 'E';
-      }
-    }
-    else if (this.cursors.down.isDown) {
-      direction = 'S';
-      if (this.cursors.left.isDown) { //NW
-        direction += 'W';
-      }
-      else if (this.cursors.right.isDown) { //NE
-        direction += 'E';
-      }
-    }
-    else if (this.cursors.left.isDown) { //W
-      direction = 'W';
-    }
-    else if (this.cursors.right.isDown) { //E
-      direction = 'E';
-    }
-    else {
-      animation = 'stance';
-    }
+    let direction = this.controller.getWASDCoordinate();
+    let animation = 'stance';
 
     if(this.fightKey.isDown) {
       animation = 'fight';
@@ -101,6 +74,6 @@ export default class DemoScene extends BaseScene {
     this.golemMonster.setAnimation(animation, direction);
     this.knight.setAnimation(animation, direction);
 
-    this.priest.update();
+    this.priest.setMotion(this.controller.getWASDVector());
   }
 }

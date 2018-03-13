@@ -1,21 +1,16 @@
 import Projectile from '../Projectile';
 
-export default class Character extends Phaser.GameObjects.Sprite {
+export default class Character extends Phaser.Physics.Arcade.Sprite {
   constructor(scene, x, y, key) {
     super(scene, x, y, key);
+    scene.physics.world.enable(this);
+
     this.scene = scene;
     this.lastOrientation = 'E';
     this.projectileType = 'fire';
 
-    this.speed = 5;
+    this.speed = 100;
 
-    this.motion = {
-      moving: false,
-      moveTo: {
-        x: x,
-        y: y
-      }
-    };
     this.setScale(.35);
   }
 
@@ -54,42 +49,20 @@ export default class Character extends Phaser.GameObjects.Sprite {
     this.anims.play(`${this.type}-${animation}-${orientation}`, true);
   }
 
-  moveTo(x, y) {
-    console.log('Original pos', this.x, this.y);
-    console.log('Move to pos', x, y);
-    this.motion.moveTo.x = Math.round(this.x + x - 400);
-    this.motion.moveTo.y = Math.round(this.y + y - 300);
-    this.motion.moving = true;
-  }
-
-  update() {
-    if(this.motion.moving) {
-      let orientationNS = '';
-      let orientationEW = '';
-
-      let dx = this.motion.moveTo.x - this.x;
-      if(dx !== 0) {
-        this.x += Math.ceil(dx / Math.abs(dx));
-        orientationEW = dx > 0 ? 'E' : 'W';
-      }
-            
-      let dy = this.motion.moveTo.y - this.y;
-      if(dy !== 0) {
-        this.y += Math.ceil(dy / Math.abs(dy));
-        orientationNS = dy < 0 ? 'N' : 'S';
-      }
-      
-      this.setAnimation('walk', orientationNS + orientationEW);
-
-      if(this.x == this.motion.moveTo.x && this.y == this.motion.moveTo.y) {
-        this.stop();
-      }
+  /**
+   * Moves the character in the specified direction and animates it appropriately
+   * @param {Vector2} vector Specifies the direction of motion
+   */
+  setMotion(vector) {
+    this.setVelocity(vector.x * this.speed, vector.y * this.speed);
+    let animation = 'stance';
+    if(vector.length() != 0) {
+      animation = 'walk';
+      this.lastOrientation = vector.y > 0 ? 'S' : (vector.y < 0 ? 'N' : '');
+      this.lastOrientation += vector.x > 0  ? 'E' : (vector.x < 0  ? 'W' : '');
     }
-  }
-
-  stop() {
-    this.motion.moving = false;
-    this.setAnimation('stance');
+    
+    this.setAnimation(animation, this.lastOrientation);
   }
 
   fire(targetX, targetY) {
