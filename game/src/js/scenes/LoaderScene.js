@@ -42,6 +42,10 @@ export default class LoaderScene extends Phaser.Scene {
     loader.atlas('priest_hero', 'spritesheets/priest_hero.png', 'spritesheets/priest_hero.json');
     loader.atlas('knight_hero', 'spritesheets/knight_hero.png', 'spritesheets/knight_hero.json');
 
+    //Projectiles
+    loader.atlas('projectiles', 'spritesheets/projectiles/projectiles.png', 'spritesheets/projectiles/projectiles.json');
+
+    //Maps
     loader.tilemapTiledJSON('grass_area', 'maps/map.json');
     loader.image('map_tiles', 'maps/map_tiles.png');
     loader.tilemapTiledJSON('dungeon_map', 'maps/dungeon_map.json')

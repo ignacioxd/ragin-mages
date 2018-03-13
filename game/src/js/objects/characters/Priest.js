@@ -4,6 +4,7 @@ export default class Priest extends Character {
   constructor(scene, x, y) {
     super(scene, x, y, 'priest_hero');
     this.type = 'priest_hero';
+    this.projectileType = 'orb';
     
     this.buildAnimations(scene);
 
@@ -11,7 +12,5 @@ export default class Priest extends Character {
     scene.add.existing(this);
 
   }
-
-
 
 }

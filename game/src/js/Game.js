@@ -13,6 +13,13 @@ class Game extends Phaser.Game {
       pixelArt: true,
       width: 800,
       height: 600,
+      physics: {
+        default: 'arcade',
+        arcade: {
+          gravity: { y: 0 },
+          debug: true
+        }
+      },
       scene: [LoaderScene, TitleScene, DemoScene, DungeonScene, PauseMenuScene, DialogScene]
     });
   }

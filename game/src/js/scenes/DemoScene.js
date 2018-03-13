@@ -50,6 +50,7 @@ export default class DemoScene extends BaseScene {
     this.input.on('pointerdown', function(event) {
       if(event.buttons === 1) {
         this.priest.moveTo(this.input.x, this.input.y);
+        this.priest.fire(this.input.x, this.input.y);
       }
     }, this)
 

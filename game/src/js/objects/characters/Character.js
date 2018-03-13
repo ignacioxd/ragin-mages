@@ -1,7 +1,11 @@
+import Projectile from '../Projectile';
+
 export default class Character extends Phaser.GameObjects.Sprite {
   constructor(scene, x, y, key) {
     super(scene, x, y, key);
+    this.scene = scene;
     this.lastOrientation = 'E';
+    this.projectileType = 'fire';
 
     this.speed = 5;
 
@@ -12,7 +16,7 @@ export default class Character extends Phaser.GameObjects.Sprite {
         y: y
       }
     };
-    this.setScale(.3);
+    this.setScale(.35);
   }
 
   buildAnimations(scene) {
@@ -86,6 +90,10 @@ export default class Character extends Phaser.GameObjects.Sprite {
   stop() {
     this.motion.moving = false;
     this.setAnimation('stance');
+  }
+
+  fire(targetX, targetY) {
+    new Projectile(this.scene, this.x, this.y, this.projectileType, targetX, targetY);
   }
 
 }
