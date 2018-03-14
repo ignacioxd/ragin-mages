@@ -41,6 +41,7 @@ export default class LoaderScene extends Phaser.Scene {
     loader.atlas('golem_monster', 'spritesheets/golem_monster.png', 'spritesheets/golem_monster.json');
     loader.atlas('priest_hero', 'spritesheets/priest_hero.png', 'spritesheets/priest_hero.json');
     loader.atlas('knight_hero', 'spritesheets/knight_hero.png', 'spritesheets/knight_hero.json');
+    loader.atlas('mage_hero', 'spritesheets/mage_hero.png', 'spritesheets/mage_hero.json');
 
     //Projectiles
     loader.atlas('projectiles', 'spritesheets/projectiles/projectiles.png', 'spritesheets/projectiles/projectiles.json');
