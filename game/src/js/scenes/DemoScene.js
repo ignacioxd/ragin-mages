@@ -14,6 +14,12 @@ export default class DemoScene extends BaseScene {
   }
 
   preload() {
+    //Create collision groups and event handling
+    this.projectiles = this.add.group();
+    this.characters = this.add.group();
+    this.physics.add.overlap(this.projectiles, this.characters, this.playerHit, null, this);
+
+
     this.controller = new Controller(this);
     this.input.keyboard.on('keydown_ESC', function () {
       if (this.sys.isActive()) this.sys.pause();
@@ -42,6 +48,8 @@ export default class DemoScene extends BaseScene {
     this.spiderMonster = new SpiderMonster(this, -300, 100);
     this.golemMonster = new GolemMonster(this, -300, -100);
     this.knight = new Knight(this, -100, 100);
+
+    this.characters.remove(this.priest); //this is us.
 
     this.cameras.main.startFollow(this.priest);
 
@@ -75,5 +83,12 @@ export default class DemoScene extends BaseScene {
     this.knight.setAnimation(animation, direction);
 
     this.priest.setMotion(this.controller.getWASDVector());
+  }
+
+  playerHit(projectile, character) {
+    console.log(projectile, character);
+    projectile.destroy();
+    character.destroy();
+    console.log(this.projectiles);
   }
 }

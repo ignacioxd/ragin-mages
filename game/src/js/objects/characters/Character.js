@@ -4,6 +4,7 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
   constructor(scene, x, y, key) {
     super(scene, x, y, key);
     scene.physics.world.enable(this);
+    scene.characters.add(this);
 
     this.scene = scene;
     this.lastOrientation = 'E';
@@ -12,6 +13,7 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
     this.speed = 100;
 
     this.setScale(.35);
+
   }
 
   buildAnimations(scene) {
@@ -66,7 +68,8 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
   }
 
   fire(targetX, targetY) {
-    new Projectile(this.scene, this.x, this.y, this.projectileType, targetX, targetY);
+    let projectile = new Projectile(this.scene, this.x, this.y, this.projectileType, targetX, targetY);
+    this.scene.projectiles.add(projectile);
   }
 
 }
