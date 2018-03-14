@@ -9,6 +9,8 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
     this.scene = scene;
     this.lastOrientation = 'E';
     this.projectileType = 'fire';
+    this.body.isCircle = true;
+    this.body.setCircle(45,115,115);
 
     this.speed = 100;
 
@@ -70,6 +72,8 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
   fire(targetX, targetY) {
     let projectile = new Projectile(this.scene, this.x, this.y, this.projectileType, targetX, targetY);
     this.scene.projectiles.add(projectile);
+    projectile.body.isCircle = true;
+    projectile.body.setCircle(16,10,10);
   }
 
 }
