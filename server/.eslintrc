@@ -1,0 +1,17 @@
+{
+  "parserOptions": {
+    "ecmaVersion": 9,
+    "sourceType": "module"
+  },
+  "rules": {
+    "no-console": 0,
+    "indent": ["error", 2],
+    "quotes": [2, "single", "avoid-escape"]
+  },
+  "env": {
+    "node": true
+  },
+  "extends": "eslint:recommended",
+  "globals": {
+  }
+}
