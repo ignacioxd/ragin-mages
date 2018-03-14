@@ -13,14 +13,6 @@
       "texture": "http://labs.phaser.io/assets/particles/red.png"
     },
     {
-      "key": "grid_pointer",
-      "texture": "sprites/grid_pointer.png"
-    },
-    {
-      "key": "grid_slot",
-      "texture": "sprites/slot_cursed.png"
-    },
-    {
       "key": "map_tiles",
       "texture": "maps/map_tiles.png"
     },
