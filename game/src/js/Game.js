@@ -1,3 +1,4 @@
+import BootScene from 'scenes/BootScene';
 import LoaderScene from 'scenes/LoaderScene';
 import TitleScene from 'scenes/TitleScene';
 import DemoScene from 'scenes/DemoScene';
@@ -20,7 +21,7 @@ class Game extends Phaser.Game {
           debug: true
         }
       },
-      scene: [LoaderScene, TitleScene, DemoScene, DungeonScene, PauseMenuScene, DialogScene]
+      scene: [BootScene, LoaderScene, TitleScene, DemoScene, DungeonScene, PauseMenuScene, DialogScene]
     });
   }
 

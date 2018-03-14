@@ -5,9 +5,9 @@ export default class LoaderScene extends Phaser.Scene {
   }
 
   preload() {
-    console.log(this.constructor.name);
     this.load.setBaseURL('./assets/');
-    this.load.json('assets');
+    this.assets =  this.cache.json.get('assets');
+
     this.progress = this.add.graphics();
 
     this.load.on('start', this.loadStart, this);
@@ -26,35 +26,34 @@ export default class LoaderScene extends Phaser.Scene {
    * @param {object} loader Instance of the global Phaser loader.
    */
   loadStart(loader) {
-    loader.image('sky', 'http://labs.phaser.io/assets/skies/space3.png');
-    loader.image('logo', 'http://labs.phaser.io/assets/sprites/phaser3-logo.png');
-    loader.image('red', 'http://labs.phaser.io/assets/particles/red.png');
 
-    // Assets from https://opengameart.org/content/dungeon-crawl-32x32-tiles
+    //Load Images
+    for(let image of this.assets.image) {
+      loader.image(image.key, image.texture);
+      //loader.image(image);
+    }
+    //loader.image(this.assets.image);
 
-    loader.spritesheet('soldier', 'spritesheets/soldier.png', { frameWidth: 300, frameHeight: 300 });
+    //Load Spritesheets
+    for(let spritesheet of this.assets.spritesheet) {
+      loader.spritesheet(spritesheet.key, spritesheet.texture, spritesheet);
+    }
 
-    //Characters
-    loader.atlas('fire_monster', 'spritesheets/fire_monster.png', 'spritesheets/fire_monster.json');
-    loader.atlas('ice_monster', 'spritesheets/ice_monster.png', 'spritesheets/ice_monster.json');
-    loader.atlas('spider_monster', 'spritesheets/spider_monster.png', 'spritesheets/spider_monster.json');
-    loader.atlas('golem_monster', 'spritesheets/golem_monster.png', 'spritesheets/golem_monster.json');
-    loader.atlas('priest_hero', 'spritesheets/priest_hero.png', 'spritesheets/priest_hero.json');
-    loader.atlas('knight_hero', 'spritesheets/knight_hero.png', 'spritesheets/knight_hero.json');
-    loader.atlas('mage_hero', 'spritesheets/mage_hero.png', 'spritesheets/mage_hero.json');
+    //Load Atlas
+    for(let atlas of this.assets.atlas) {
+      loader.atlas(atlas);
+    }
 
-    //Projectiles
-    loader.atlas('projectiles', 'spritesheets/projectiles/projectiles.png', 'spritesheets/projectiles/projectiles.json');
+    //Load TileMaps
+    for(let tileMap of this.assets.tileMap) {
+      loader.tilemapTiledJSON(tileMap.key, tileMap.data);
+    }
 
-    //Maps
-    loader.tilemapTiledJSON('grass_area', 'maps/map.json');
-    loader.image('map_tiles', 'maps/map_tiles.png');
-    loader.tilemapTiledJSON('dungeon_map', 'maps/dungeon_map.json')
-    loader.image('stone-tiles', 'maps/stone-tiles.jpg');
-
-    //UI
-    //https://opengameart.org/content/user-interface-element-pack-panels-buttons-sliders-tables-icons
-    this.load.atlas('checkbox', 'spritesheets/checkbox.png', 'spritesheets/checkbox.json');
+    /*
+      Assets from
+      https://opengameart.org/content/dungeon-crawl-32x32-tiles
+      https://opengameart.org/content/user-interface-element-pack-panels-buttons-sliders-tables-icons
+    */
   }
 
   /**
@@ -81,6 +80,5 @@ export default class LoaderScene extends Phaser.Scene {
   loadCompleted() {
     this.progress.destroy();
     this.scene.start('TitleScene');
-    console.log(this.cache.json.get('assets'));
   }
 }
