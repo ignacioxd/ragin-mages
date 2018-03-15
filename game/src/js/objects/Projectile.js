@@ -1,11 +1,9 @@
 export default class Projectile extends Phaser.Physics.Arcade.Sprite {
   constructor(scene, x, y, key, targetX, targetY) {
-    Projectile.buildAnimations(scene, key);
     super(scene, x, y, key);
     this.type = key;
 
-    this.vector = new Phaser.Math.Vector2(x + targetX - 400, y + targetY - 300);
-    this.vector = this.vector.subtract({x: x, y: y}).normalize();
+    this.vector = new Phaser.Math.Vector2(x + targetX - 400, y + targetY - 300).subtract({x: x, y: y}).normalize();
     this.rotation = this.vector.angle();
     this.setScale(.5);
 

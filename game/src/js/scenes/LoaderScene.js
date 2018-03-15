@@ -1,4 +1,5 @@
 import Character from 'objects/characters/Character';
+import Projectile from 'objects/Projectile';
 
 export default class LoaderScene extends Phaser.Scene {
 
@@ -82,6 +83,7 @@ export default class LoaderScene extends Phaser.Scene {
   loadCompleted() {
     //Build animations
     Character.buildAnimations(this);
+    Projectile.buildAnimations(this);
     this.progress.destroy();
     this.scene.start('TitleScene');
   }
