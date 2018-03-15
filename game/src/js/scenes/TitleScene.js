@@ -1,5 +1,7 @@
 import ServiceWorker from 'util/ServiceWorker';
 import Checkbox from 'objects/ui/Checkbox';
+import SinglePlayerButton from 'objects/ui/SinglePlayerButton';
+import MultiplayerButton from 'objects/ui/MultiplayerButton';
 
 export default class TitleScene extends Phaser.Scene {
 
@@ -39,6 +41,9 @@ export default class TitleScene extends Phaser.Scene {
     let serviceWorker = new ServiceWorker();
     
     let checkbox = new Checkbox(this, 45, 560, 'Enable offline mode', serviceWorker.isRegistered());
+    let SinglePlayerButton = new SinglePlayerButton(this, 30,560);
+    let MultiplayerButton = new MultiplayerButton(this, 10,560);
+    
 
     checkbox.onPointerDown(function(obj) {
       //TODO: add service worker
