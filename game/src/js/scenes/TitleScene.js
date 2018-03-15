@@ -58,7 +58,7 @@ export default class TitleScene extends Phaser.Scene {
 
   update() {
     if(this.startKey.isDown) {
-      this.scene.start('DemoScene');
+      this.scene.start('CharacterSelectionScene');
     }
       
     if(this.startKey2.isDown) {

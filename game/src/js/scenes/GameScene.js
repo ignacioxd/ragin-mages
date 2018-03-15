@@ -8,10 +8,10 @@ import Priest from 'objects/characters/Priest';
 import Knight from 'objects/characters/Knight';
 import Mage from 'objects/characters/Mage';
 
-export default class DemoScene extends BaseScene {
+export default class GameScene extends BaseScene {
 
   constructor() {
-    super({ key: 'DemoScene' });
+    super({ key: 'GameScene' });
   }
 
   preload() {
