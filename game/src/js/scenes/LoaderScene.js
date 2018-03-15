@@ -1,3 +1,5 @@
+import Character from 'objects/characters/Character';
+
 export default class LoaderScene extends Phaser.Scene {
 
   constructor() {
@@ -78,6 +80,8 @@ export default class LoaderScene extends Phaser.Scene {
    * Called when the loader has completed loading all assets.
    */
   loadCompleted() {
+    //Build animations
+    Character.buildAnimations(this);
     this.progress.destroy();
     this.scene.start('TitleScene');
   }

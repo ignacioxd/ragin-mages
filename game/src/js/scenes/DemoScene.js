@@ -91,9 +91,7 @@ export default class DemoScene extends BaseScene {
   }
 
   playerHit(projectile, character) {
-    console.log(projectile, character);
     projectile.destroy();
-    character.destroy();
-    console.log(this.projectiles);
+    character.die();
   }
 }
