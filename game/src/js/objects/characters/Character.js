@@ -1,7 +1,7 @@
 import Projectile from '../Projectile';
 
 export default class Character extends Phaser.Physics.Arcade.Sprite {
-  constructor(scene, x, y, key,colSize,offsetX,offsetY) {
+  constructor(scene, x, y, key, colSize, offsetX, offsetY) {
     super(scene, x, y, key);
     scene.physics.world.enable(this);
     scene.characters.add(this);
@@ -10,7 +10,7 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
     //set the size based on the constructor parameter set from the scene constructor
     this.body.setCircle(colSize);
     //unique offset for each character to make collider fit properly
-    this.setOffset(offsetX,offsetY);
+    this.setOffset(offsetX, offsetY);
     this.scene = scene;
     this.lastOrientation = 'E';
     this.projectileType = 'fire';
@@ -51,8 +51,6 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
     this.setVelocity(0, 0);
     let projectile = new Projectile(this.scene, this.x, this.y, this.projectileType, targetX, targetY);
     this.scene.projectiles.add(projectile);
-    //set the size of the collider based on the name of the projectile in projectile.js
-    projectile.setSizeCollider(this.projectileType);
   }
 
   die() {
