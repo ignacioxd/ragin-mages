@@ -6,11 +6,12 @@ import SpiderMonster from 'objects/characters/SpiderMonster';
 import GolemMonster from 'objects/characters/GolemMonster';
 import Priest from 'objects/characters/Priest';
 import Knight from 'objects/characters/Knight';
+import Mage from 'objects/characters/Mage';
 
-export default class DemoScene extends BaseScene {
+export default class GameScene extends BaseScene {
 
   constructor() {
-    super({ key: 'DemoScene' });
+    super({ key: 'GameScene' });
   }
 
   preload() {
@@ -48,6 +49,7 @@ export default class DemoScene extends BaseScene {
     this.spiderMonster = new SpiderMonster(this, -300, 100);
     this.golemMonster = new GolemMonster(this, -300, -100);
     this.knight = new Knight(this, -100, 100);
+    this.mage = new Mage(this, -100, -150);
 
     this.characters.remove(this.priest); //this is us.
 
@@ -68,11 +70,13 @@ export default class DemoScene extends BaseScene {
     let direction = this.controller.getWASDCoordinate();
     let animation = 'stance';
 
-    if(this.fightKey.isDown) {
+    if(direction) {
+      animation = 'walk';
+    }
+    else if(this.fightKey.isDown) {
       animation = 'fight';
     }
-
-    if(this.deathKey.isDown) {
+    else if(this.deathKey.isDown) {
       animation = 'death';
     }
 
@@ -81,14 +85,13 @@ export default class DemoScene extends BaseScene {
     this.spiderMonster.setAnimation(animation, direction);
     this.golemMonster.setAnimation(animation, direction);
     this.knight.setAnimation(animation, direction);
+    this.mage.setAnimation(animation, direction);
 
     this.priest.setMotion(this.controller.getWASDVector());
   }
 
   playerHit(projectile, character) {
-    console.log(projectile, character);
     projectile.destroy();
-    character.destroy();
-    console.log(this.projectiles);
+    character.die();
   }
 }

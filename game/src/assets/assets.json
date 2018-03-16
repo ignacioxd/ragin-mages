@@ -1,71 +1,95 @@
-{"image": 
- [{
-
-    "key":"sky",
-    "path":"http://labs.phaser.io/assets/skies/space3.png"
- },
- {
-    "key":"logo",
-    "path":"http://labs.phaser.io/assets/sprites/phaser3-logo.png"
- },
- {
-    "key":"red",
-    "path":"http://labs.phaser.io/assets/particles/red.png"
- },
- {
-    "key":"grid_pointer",
-    "path":"sprites/grid_pointer.png"
- },
- {
-    "key":"grid_slot",
-    "path":"sprites/slot_cursed.png"
- },
- {
-    "key":"map_tiles",
-    "path":"maps/map_tiles.png"
- },
- {
-    "key":"stone-tiles",
-    "path":"maps/stone-tiles.jpg"
- }
- ],
- "spritesheet":
- [{
-     "key":"soldier",
-     "path":"spritesheets/soldier.png",
-     "frameWidth":300,
-     "frameHeight":300
-  }],
- "atlas":
- [{
-     "key":"fire_monster",
-     "path":"spritesheets/fire_monster.png",
-     "json":"spritesheets/fire_monster.json"
- },
- {
-     "key":"ice_monster",
-     "path":"spritesheets/ice_monster.png",
-     "json":"spritesheets/ice_monster.json"
- },
- {
-     "key":"spider_monster",
-     "path":"spritesheets/spider_monster.png",
-     "json":"spritesheets/spider_monster.json"
- },
- {
-     "key":"golem_monster",
-     "path":"spritesheets/golem_monster.png",
-     "json":"spritesheets/golem_monster.json"
- }],
- "tileMaps":
- [{
-     "key":"grass_area",
-     "json":"maps/map.json"
- },
- {
-     "key":"dungeon_map",
-     "json":"maps/dungeon_map.json"
- }],
- "cache":
- ["index.html","js/phaser.min.js","js/game/js","css/main.css"]
+{
+  "image": [
+    {
+      "key": "sky",
+      "texture": "http://labs.phaser.io/assets/skies/space3.png"
+    },
+    {
+      "key": "logo",
+      "texture": "http://labs.phaser.io/assets/sprites/phaser3-logo.png"
+    },
+    {
+      "key": "red",
+      "texture": "http://labs.phaser.io/assets/particles/red.png"
+    },
+    {
+      "key": "map_tiles",
+      "texture": "maps/map_tiles.png"
+    },
+    {
+      "key": "stone-tiles",
+      "texture": "maps/stone-tiles.jpg"
+    }
+  ],
+  "spritesheet": [
+    {
+      "key": "soldier",
+      "texture": "spritesheets/soldier.png",
+      "frameWidth": 300,
+      "frameHeight": 300
+    }
+  ],
+  "atlas": [
+    {
+      "key": "fire_monster",
+      "texture": "spritesheets/fire_monster.png",
+      "data": "spritesheets/fire_monster.json"
+    },
+    {
+      "key": "ice_monster",
+      "texture": "spritesheets/ice_monster.png",
+      "data": "spritesheets/ice_monster.json"
+    },
+    {
+      "key": "spider_monster",
+      "texture": "spritesheets/spider_monster.png",
+      "data": "spritesheets/spider_monster.json"
+    },
+    {
+      "key": "golem_monster",
+      "texture": "spritesheets/golem_monster.png",
+      "data": "spritesheets/golem_monster.json"
+    },
+    {
+      "key": "priest_hero",
+      "texture": "spritesheets/priest_hero.png",
+      "data": "spritesheets/priest_hero.json"
+    },
+    {
+      "key": "knight_hero",
+      "texture": "spritesheets/knight_hero.png",
+      "data": "spritesheets/knight_hero.json"
+    },
+    {
+      "key": "mage_hero",
+      "texture": "spritesheets/mage_hero.png",
+      "data": "spritesheets/mage_hero.json"
+    },
+    {
+      "key": "checkbox",
+      "texture": "spritesheets/checkbox.png",
+      "data": "spritesheets/checkbox.json"
+    },
+    {
+      "key": "projectiles",
+      "texture": "spritesheets/projectiles/projectiles.png",
+      "data": "spritesheets/projectiles/projectiles.json"
+    }
+  ],
+  "tileMap": [
+    {
+      "key": "grass_area",
+      "data": "maps/map.json"
+    },
+    {
+      "key": "dungeon_map",
+      "data": "maps/dungeon_map.json"
+    }
+  ],
+  "cache": [
+    "index.html",
+    "js/phaser.min.js",
+    "js/game/js",
+    "css/main.css"
+  ]
 }
