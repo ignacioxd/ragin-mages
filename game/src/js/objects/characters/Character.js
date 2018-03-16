@@ -6,7 +6,7 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
     scene.physics.world.enable(this);
     scene.characters.add(this);
     this.body.isCircle = true;
-    this.body.setCircle(45,115,115);
+    this.body.setCircle(75,100,100);
     this.scene = scene;
     this.lastOrientation = 'E';
     this.projectileType = 'fire';
@@ -52,7 +52,7 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
     let projectile = new Projectile(this.scene, this.x, this.y, this.projectileType, targetX, targetY);
     this.scene.projectiles.add(projectile);
     projectile.body.isCircle = true;
-    projectile.body.setCircle(16,10,10);
+    projectile.body.setCircle(40,-5,-5);
   }
 
   die() {
