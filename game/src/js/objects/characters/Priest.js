@@ -1,7 +1,7 @@
 import Character from './Character';
 
 export default class Priest extends Character {
-  constructor(scene, x, y,colSize,offsetX,offsetY) {
+  constructor(scene, x, y,colSize=70,offsetX=92,offsetY=80) {
     super(scene, x, y, 'priest_hero',colSize,offsetX,offsetY);
     this.type = 'priest_hero';
     this.projectileType = 'fire';

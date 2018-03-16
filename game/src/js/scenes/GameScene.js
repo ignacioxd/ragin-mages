@@ -43,13 +43,13 @@ export default class GameScene extends BaseScene {
   }
 
   create() {
-    this.priest = new Priest(this, -100, 0, 70, 92, 80);
-    this.fireMonster = new FireMonster(this, 100, 100,70,95,65);
-    this.iceMonster = new IceMonster(this, 100, -100,70,88,60);
-    this.spiderMonster = new SpiderMonster(this, -300, 100,70,84,115);
-    this.golemMonster = new GolemMonster(this, -300, -100,70,85,75);
-    this.knight = new Knight(this, -100, 100,70,87,80);
-    this.mage = new Mage(this, -100, -150,70,92,90);
+    this.priest = new Priest(this, -100, 0);
+    this.fireMonster = new FireMonster(this, 100, 100);
+    this.iceMonster = new IceMonster(this, 100, -100);
+    this.spiderMonster = new SpiderMonster(this, -300, 100);
+    this.golemMonster = new GolemMonster(this, -300, -100);
+    this.knight = new Knight(this, -100, 100);
+    this.mage = new Mage(this, -100, -150);
 
     this.characters.remove(this.priest); //this is us.
 
