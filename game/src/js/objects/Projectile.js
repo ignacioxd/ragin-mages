@@ -9,18 +9,43 @@ export default class Projectile extends Phaser.Physics.Arcade.Sprite {
     // Enable physics first to allow other transformations to apply to the physics layer
     scene.physics.world.enable(this);
     this.type = key;
-
     this.vector = new Phaser.Math.Vector2(x + targetX - 400, y + targetY - 300).subtract({x: x, y: y}).normalize();
     this.setRotation(this.vector.angle());
     this.setScale(.4);
-
     this.speed = 250;
-
     scene.add.existing(this);
     this.setVelocity(this.vector.x * this.speed, this.vector.y * this.speed);
 
   }
+  setSizeCollider(projectileType){
+    switch(projectileType){
 
+      case 'orb' :
+      this.body.setCircle(20);
+      break;
+      
+      case 'orb_p' :
+      this.body.setCircle(15);
+      break;
+      
+      case 'ven' :
+      this.body.setCircle(10);
+      break;
+      
+      case 'fire' :
+      this.body.setCircle(30);
+      break;
+      
+      case 'light' :
+      this.body.setCircle(20);
+      break;
+      
+      case 'ice' :
+      this.body.setCircle(20);
+      break;
+   
+    }
+  }
   static buildAnimations(scene) {
     if(!this.animationsCreated) {
       const coordinates = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'];
@@ -45,7 +70,6 @@ export default class Projectile extends Phaser.Physics.Arcade.Sprite {
         }
       ];
 
-
       for (const animation of animations) {
         for (const coordinate of coordinates) {
           let animFrames = scene.anims.generateFrameNames('projectiles', {
@@ -58,6 +82,4 @@ export default class Projectile extends Phaser.Physics.Arcade.Sprite {
       this.animationsCreated = true;
     }
   }
-
-
 }
