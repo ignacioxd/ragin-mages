@@ -25,27 +25,27 @@ export default class Controller {
       y = -1;
 
     }
-    else if (this.cursors.down.isDown) {
-      y = 1;
+    if (this.cursors.down.isDown) {
+      y += 1;
     }
-    else if (this.keyW.isDown) {
-      y = -1;
+    if (this.keyW.isDown) {
+      y += -1;
     }
-    else if (this.keyS.isDown) {
-      y = 1;
+    if (this.keyS.isDown) {
+      y += 1;
     }
 
     if (this.cursors.left.isDown) {
       x = -1;
     }
-    else if (this.cursors.right.isDown) {
-      x = 1;
+    if (this.cursors.right.isDown) {
+      x += 1;
     }
-    else if (this.keyA.isDown) {
-      x = -1;
+    if (this.keyA.isDown) {
+      x += -1;
     }
-    else if (this.keyD.isDown) {
-      x = 1;
+    if (this.keyD.isDown) {
+      x += 1;
     }
 
     return new Phaser.Math.Vector2( x, y,).normalize();
