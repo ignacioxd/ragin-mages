@@ -1,21 +1,23 @@
 import Projectile from '../Projectile';
 
 export default class Character extends Phaser.Physics.Arcade.Sprite {
-  constructor(scene, x, y, key) {
+  constructor(scene, x, y, key,colSize,offsetX,offsetY) {
     super(scene, x, y, key);
     scene.physics.world.enable(this);
     scene.characters.add(this);
-
+    //make the physics body a circle instead of box
+    this.body.isCircle = true;
+    //set the size based on the constructor parameter set from the scene constructor
+    this.body.setCircle(colSize);
+    //unique offset for each character to make collider fit properly
+    this.setOffset(offsetX,offsetY);
     this.scene = scene;
     this.lastOrientation = 'E';
     this.projectileType = 'fire';
     this.isFiring = false;
     this.isDead = false;
-
     this.speed = 100;
-
     this.setScale(.35);
-
   }
 
   setAnimation(animation, orientation, force = false) {
@@ -24,7 +26,6 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
     this.lastOrientation = orientation;
     this.anims.play(`${this.type}-${animation}-${orientation}`, true);
   }
-
   /**
    * Moves the character in the specified direction and animates it appropriately
    * @param {Vector2} vector Specifies the direction of motion
@@ -50,6 +51,8 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
     this.setVelocity(0, 0);
     let projectile = new Projectile(this.scene, this.x, this.y, this.projectileType, targetX, targetY);
     this.scene.projectiles.add(projectile);
+    //set the size of the collider based on the name of the projectile in projectile.js
+    projectile.setSizeCollider(this.projectileType);
   }
 
   die() {
@@ -108,6 +111,4 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
       character.destroy();
     }
   }
-
-
 }
