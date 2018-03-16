@@ -9,11 +9,9 @@ export default class Controller {
   }
 
   getWASDCoordinate() {
-    let direction = this.cursors.down.isDown ? 'S' : (this.cursors.up.isDown ? 'N' : '');
-    direction += this.cursors.left.isDown ? 'W' : (this.cursors.right.isDown ? 'E' : '');
+    let direction = this.cursors.down.isDown || this.keyS.isDown ? 'S' : (this.cursors.up.isDown || this.keyW.isDown ? 'N' : '');
+    direction += this.cursors.left.isDown || this.keyA.isDown ? 'W' : (this.cursors.right.isDown || this.keyD.isDown ? 'E' : '');
 
-    direction += this.keyA.isDown ? 'W' : (this.keyD.isDown ? 'E' : '');
-    direction += this.keyW.isDown ? 'N' : (this.keyS.isDown ? 'S' : '');
     return direction;
   }
 
