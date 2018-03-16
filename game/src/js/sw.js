@@ -10,14 +10,18 @@ self.addEventListener('install', e => {
   e.waitUntil(
     caches
       .open(STATIC_CACHE)
-      .then(cache =>
-        cache.addAll([
-          '/index.html',
-          'js/phaser.min.js',
-          'js/game.js',
-          'css/main.css',
-        ])
-      )
+      .then(cache => {
+        fetch('../../assets/assets.json').then(function(response) {
+          return response.json();
+        }).catch(function(err) {
+          console.log('fetch:', err);
+        }).then(function(files) {
+          let cacheFiles = files.cache;
+          cache.addAll(cacheFiles)
+        }).catch(function(err) {
+          console.log('cache files:', err);
+        });
+      })
   );
 });
 
