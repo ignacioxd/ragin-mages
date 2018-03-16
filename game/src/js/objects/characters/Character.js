@@ -51,7 +51,6 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
     this.setVelocity(0, 0);
     let projectile = new Projectile(this.scene, this.x, this.y, this.projectileType, targetX, targetY);
     this.scene.projectiles.add(projectile);
-    projectile.body.isCircle = true;
     //set the size of the collider based on the name of the projectile in projectile.js
     projectile.setSizeCollider(this.projectileType);
   }
