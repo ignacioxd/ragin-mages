@@ -48,7 +48,7 @@ export default class Controller {
       x += 1;
     }
 
-    return new Phaser.Math.Vector2( x, y,).normalize();
+    return new Phaser.Math.Vector2(x, y).normalize();
   }
 
 
