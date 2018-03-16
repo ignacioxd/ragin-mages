@@ -1,0 +1,32 @@
+{
+  "name": "gosch-game-server",
+  "version": "0.0.1",
+  "author": "Ignacio X. Domínguez",
+  "license": "MIT",
+  "description": "Phaser game server",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node build/index.js",
+    "build": "gulp build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ignacioxd/gosch-game"
+  },
+  "dependencies": {
+    "express": "^4.16.3",
+    "socket.io": "^2.0.4",
+    "uuid": "^3.2.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.0.0-beta.40",
+    "@babel/preset-env": "^7.0.0-beta.40",
+    "del": "^3.0.0",
+    "gulp": "^3.9.1",
+    "gulp-babel": "^8.0.0-beta.1",
+    "gulp-concat": "^2.6.1",
+    "gulp-eslint": "^4.0.2",
+    "gulp-sourcemaps": "^2.6.4",
+    "gulp-uglify": "^3.0.0"
+  }
+}
