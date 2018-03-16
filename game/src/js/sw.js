@@ -1,6 +1,6 @@
 /* global Promise */
-const STATIC_CACHE = 'gosch-static-cache-v1';
-const ASSETS_CACHE = 'gosch-assets-cache-v1';
+const STATIC_CACHE = 'gosch-static-cache-v2';
+const ASSETS_CACHE = 'gosch-assets-cache-v2';
 const CACHES = [
   STATIC_CACHE,
   ASSETS_CACHE
