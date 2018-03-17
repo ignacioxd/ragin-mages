@@ -17,6 +17,7 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
     this.isFiring = false;
     this.isDead = false;
     this.speed = 100;
+    this.motionVector = new Phaser.Math.Vector2(0, 0);
     this.setScale(.35);
   }
 
@@ -26,12 +27,18 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
     this.lastOrientation = orientation;
     this.anims.play(`${this.type}-${animation}-${orientation}`, true);
   }
+
+  motionChanged(vector) {
+    return this.motionVector.x !== vector.x || this.motionVector.y !== vector.y;
+  }
+  
   /**
    * Moves the character in the specified direction and animates it appropriately
    * @param {Vector2} vector Specifies the direction of motion
    */
   setMotion(vector) {
     if(this.isDead || this.isFiring) return;
+    this.motionVector = vector;
     this.setVelocity(vector.x * this.speed, vector.y * this.speed);
     let animation = 'stance';
     if(vector.length() != 0) {
