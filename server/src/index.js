@@ -9,16 +9,8 @@ let app = express();
 let server = http.Server(app);
 let socketio = io(http);
 
-let playerManager = new PlayerManager();
+new PlayerManager(socketio);
 
-socketio.on('connection', function(socket) {
-  playerManager.playerConnected(socket);
-  console.log('a user connected');
-  socket.on('disconnect', function() {
-    console.log('user disconnected');
-    playerManager.playerDisconnected(socket);
-  });
-});
 
 server.listen(3030, function() {
   console.log('Server listening on *:3030 (e.g., http://localhost:3030)');
