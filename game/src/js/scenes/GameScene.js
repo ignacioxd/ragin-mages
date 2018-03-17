@@ -32,6 +32,14 @@ export default class GameScene extends BaseScene {
       this.sys.game.scene.keys.DialogScene.setDialogText(sampleDialog);
     }, this);
 
+    this.input.keyboard.on('keydown_PLUS', function () {
+      this.cameras.main.setZoom(this.cameras.main.zoom + 0.1);
+    }, this);
+
+    this.input.keyboard.on('keydown_MINUS', function () {
+      this.cameras.main.setZoom(this.cameras.main.zoom - 0.1);
+    }, this);
+
     this.map1 = this.add.tilemap('grass_area');
     this.tileset1 = this.map1.addTilesetImage('Map_tileset', 'map_tiles');
     this.layer1 = this.map1.createStaticLayer('Grass Layer', this.tileset1, -800, -600);
@@ -60,7 +68,9 @@ export default class GameScene extends BaseScene {
     
     this.input.on('pointerdown', function(event) {
       if(event.buttons === 1) {
-        this.priest.fire(this.input.x, this.input.y);
+        let worldX = event.x + event.camera.scrollX * event.camera.zoom;
+        let worldY = event.y + event.camera.scrollY * event.camera.zoom;
+        this.priest.fire(worldX, worldY);
       }
     }, this);
 

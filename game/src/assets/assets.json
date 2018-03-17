@@ -87,9 +87,9 @@
     }
   ],
   "cache": [
-    "index.html",
+    "/index.html",
     "js/phaser.min.js",
-    "js/game/js",
+    "js/game.js",
     "css/main.css"
   ]
 }
