@@ -14,6 +14,7 @@ let path = require('path');
 
 const paths = {
   phaser: './node_modules/phaser/dist/',
+  socket: './node_modules/socket.io-client/dist/',
   base: './src',
   build: './build',
   assets: {
@@ -61,7 +62,7 @@ gulp.task('clean', function() {
   del([paths.build]);
 });
 
-gulp.task('copy-static', ['copy-html', 'copy-assets', 'copy-phaser']);
+gulp.task('copy-static', ['copy-html', 'copy-assets', 'copy-phaser', 'copy-socket']);
 
 gulp.task('copy-html', function() {
   gulp.src([paths.base + '/index.html', paths.base + '/manifest.json'])
@@ -75,6 +76,11 @@ gulp.task('copy-assets', function() {
 
 gulp.task('copy-phaser', function() {
   gulp.src(paths.phaser + '/phaser.min.js')
+    .pipe(gulp.dest(paths.script.dest));
+});
+
+gulp.task('copy-socket', function() {
+  gulp.src(paths.socket + '/socket.io.js')
     .pipe(gulp.dest(paths.script.dest));
 });
 
