@@ -19,7 +19,7 @@ gulp.task('default', ['build']);
 
 gulp.task('build', [ 'lint', 'scripts']);
 
-gulp.task('serve', ['build-dev'], function() {
+gulp.task('serve', ['build'], function() {
   gulp.watch(paths.script.src + '/**/*.js', ['lint', 'scripts']);
 });
 
