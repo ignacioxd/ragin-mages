@@ -60,7 +60,9 @@ export default class GameScene extends BaseScene {
     
     this.input.on('pointerdown', function(event) {
       if(event.buttons === 1) {
-        this.priest.fire(this.input.x, this.input.y);
+        let worldX = event.x + event.camera.scrollX;
+        let worldY = event.y + event.camera.scrollY;
+        this.priest.fire(worldX, worldY);
       }
     }, this);
 

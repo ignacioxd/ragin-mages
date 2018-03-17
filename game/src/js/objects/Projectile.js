@@ -14,7 +14,7 @@ export default class Projectile extends Phaser.Physics.Arcade.Sprite {
     this.type = key;
     this.speed = 250;
 
-    this.vector = new Phaser.Math.Vector2(x + targetX - 400, y + targetY - 300).subtract({x: x, y: y}).normalize();
+    this.vector = new Phaser.Math.Vector2(targetX, targetY).subtract({x: x, y: y}).normalize();
     this.setRotation(this.vector.angle());
     this.setVelocity(this.vector.x * this.speed, this.vector.y * this.speed);
 
