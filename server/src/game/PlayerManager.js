@@ -11,9 +11,11 @@ export default class PlayerManager {
 
   playerConnected(socket) {
     socket.id = uuidv4();
-    console.log('Player connected', socket.id);
-    console.log('Player count is', this.gamePlayerMap.size);
     this.lobbyPlayerMap.set(socket.id, socket);
+    socket.emit('setId', socket.id);
+
+    console.log('Player connected', socket.id);
+    console.log(this.lobbyPlayerMap.size + this.gamePlayerMap.size, 'players connected,', this.gamePlayerMap.size, 'in game');
 
     socket.on('disconnect', () => {
       this.playerDisconnected(socket);
@@ -39,25 +41,24 @@ export default class PlayerManager {
           orientation: value.orientation
         });
       } 
-      /*this.gamePlayerMap.forEach((value) => {
-        existingPlayers.push({
-          id: value.id,
-          handle: value.handle,
-          character: value.character,
-          x: value.x,
-          y: value.y,
-          orientation: value.orientation
-        })
-      });*/
+      
       //Move player from lobby to game list
       this.lobbyPlayerMap.delete(socket.id);
       this.gamePlayerMap.set(socket.id, socket);
-      //Send player list to new player and tell them where to spawn
-      socket.emit('joinGame', socket.x, socket.y, existingPlayers);
-      //Notify everyone else of this new player
+      //Send player list to new player
+      socket.emit('existingPlayers', existingPlayers);
+      //Notify everyone of this new player
       socket.broadcast.emit('playerJoined', socket.id, character, handle, socket.x, socket.y);
+      console.log(this.lobbyPlayerMap.size + this.gamePlayerMap.size, 'players connected,', this.gamePlayerMap.size, 'in game');
     });
     
+    socket.on('setMotion', (posX, posY, vecX, vecY) => {
+      socket.x = posX;
+      socket.y = posY;
+      socket.motionVector = {x: vecX, y: vecY};
+      socket.broadcast.emit('setMotion', socket.id, posX, posY, vecX, vecY);
+    });
+
     socket.on('setPosition', (x, y, orientation) => {
       socket.x = x;
       socket.y = y;
@@ -74,10 +75,10 @@ export default class PlayerManager {
   }
 
   playerDisconnected(socket) {
-    console.log('Player disconnected', socket.id);
-    console.log('Player count is', this.gamePlayerMap.size);
-    socket.broadcast.emit('playerDisconnected', socket.id);
     this.gamePlayerMap.delete(socket.id);
     this.lobbyPlayerMap.delete(socket.id);
+    socket.broadcast.emit('playerDisconnected', socket.id);
+    console.log(this.lobbyPlayerMap.size + this.gamePlayerMap.size, 'players connected,', this.gamePlayerMap.size, 'in game');
+
   }
 }
