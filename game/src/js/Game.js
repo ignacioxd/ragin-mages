@@ -12,9 +12,8 @@ class Game extends Phaser.Game {
   constructor() {
     super({
       type: Phaser.AUTO,
-      pixelArt: true,
-      width: 800,
-      height: 600,
+      width: window.innerWidth,
+      height: window.innerHeight,
       physics: {
         default: 'arcade',
         arcade: {
