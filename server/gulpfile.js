@@ -17,7 +17,7 @@ const paths = {
 
 gulp.task('default', ['build']);
 
-gulp.task('build', [ 'lint', 'scripts-dist']);
+gulp.task('build', [ 'lint', 'scripts']);
 
 gulp.task('serve', ['build-dev'], function() {
   gulp.watch(paths.script.src + '/**/*.js', ['lint', 'scripts']);
@@ -34,16 +34,11 @@ gulp.task('lint', function () {
     .pipe(eslint.format());
 });
 
-
-gulp.task('build', [ 'lint', 'scripts-dist']);
-
-gulp.task('build-dev', [ 'lint', 'scripts']);
-
 gulp.task('scripts', function() {
   return gulp.src(paths.script.src + '/**/*.js')
     .pipe(sourcemaps.init())
     .pipe(babel())
-    .pipe(concat('index.js'))
+    //.pipe(concat('index.js'))
     .pipe(uglify())
     .pipe(sourcemaps.write('.'))
     .pipe(gulp.dest(paths.build));
