@@ -19,6 +19,7 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
     this.speed = 100;
     this.motionVector = new Phaser.Math.Vector2(0, 0);
     this.setScale(.35);
+    this.type = key;
   }
 
   setAnimation(animation, orientation, force = false) {
