@@ -55,7 +55,7 @@ export default class GameScene extends BaseScene {
 
   create() {
     //TODO: This should be configurable. Change IP to localhost if using a local server
-    this.socket = io('http://152.46.18.48:3030');
+    this.socket = io('http://152.46.19.3:443');
 
     this.socket.on('connect', this.serverConnected.bind(this));
     this.socket.on('setId', this.setId.bind(this));
