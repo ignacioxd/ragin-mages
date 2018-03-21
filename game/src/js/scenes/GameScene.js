@@ -1,20 +1,20 @@
 import BaseScene from './BaseScene';
 import Controller from '../util/Controller';
-import FireMonster from 'objects/characters/FireMonster';
-import IceMonster from 'objects/characters/IceMonster';
-import SpiderMonster from 'objects/characters/SpiderMonster';
-import GolemMonster from 'objects/characters/GolemMonster';
 import Priest from 'objects/characters/Priest';
-import Knight from 'objects/characters/Knight';
-import Mage from 'objects/characters/Mage';
 
 export default class GameScene extends BaseScene {
 
   constructor() {
     super({ key: 'GameScene' });
+    this.clientId = null;
+
+    this.players = new Map();
+    this.localCharacter = null;
   }
 
   preload() {
+    
+
     //Create collision groups and event handling
     this.projectiles = this.add.group();
     this.characters = this.add.group();
@@ -32,66 +32,112 @@ export default class GameScene extends BaseScene {
       this.sys.game.scene.keys.DialogScene.setDialogText(sampleDialog);
     }, this);
 
-    this.map1 = this.add.tilemap('grass_area');
-    this.tileset1 = this.map1.addTilesetImage('Map_tileset', 'map_tiles');
-    this.layer1 = this.map1.createStaticLayer('Grass Layer', this.tileset1, -800, -600);
+    this.input.keyboard.on('keydown_PLUS', function () {
+      this.cameras.main.setZoom(this.cameras.main.zoom + 0.1);
+    }, this);
 
-    this.add.text(-390, -300, 'Use the arrow keys for motion, spacebar to attack, k to die', {
-      font: '16px Arial',
-      fill: '#ffffff'
-    });
-  }
+    this.input.keyboard.on('keydown_MINUS', function () {
+      this.cameras.main.setZoom(this.cameras.main.zoom - 0.1);
+    }, this);
 
-  create() {
-    this.priest = new Priest(this, -100, 0);
-    this.fireMonster = new FireMonster(this, 100, 100);
-    this.iceMonster = new IceMonster(this, 100, -100);
-    this.spiderMonster = new SpiderMonster(this, -300, 100);
-    this.golemMonster = new GolemMonster(this, -300, -100);
-    this.knight = new Knight(this, -100, 100);
-    this.mage = new Mage(this, -100, -150);
-
-    this.characters.remove(this.priest); //this is us.
-
-    this.cameras.main.startFollow(this.priest);
-
-    this.fightKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
-    this.deathKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.K);
-    
     this.input.on('pointerdown', function(event) {
-      if(event.buttons === 1) {
-        this.priest.fire(this.input.x, this.input.y);
+      if(this.localCharacter && event.buttons === 1) {
+        let worldX = event.x + event.camera.scrollX * event.camera.zoom;
+        let worldY = event.y + event.camera.scrollY * event.camera.zoom;
+        this.localCharacter.fire(worldX, worldY);
       }
     }, this);
 
+    this.map1 = this.add.tilemap('grass_area');
+    this.tileset1 = this.map1.addTilesetImage('Map_tileset', 'map_tiles');
+    this.layer1 = this.map1.createStaticLayer('Grass Layer', this.tileset1, -800, -600);
+  }
+
+  create() {
+    //TODO: This should be configurable. Change IP to localhost if using a local server
+    this.socket = io('http://152.46.19.3:443');
+
+    this.socket.on('connect', this.serverConnected.bind(this));
+    this.socket.on('setId', this.setId.bind(this));
+    this.socket.on('existingPlayers', this.existingPlayers.bind(this));
+    this.socket.on('playerJoined', this.playerJoined.bind(this));
+    this.socket.on('setMotion', this.setMotion.bind(this));
+    this.socket.on('setPosition', this.setPosition.bind(this));
+    this.socket.on('playerDisconnected', this.playerDisconnected.bind(this));
   }
 
   update() {
-    let direction = this.controller.getWASDCoordinate();
-    let animation = 'stance';
-
-    if(direction) {
-      animation = 'walk';
+    if(this.localCharacter) {
+      const vector = this.controller.getWASDVector();
+      if(this.localCharacter.motionChanged(vector)) {
+        console.log('motion changed locally');
+        this.localCharacter.setMotion(vector);
+        this.socket.emit('setMotion', this.localCharacter.x, this.localCharacter.y, vector.x, vector.y);  
+      }
     }
-    else if(this.fightKey.isDown) {
-      animation = 'fight';
-    }
-    else if(this.deathKey.isDown) {
-      animation = 'death';
-    }
-
-    this.iceMonster.setAnimation(animation, direction);
-    this.fireMonster.setAnimation(animation, direction);
-    this.spiderMonster.setAnimation(animation, direction);
-    this.golemMonster.setAnimation(animation, direction);
-    this.knight.setAnimation(animation, direction);
-    this.mage.setAnimation(animation, direction);
-
-    this.priest.setMotion(this.controller.getWASDVector());
   }
 
   playerHit(projectile, character) {
     projectile.destroy();
     character.die();
+  }
+
+
+
+  //WebSocket Messages
+  serverConnected() {
+    console.log('serverConnected');
+  }
+
+  setId(id) {
+    this.clientId = id;
+    this.socket.emit('joinGame', 'priest', 'Player1');
+  }
+
+  existingPlayers(existingPlayers) {
+    console.log('existingPlayers');
+    console.log(existingPlayers);
+    existingPlayers.forEach(value => {
+      this.playerJoined(value.id, value.handle, value.character, value.x, value.y);
+    });
+  }
+
+  playerJoined(id, handle, character, x, y) {
+    console.log('playerJoined');
+    //TODO: Choose character based on value.character
+    if(this.clientId !== id) {
+      let remotePlayer = new Priest(this, x, y);
+      this.players.set(id, remotePlayer);
+      remotePlayer.id = id;
+      //remotePlayer.setHandle(handle);
+    }
+    else {
+      this.localCharacter = new Priest(this, x, y);
+      this.characters.remove(this.localCharacter); //this is us.
+      this.cameras.main.startFollow(this.localCharacter);
+    }
+  }
+
+  setMotion(id, posX, posY, vecX, vecY) {
+    console.log('setMotion');
+    let player = this.players.get(id);
+    if(!player) return;
+    player.setPosition(posX, posY);
+    player.setMotion(new Phaser.Math.Vector2(vecX, vecY));
+  }
+
+  setPosition(id, x, y, orientation) {
+    console.log('setPosition');
+    let player = this.players.get(id);
+    if(!player) return;
+    player.lastOrientation = orientation;
+    player.setPosition(x, y);
+  }
+
+  playerDisconnected(id) {
+    let player = this.players.get(id);
+    this.characters.remove(player);
+    this.players.delete(id);
+    player.destroy();
   }
 }

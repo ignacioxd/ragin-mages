@@ -1,21 +1,25 @@
 import Projectile from '../Projectile';
 
 export default class Character extends Phaser.Physics.Arcade.Sprite {
-  constructor(scene, x, y, key) {
+  constructor(scene, x, y, key, colSize, offsetX, offsetY) {
     super(scene, x, y, key);
     scene.physics.world.enable(this);
     scene.characters.add(this);
-
+    //make the physics body a circle instead of box
+    this.body.isCircle = true;
+    //set the size based on the constructor parameter set from the scene constructor
+    this.body.setCircle(colSize);
+    //unique offset for each character to make collider fit properly
+    this.setOffset(offsetX, offsetY);
     this.scene = scene;
     this.lastOrientation = 'E';
     this.projectileType = 'fire';
     this.isFiring = false;
     this.isDead = false;
-
     this.speed = 100;
-
+    this.motionVector = new Phaser.Math.Vector2(0, 0);
     this.setScale(.35);
-
+    this.type = key;
   }
 
   setAnimation(animation, orientation, force = false) {
@@ -25,12 +29,17 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
     this.anims.play(`${this.type}-${animation}-${orientation}`, true);
   }
 
+  motionChanged(vector) {
+    return this.motionVector.x !== vector.x || this.motionVector.y !== vector.y;
+  }
+  
   /**
    * Moves the character in the specified direction and animates it appropriately
    * @param {Vector2} vector Specifies the direction of motion
    */
   setMotion(vector) {
     if(this.isDead || this.isFiring) return;
+    this.motionVector = vector;
     this.setVelocity(vector.x * this.speed, vector.y * this.speed);
     let animation = 'stance';
     if(vector.length() != 0) {
@@ -108,6 +117,4 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
       character.destroy();
     }
   }
-
-
 }

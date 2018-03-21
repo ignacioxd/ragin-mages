@@ -1,6 +1,6 @@
 /* global Promise */
-const STATIC_CACHE = 'gosch-static-cache-v1';
-const ASSETS_CACHE = 'gosch-assets-cache-v1';
+const STATIC_CACHE = 'gosch-static-cache-v2';
+const ASSETS_CACHE = 'gosch-assets-cache-v2';
 const CACHES = [
   STATIC_CACHE,
   ASSETS_CACHE
@@ -10,14 +10,18 @@ self.addEventListener('install', e => {
   e.waitUntil(
     caches
       .open(STATIC_CACHE)
-      .then(cache =>
-        cache.addAll([
-          '/index.html',
-          'js/phaser.min.js',
-          'js/game.js',
-          'css/main.css',
-        ])
-      )
+      .then(cache => {
+        fetch('../../assets/assets.json').then(function(response) {
+          return response.json();
+        }).catch(function(err) {
+          console.log('fetch:', err);
+        }).then(function(files) {
+          let cacheFiles = files.cache;
+          cache.addAll(cacheFiles)
+        }).catch(function(err) {
+          console.log('cache files:', err);
+        });
+      })
   );
 });
 
