@@ -1,4 +1,3 @@
-const SECRETS = require('./secrets.json'); // nodejs will auto read json
 
 module.exports = {
   NODE_ENV: process.env.NODE_ENV || 'development',

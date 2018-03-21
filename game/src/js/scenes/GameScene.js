@@ -1,7 +1,7 @@
 import BaseScene from './BaseScene';
 import Controller from '../util/Controller';
 import Priest from 'objects/characters/Priest';
-import ENV from '../../../config';
+import ENV from '../../../../config';
 
 export default class GameScene extends BaseScene {
 
