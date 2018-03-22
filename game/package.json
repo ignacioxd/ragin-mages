@@ -29,11 +29,11 @@
     "gulp-sass": "^3.1.0",
     "gulp-sourcemaps": "^2.6.4",
     "gulp-uglify": "^3.0.0",
+    "gulp-rename": "^1.2.2",
     "vinyl-buffer": "^1.0.1",
     "vinyl-source-stream": "^2.0.0"
   },
   "dependencies": {
-    "gulp-rename": "^1.2.2",
     "phaser": "^3.2.1",
     "socket.io": "^2.0.4"
   }
