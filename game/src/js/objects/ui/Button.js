@@ -17,24 +17,20 @@ export default class Button extends Phaser.GameObjects.Group {
       });
     }
   
-    sendit() {
-        // this.scene.start('CharacterSelectionScene');
-        console.log('clicked')
-    }
 
-    isChecked() {
-      return this.checked;
+    // isChecked() {
+    //   return this.checked;
 
-    }
+    // }
   
-    toggle() {
-      this.setChecked(!this.checked);
-    }
+    // toggle() {
+    //   this.setChecked(!this.checked);
+    // }
   
-    setChecked(checked) {
-      this.checked = checked == true;
-      // this.button.setFrame(this.checked ? 'checked' : 'unchecked');
-    }
+    // setChecked(checked) {
+    //   this.checked = checked == true;
+    //   // this.button.setFrame(this.checked ? 'checked' : 'unchecked');
+    // }
   
    buttonDown(handler) {
       this.button.on('pointerdown', () => {
