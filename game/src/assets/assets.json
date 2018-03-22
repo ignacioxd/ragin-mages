@@ -71,6 +71,11 @@
       "data": "spritesheets/checkbox.json"
     },
     {
+      "key": "button_singleplayer",
+      "texture": "spritesheets/button_singleplayer.png",
+      "data": "spritesheets/button_singleplayer.json"
+    },
+    {
       "key": "projectiles",
       "texture": "spritesheets/projectiles/projectiles.png",
       "data": "spritesheets/projectiles/projectiles.json"

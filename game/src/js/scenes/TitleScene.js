@@ -1,15 +1,17 @@
 import ServiceWorker from 'util/ServiceWorker';
 import Checkbox from 'objects/ui/Checkbox';
+import Button from 'objects/ui/Button'
+
 
 export default class TitleScene extends Phaser.Scene {
 
   constructor() {
     super({key: 'TitleScene'});
   }
-
+  
   preload() {
   }
-    
+
   create() {
     this.add.image(400, 300, 'sky');
 
@@ -22,8 +24,13 @@ export default class TitleScene extends Phaser.Scene {
     });
 
     let logo = this.add.image(400, 100, 'logo');
+   
 
     emitter.startFollow(logo);
+    let button = new Button(this);
+   
+    button.buttonDown(this);
+
 
     this.add.text(220, 350, 'Press ENTER to begin', {
       font: '34px Arial',
@@ -65,4 +72,5 @@ export default class TitleScene extends Phaser.Scene {
       this.scene.start('DungeonScene');
     }
   }
+
 }
