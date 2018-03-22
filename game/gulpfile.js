@@ -11,6 +11,7 @@ let babelify = require('babelify');
 let source = require('vinyl-source-stream');
 let buffer = require('vinyl-buffer');
 let path = require('path');
+let rename = require('gulp-rename');
 
 const paths = {
   phaser: './node_modules/phaser/dist/',
@@ -37,9 +38,13 @@ const paths = {
     entry: './src/js/sw.js',
     dest: 'sw.js'
   },
-  config: {
-    src:'../config',
-    dest:'./build/config'
+  devconfig: {
+    entry:'../config/dev.config.json',
+    dest:'config.json'
+  },
+  distconfig: {
+    entry:'../config/prod.config.json',
+    dest:'config.json'
   },
 };
 
@@ -49,7 +54,7 @@ gulp.task('serve', ['build-dev'], function() {
   gulp.watch(paths.styles.src + '/**/*', ['styles']);
   gulp.watch(paths.assets.src + '/**/*', ['copy-assets']);
   gulp.watch(paths.script.src + '/**/*.js', ['lint', 'scripts']);
-  gulp.watch(paths.config.src + '/**/*.js', ['lint', 'scripts']);
+  gulp.watch(paths.devconfig.entry, ['config-dev']);
   gulp.watch(paths.base + '/index.html', ['copy-html']);
 
   gulp.watch(paths.build + '/**/*').on('change', browserSync.reload);
@@ -61,7 +66,7 @@ gulp.task('serve', ['build-dev'], function() {
 
 gulp.task('build', ['copy-static', 'styles', 'lint', 'sw-dist', 'scripts-dist','config-dist']);
 
-gulp.task('build-dev', ['copy-static', 'styles', 'lint', 'sw', 'scripts']);
+gulp.task('build-dev', ['copy-static', 'styles', 'lint', 'sw', 'scripts','config-dev']);
 
 gulp.task('clean', function() {
   del([paths.build]);
@@ -71,6 +76,18 @@ gulp.task('copy-static', ['copy-html', 'copy-assets', 'copy-phaser', 'copy-socke
 
 gulp.task('copy-html', function() {
   gulp.src([paths.base + '/index.html', paths.base + '/manifest.json'])
+    .pipe(gulp.dest(paths.build));
+});
+
+gulp.task('config-dev', function() {
+  gulp.src(paths.devconfig.entry)
+    .pipe(rename(paths.devconfig.dest))
+    .pipe(gulp.dest(paths.build));
+});
+
+gulp.task('config-dist', function() {
+  gulp.src(paths.distconfig.entry)
+    .pipe(rename(paths.distconfig.dest))
     .pipe(gulp.dest(paths.build));
 });
 
@@ -126,9 +143,6 @@ gulp.task('scripts-dist', function() {
   return distScript(paths.script.src, paths.game, paths.script.dest);
 });
 
-gulp.task('config-dist', function() {
-  return distScript(paths.config.src, paths.game, paths.config.dest);
-});
 function devScript(basePath, scriptPath, destPath) {
   return browserify(
     {

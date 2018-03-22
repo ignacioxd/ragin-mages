@@ -33,7 +33,8 @@
     "vinyl-source-stream": "^2.0.0"
   },
   "dependencies": {
-    "phaser": "^3.2.1",   
+    "gulp-rename": "^1.2.2",
+    "phaser": "^3.2.1",
     "socket.io": "^2.0.4"
   }
 }
