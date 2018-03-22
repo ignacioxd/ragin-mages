@@ -36,7 +36,11 @@ const paths = {
   serviceWorker: {
     entry: './src/js/sw.js',
     dest: 'sw.js'
-  }
+  },
+  config: {
+    src:'../config',
+    dest:'./build/config'
+  },
 };
 
 gulp.task('default', ['serve']);
@@ -45,6 +49,7 @@ gulp.task('serve', ['build-dev'], function() {
   gulp.watch(paths.styles.src + '/**/*', ['styles']);
   gulp.watch(paths.assets.src + '/**/*', ['copy-assets']);
   gulp.watch(paths.script.src + '/**/*.js', ['lint', 'scripts']);
+  gulp.watch(paths.config.src + '/**/*.js', ['lint', 'scripts']);
   gulp.watch(paths.base + '/index.html', ['copy-html']);
 
   gulp.watch(paths.build + '/**/*').on('change', browserSync.reload);
@@ -54,7 +59,7 @@ gulp.task('serve', ['build-dev'], function() {
   });
 });
 
-gulp.task('build', ['copy-static', 'styles', 'lint', 'sw-dist', 'scripts-dist']);
+gulp.task('build', ['copy-static', 'styles', 'lint', 'sw-dist', 'scripts-dist','config-dist']);
 
 gulp.task('build-dev', ['copy-static', 'styles', 'lint', 'sw', 'scripts']);
 
@@ -109,6 +114,9 @@ gulp.task('sw', function () {
 gulp.task('scripts', function() {
   return devScript(paths.script.src, paths.game, paths.script.dest);
 });
+gulp.task('config', function() {
+  return devScript(paths.config.src, paths.game, paths.config.dest);
+});
 
 gulp.task('sw-dist', function () {
   return distScript(paths.base, paths.serviceWorker, paths.build);
@@ -118,6 +126,9 @@ gulp.task('scripts-dist', function() {
   return distScript(paths.script.src, paths.game, paths.script.dest);
 });
 
+gulp.task('config-dist', function() {
+  return distScript(paths.config.src, paths.game, paths.config.dest);
+});
 function devScript(basePath, scriptPath, destPath) {
   return browserify(
     {
