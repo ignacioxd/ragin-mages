@@ -2,15 +2,15 @@
   "image": [
     {
       "key": "sky",
-      "texture": "http://labs.phaser.io/assets/skies/space3.png"
+      "texture": "https://labs.phaser.io/assets/skies/space3.png"
     },
     {
       "key": "logo",
-      "texture": "http://labs.phaser.io/assets/sprites/phaser3-logo.png"
+      "texture": "https://labs.phaser.io/assets/sprites/phaser3-logo.png"
     },
     {
       "key": "red",
-      "texture": "http://labs.phaser.io/assets/particles/red.png"
+      "texture": "https://labs.phaser.io/assets/particles/red.png"
     },
     {
       "key": "map_tiles",
