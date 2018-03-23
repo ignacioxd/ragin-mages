@@ -1,0 +1,30 @@
+{"frames": [
+
+{
+	"filename": "checked.png",
+	"frame": {"x":0,"y":0,"w":106,"h":104},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":106,"h":104},
+	"sourceSize": {"w":106,"h":104},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "unchecked.png",
+	"frame": {"x":106,"y":0,"w":106,"h":104},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":106,"h":104},
+	"sourceSize": {"w":106,"h":104},
+	"pivot": {"x":0.5,"y":0.5}
+}],
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "checkmark.png",
+	"format": "RGBA8888",
+	"size": {"w":212,"h":104},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:b4e7b8e4112de64022c05072a95286f3:48d4c8359806031ab10e271374988b0f:2f5042315b83b267c41ace5fba1accfd$"
+}
+}

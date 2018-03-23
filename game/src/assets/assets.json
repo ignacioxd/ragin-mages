@@ -67,8 +67,8 @@
     },
     {
       "key": "checkbox",
-      "texture": "spritesheets/checkbox.png",
-      "data": "spritesheets/checkbox.json"
+      "texture": "spritesheets/buttons/checkmark.png",
+      "data": "spritesheets/buttons/checkmark.json"
     },
     {
       "key": "single_player",
@@ -79,6 +79,21 @@
       "key": "multi_player",
       "texture": "spritesheets/buttons/multi.png",
       "data": "spritesheets/buttons/multi.json"
+    },
+    {
+      "key": "home_button",
+      "texture": "spritesheets/buttons/home.png",
+      "data": "spritesheets/buttons/home.json"
+    },
+    {
+      "key": "controls_button",
+      "texture": "spritesheets/buttons/controls.png",
+      "data": "spritesheets/buttons/controls.json"
+    },
+    {
+      "key": "credits_button",
+      "texture": "spritesheets/buttons/credits.png",
+      "data": "spritesheets/buttons/credits.json"
     },
     {
       "key": "projectiles",

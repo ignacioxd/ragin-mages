@@ -3,7 +3,7 @@ html {
   height: 100%;
   margin: 0px;
   padding: 0px;
-  background-color: #333;
+  background-color: #000;
 }
 
 body {
@@ -13,6 +13,11 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.container {
+  display: grid;
+  grid-column: 1fr;
 }
 
 #overlay {

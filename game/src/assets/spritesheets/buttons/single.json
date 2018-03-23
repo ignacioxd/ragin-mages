@@ -2,20 +2,20 @@
 
 {
 	"filename": "hover.png",
-	"frame": {"x":0,"y":0,"w":389,"h":160},
+	"frame": {"x":0,"y":0,"w":389,"h":128},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":389,"h":160},
-	"sourceSize": {"w":389,"h":160},
+	"spriteSourceSize": {"x":0,"y":0,"w":389,"h":128},
+	"sourceSize": {"w":389,"h":128},
 	"pivot": {"x":0.5,"y":0.5}
 },
 {
 	"filename": "norm.png",
-	"frame": {"x":389,"y":0,"w":389,"h":160},
+	"frame": {"x":389,"y":0,"w":389,"h":128},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":389,"h":160},
-	"sourceSize": {"w":389,"h":160},
+	"spriteSourceSize": {"x":0,"y":0,"w":389,"h":128},
+	"sourceSize": {"w":389,"h":128},
 	"pivot": {"x":0.5,"y":0.5}
 }],
 "meta": {
@@ -23,8 +23,8 @@
 	"version": "1.0",
 	"image": "single.png",
 	"format": "RGBA8888",
-	"size": {"w":778,"h":160},
+	"size": {"w":778,"h":128},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:96dc7bfb1db451cf31be4ed06d8ba7e6:d14dbca65236ab7776d6f484571a6f0a:7c2e68224a08cb441b305215da425195$"
+	"smartupdate": "$TexturePacker:SmartUpdate:80fe7dda48cd9ccee7be051aff76dd9c:90baf7059da55c6a47076612dda67588:7c2e68224a08cb441b305215da425195$"
 }
 }
