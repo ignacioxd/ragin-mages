@@ -16,11 +16,12 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
         colliderOffsetX: 0,
         colliderOffsetY: 0
       },
-      ...options};
+      ...options
+    };
 
 
     scene.physics.world.enable(this);
-    scene.characters.add(this);
+    //scene.characters.add(this);
     //make the physics body a circle instead of box
     this.body.isCircle = true;
     //set the size based on the constructor parameter set from the scene constructor
@@ -72,7 +73,7 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
     this.isFiring = true;
     this.setVelocity(0, 0);
     let projectile = new Projectile(this.scene, this.x, this.y, this.props.projectileType, targetX, targetY, {range: this.props.projectileRange});
-    this.scene.projectiles.add(projectile);
+    return projectile;
   }
 
   die() {
