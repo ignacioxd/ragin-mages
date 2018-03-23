@@ -13,7 +13,7 @@ export default class Projectile extends Phaser.Physics.Arcade.Sprite {
 
     this.type = key;
     this.speed = 250;
-
+    this.setRange(key);
     this.vector = new Phaser.Math.Vector2(targetX, targetY).subtract({x: x, y: y}).normalize();
     this.setRotation(this.vector.angle());
     this.setVelocity(this.vector.x * this.speed, this.vector.y * this.speed);
@@ -21,6 +21,51 @@ export default class Projectile extends Phaser.Physics.Arcade.Sprite {
     this.setScale(.4);
 
     scene.add.existing(this);
+
+    this.timedEvent = scene.time.addEvent({
+      delay: this.Range,  
+      callback: this._rangeReached,
+      callbackScope: this,
+      loop: false
+    });
+
+  }
+
+  // Slowly displays the text in the window to make it appear annimated
+  _rangeReached() {
+    console.log('Kill message received');
+    this.timedEvent.remove(false);
+    this.destroy();
+  }
+  
+  setRange(projectileType) {
+    switch(projectileType){
+    case 'orb' :
+      this.Range=1000;
+      break;
+      
+    case 'orb_p' :
+      this.Range=1000;
+      break;
+      
+    case 'ven' :
+      this.Range=1000;
+      break;
+      
+    case 'fire' :
+      this.Range=1000;
+      break;
+      
+    case 'light' :
+      this.Range=1000;
+      break;
+      
+    case 'ice' :
+      this.Range=1000;
+      break;
+    
+    }
+  
   }
 
   setColliderSize(projectileType){
