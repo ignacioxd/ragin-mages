@@ -9,8 +9,12 @@
       "texture": "spritesheets/images/logo.png"
     },
     {
+      "key": "logo2",
+      "texture": "https://labs.phaser.io/assets/sprites/phaser3-logo.png"
+    },
+    {
       "key": "red",
-      "texture": "http://labs.phaser.io/assets/particles/red.png"
+      "texture": "https://labs.phaser.io/assets/particles/red.png"
     },
     {
       "key": "map_tiles",

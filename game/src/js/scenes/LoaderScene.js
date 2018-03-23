@@ -8,20 +8,24 @@ export default class LoaderScene extends Phaser.Scene {
   }
 
   preload() {
-    this.load.setBaseURL('./assets/');
     this.assets =  this.cache.json.get('assets');
 
-    this.progress = this.add.graphics();
+    this.loadtext = this.add.text(this.cameras.main.width / 2, this.cameras.main.height / 2, 'Loading...', {
+      font: '50px Times',
+      fill: '#ffffff'
+    });
+    this.rotAngle = 0;
+  }
 
+  create() {
+
+    this.load.setBaseURL('./assets/');
     this.load.on('start', this.loadStart, this);
     this.load.on('progress', this.loadProgress, this);
     this.load.on('fileprogress', this.loadFileProgress, this);
     this.load.on('complete', this.loadCompleted, this);
     
     this.load.start();
-  }
-
-  create() {
   }
 
   /**
@@ -72,9 +76,6 @@ export default class LoaderScene extends Phaser.Scene {
    * @param {float} value Percentage of load progress. Appears to be currently broken in Phaser 3.
    */
   loadProgress(value) {
-    this.progress.clear();
-    this.progress.fillStyle(0xffffff, 1);
-    this.progress.fillRect(0, 270, 800 * value, 60);
   }
 
   /**
@@ -84,7 +85,11 @@ export default class LoaderScene extends Phaser.Scene {
     //Build animations
     Character.buildAnimations(this);
     Projectile.buildAnimations(this);
-    this.progress.destroy();
     this.scene.start('TitleScene');
+  }
+
+  update() {
+    this.rotAngle += 0.1;
+    this.loadtext.setRotation(this.rotAngle);
   }
 }
