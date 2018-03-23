@@ -94,6 +94,10 @@ export default class Projectile extends Phaser.Physics.Arcade.Sprite {
     case 'ice' :
       this.body.setCircle(20);
       break;
+      
+    case 'rock' :
+      this.body.setCircle(20);
+      break;
    
     }
   }
@@ -119,6 +123,9 @@ export default class Projectile extends Phaser.Physics.Arcade.Sprite {
         },
         {
           name: 'ice', frames: 6
+        },
+        {
+          name: 'rock', frames: 6
         }
       ];
 
