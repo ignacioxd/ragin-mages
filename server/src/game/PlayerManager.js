@@ -66,6 +66,19 @@ export default class PlayerManager {
       socket.broadcast.emit('setPosition', socket.id, x, y, orientation);
     });
 
+    
+    socket.on('fire', (posX, posY, toX, toY) => {
+      socket.x = posX;
+      socket.y = posY;
+      socket.broadcast.emit('playerFired', socket.id, posX, posY, toX, toY);
+    });
+
+    socket.on('death', (posX, posY) => {
+      socket.x = posX;
+      socket.y = posY;
+      socket.broadcast.emit('playerDied', socket.id, posX, posY);
+    });
+
     socket.on('exitGame', () => {
       this.gamePlayerMap.delete(socket.id);
       this.lobbyPlayerMap.set(socket.id, socket);
