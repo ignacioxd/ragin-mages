@@ -27,21 +27,31 @@ export default class TitleScene extends Phaser.Scene {
    
 
     emitter.startFollow(logo);
-    let button = new Button(this);
+    let single_player_button = new Button(this, 200, 300, 'single_player');
    
-    button.buttonDown(this);
+    single_player_button.buttonDown(button => 
+    {
+      this.scene.start('CharacterSelectionScene', {type: 'single_player'});
+    })
 
 
-    this.add.text(220, 350, 'Press ENTER to begin', {
-      font: '34px Arial',
-      fill: '#ffffff',
-      stroke: '#000000',
-      strokeThickness: '6',
-      shadowFill: '#ffffff',
-      shadowStroke: '#ffffff',
-      shadowOffsetY: '10',
-      shadowBlur: '5'
-    });
+    let multi_player_button = new Button(this, 200, 440, 'multi_player');
+   
+    multi_player_button.buttonDown(button => 
+    {
+      this.scene.start('CharacterSelectionScene', {type: 'multi_player'});
+    })
+
+    // this.add.text(220, 350, 'Press ENTER to begin', {
+    //   font: '34px Arial',
+    //   fill: '#ffffff',
+    //   stroke: '#000000',
+    //   strokeThickness: '6',
+    //   shadowFill: '#ffffff',
+    //   shadowStroke: '#ffffff',
+    //   shadowOffsetY: '10',
+    //   shadowBlur: '5'
+    // });
 
     let serviceWorker = new ServiceWorker();
     

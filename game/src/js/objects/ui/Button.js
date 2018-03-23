@@ -1,20 +1,22 @@
 export default class Button extends Phaser.GameObjects.Group {
-    constructor(scene, x, y, text, defaultChecked) {
+    constructor(scene, x, y, text) {
 
-      let button = scene.add.image(300, 400, 'checkbox', defaultChecked ? 'checked' : 'unchecked').setInteractive();
+      let button = scene.add.image(x, y, text, 'norm.png').setInteractive();
       super(scene, [button]);
       this.button = button;
-  
+
+      this.button.on('pointerout', () => {
+        this.button.setFrame('norm.png');
+   
+        });
 
       this.button.on('pointerover', () => {
 
-        console.log('over');
-        this.button.setFrame('checked')
+        this.button.setFrame('hover.png');
+        
       });
-      this.button.on('pointerout', () => {
-        console.log('out');
-        this.button.setFrame('unchecked')
-      });
+
+
     }
   
 
@@ -32,13 +34,10 @@ export default class Button extends Phaser.GameObjects.Group {
     //   // this.button.setFrame(this.checked ? 'checked' : 'unchecked');
     // }
   
-   buttonDown(handler) {
-      this.button.on('pointerdown', () => {
-        // handler(this);
- 
-        handler.scene.start('CharacterSelectionScene');
-        
+  buttonDown(handler) {
+    this.button.on('pointerdown', () => {
+    handler(this);
     })
-   }
+  }
     
   }

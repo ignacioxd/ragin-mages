@@ -71,9 +71,14 @@
       "data": "spritesheets/checkbox.json"
     },
     {
-      "key": "button_singleplayer",
-      "texture": "spritesheets/button_singleplayer.png",
-      "data": "spritesheets/button_singleplayer.json"
+      "key": "single_player",
+      "texture": "spritesheets/buttons/single.png",
+      "data": "spritesheets/buttons/single.json"
+    },
+    {
+      "key": "multi_player",
+      "texture": "spritesheets/buttons/multi.png",
+      "data": "spritesheets/buttons/multi.json"
     },
     {
       "key": "projectiles",
