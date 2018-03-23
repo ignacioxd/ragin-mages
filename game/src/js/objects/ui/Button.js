@@ -19,21 +19,6 @@ export default class Button extends Phaser.GameObjects.Group {
 
     }
   
-
-    // isChecked() {
-    //   return this.checked;
-
-    // }
-  
-    // toggle() {
-    //   this.setChecked(!this.checked);
-    // }
-  
-    // setChecked(checked) {
-    //   this.checked = checked == true;
-    //   // this.button.setFrame(this.checked ? 'checked' : 'unchecked');
-    // }
-  
   buttonDown(handler) {
     this.button.on('pointerdown', () => {
     handler(this);

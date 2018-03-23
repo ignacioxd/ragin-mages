@@ -13,21 +13,21 @@ export default class TitleScene extends Phaser.Scene {
   }
 
   create() {
-    this.add.image(400, 300, 'sky');
+    this.add.image(400, 430, 'sky');
 
-    let particles = this.add.particles('red');
+    // let particles = this.add.particles('red');
 
-    let emitter = particles.createEmitter({
-      speed: 100,
-      scale: { start: 1, end: 0 },
-      blendMode: 'ADD'
-    });
+    // let emitter = particles.createEmitter({
+    //   speed: 100,
+    //   scale: { start: 1, end: 0 },
+    //   blendMode: 'ADD'
+    // });
 
     let logo = this.add.image(400, 100, 'logo');
    
 
-    emitter.startFollow(logo);
-    let single_player_button = new Button(this, 200, 300, 'single_player');
+    // emitter.startFollow(logo);
+    let single_player_button = new Button(this, 280, 440, 'single_player');
    
     single_player_button.buttonDown(button => 
     {
@@ -35,7 +35,7 @@ export default class TitleScene extends Phaser.Scene {
     })
 
 
-    let multi_player_button = new Button(this, 200, 440, 'multi_player');
+    let multi_player_button = new Button(this, 280, 300, 'multi_player');
    
     multi_player_button.buttonDown(button => 
     {
@@ -55,7 +55,7 @@ export default class TitleScene extends Phaser.Scene {
 
     let serviceWorker = new ServiceWorker();
     
-    let checkbox = new Checkbox(this, 45, 560, 'Enable offline mode', serviceWorker.isRegistered());
+    let checkbox = new Checkbox(this, 145, 560, 'Enable offline mode', serviceWorker.isRegistered());
 
     checkbox.onPointerDown(function(obj) {
       //TODO: add service worker
