@@ -70,7 +70,7 @@
       "data": "spritesheets/mage_hero.json"
     },
     {
-      "key": "checkbox",
+      "key": "checkmark",
       "texture": "spritesheets/buttons/checkmark.png",
       "data": "spritesheets/buttons/checkmark.json"
     },

@@ -1,7 +1,7 @@
 {"frames": [
 
 {
-	"filename": "checked.png",
+	"filename": "checked",
 	"frame": {"x":0,"y":0,"w":106,"h":104},
 	"rotated": false,
 	"trimmed": false,
@@ -10,7 +10,7 @@
 	"pivot": {"x":0.5,"y":0.5}
 },
 {
-	"filename": "unchecked.png",
+	"filename": "unchecked",
 	"frame": {"x":106,"y":0,"w":106,"h":104},
 	"rotated": false,
 	"trimmed": false,
@@ -25,6 +25,6 @@
 	"format": "RGBA8888",
 	"size": {"w":212,"h":104},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:b4e7b8e4112de64022c05072a95286f3:48d4c8359806031ab10e271374988b0f:2f5042315b83b267c41ace5fba1accfd$"
+	"smartupdate": "$TexturePacker:SmartUpdate:a313c9da02d54827a5e172e5f69ae107:03be0b74bd1c8ccdd99c5435684eb5c7:2f5042315b83b267c41ace5fba1accfd$"
 }
 }

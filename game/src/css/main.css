@@ -15,11 +15,6 @@ body {
   align-items: center;
 }
 
-.container {
-  display: grid;
-  grid-column: 1fr;
-}
-
 #overlay {
  position: fixed;
  display: none;

@@ -2,20 +2,20 @@
 
 {
 	"filename": "hover.png",
-	"frame": {"x":0,"y":0,"w":106,"h":104},
+	"frame": {"x":0,"y":0,"w":389,"h":56},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":106,"h":104},
-	"sourceSize": {"w":106,"h":104},
+	"spriteSourceSize": {"x":0,"y":0,"w":389,"h":56},
+	"sourceSize": {"w":389,"h":56},
 	"pivot": {"x":0.5,"y":0.5}
 },
 {
 	"filename": "norm.png",
-	"frame": {"x":106,"y":0,"w":106,"h":104},
+	"frame": {"x":389,"y":0,"w":389,"h":56},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":106,"h":104},
-	"sourceSize": {"w":106,"h":104},
+	"spriteSourceSize": {"x":0,"y":0,"w":389,"h":56},
+	"sourceSize": {"w":389,"h":56},
 	"pivot": {"x":0.5,"y":0.5}
 }],
 "meta": {
@@ -23,8 +23,8 @@
 	"version": "1.0",
 	"image": "controls.png",
 	"format": "RGBA8888",
-	"size": {"w":212,"h":104},
+	"size": {"w":778,"h":56},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:0f226069a8a4c3f8787cd5f3e7f8d028:412d16debe11d9bd87baaef6dfdeef86:13db50ae431b1c60d076cd518d6333b1$"
+	"smartupdate": "$TexturePacker:SmartUpdate:2a66386dc417890e94caa3a7a1290589:e6d1e75bee7f1ee755a596cf0b4e1bf4:13db50ae431b1c60d076cd518d6333b1$"
 }
 }

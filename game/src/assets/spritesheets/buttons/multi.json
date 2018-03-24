@@ -2,29 +2,29 @@
 
 {
 	"filename": "disabled.png",
-	"frame": {"x":0,"y":0,"w":389,"h":128},
+	"frame": {"x":0,"y":0,"w":389,"h":56},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":389,"h":128},
-	"sourceSize": {"w":389,"h":128},
+	"spriteSourceSize": {"x":0,"y":0,"w":389,"h":56},
+	"sourceSize": {"w":389,"h":56},
 	"pivot": {"x":0.5,"y":0.5}
 },
 {
 	"filename": "hover.png",
-	"frame": {"x":389,"y":0,"w":389,"h":128},
+	"frame": {"x":389,"y":0,"w":389,"h":56},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":389,"h":128},
-	"sourceSize": {"w":389,"h":128},
+	"spriteSourceSize": {"x":0,"y":0,"w":389,"h":56},
+	"sourceSize": {"w":389,"h":56},
 	"pivot": {"x":0.5,"y":0.5}
 },
 {
 	"filename": "norm.png",
-	"frame": {"x":778,"y":0,"w":389,"h":128},
+	"frame": {"x":778,"y":0,"w":389,"h":56},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":389,"h":128},
-	"sourceSize": {"w":389,"h":128},
+	"spriteSourceSize": {"x":0,"y":0,"w":389,"h":56},
+	"sourceSize": {"w":389,"h":56},
 	"pivot": {"x":0.5,"y":0.5}
 }],
 "meta": {
@@ -32,8 +32,8 @@
 	"version": "1.0",
 	"image": "multi.png",
 	"format": "RGBA8888",
-	"size": {"w":1167,"h":128},
+	"size": {"w":1167,"h":56},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:2320b4439d370afed7ae482f73f00fa5:1ebb0bfea60b498a318361745e4a0536:e6eb08665f00e06374fce25f24ff95c7$"
+	"smartupdate": "$TexturePacker:SmartUpdate:bc94f83718a8f34437c11fa21cbd72fe:cbecc723f0d8dbc7006d32c3d0ac8598:e6eb08665f00e06374fce25f24ff95c7$"
 }
 }
