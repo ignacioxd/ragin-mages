@@ -36,21 +36,24 @@ export default class TitleScene extends Phaser.Scene {
       shadowBlur: '5'
     });
 
-    let serviceWorker = new ServiceWorker();
+    if(ServiceWorker.isSupported()) {
+      let serviceWorker = new ServiceWorker();
+      
+      let checkbox = new Checkbox(this, 45, 560, 'Enable offline mode', serviceWorker.isRegistered());
+
+      checkbox.onPointerDown(function(obj) {
+        //TODO: add service worker
+        console.log('checked', obj.isChecked() ? 'yes' : 'no');
+
+        if(obj.isChecked()) {
+          serviceWorker.register();
+        }
+        else {
+          serviceWorker.unregister();
+        }
+      });
+    }
     
-    let checkbox = new Checkbox(this, 45, 560, 'Enable offline mode', serviceWorker.isRegistered());
-
-    checkbox.onPointerDown(function(obj) {
-      //TODO: add service worker
-      console.log('checked', obj.isChecked() ? 'yes' : 'no');
-
-      if(obj.isChecked()) {
-        serviceWorker.register();
-      }
-      else {
-        serviceWorker.unregister();
-      }
-    })  
       
     this.startKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER);
     this.startKey2 = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
