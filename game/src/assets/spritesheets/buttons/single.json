@@ -1,7 +1,7 @@
 {"frames": [
 
 {
-	"filename": "hover.png",
+	"filename": "hover",
 	"frame": {"x":0,"y":0,"w":389,"h":56},
 	"rotated": false,
 	"trimmed": false,
@@ -10,7 +10,7 @@
 	"pivot": {"x":0.5,"y":0.5}
 },
 {
-	"filename": "norm.png",
+	"filename": "norm",
 	"frame": {"x":389,"y":0,"w":389,"h":56},
 	"rotated": false,
 	"trimmed": false,
@@ -25,6 +25,6 @@
 	"format": "RGBA8888",
 	"size": {"w":778,"h":56},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:de9fb7c43dc2b0b67dba7b4d05d12e73:94b1450beb1632701a6a4fe164d882f1:7c2e68224a08cb441b305215da425195$"
+	"smartupdate": "$TexturePacker:SmartUpdate:1eaa9aea17b92572ff459d8872ac5559:94b1450beb1632701a6a4fe164d882f1:7c2e68224a08cb441b305215da425195$"
 }
 }

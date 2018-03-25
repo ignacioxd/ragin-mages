@@ -5,10 +5,6 @@
       "texture": "spritesheets/images/background.png"
     },
     {
-      "key": "logo",
-      "texture": "spritesheets/images/logo.png"
-    },
-    {
       "key": "logo2",
       "texture": "https://labs.phaser.io/assets/sprites/phaser3-logo.png"
     },
@@ -73,31 +69,6 @@
       "key": "checkmark",
       "texture": "spritesheets/buttons/checkmark.png",
       "data": "spritesheets/buttons/checkmark.json"
-    },
-    {
-      "key": "single_player",
-      "texture": "spritesheets/buttons/single.png",
-      "data": "spritesheets/buttons/single.json"
-    },
-    {
-      "key": "multi_player",
-      "texture": "spritesheets/buttons/multi.png",
-      "data": "spritesheets/buttons/multi.json"
-    },
-    {
-      "key": "home_button",
-      "texture": "spritesheets/buttons/home.png",
-      "data": "spritesheets/buttons/home.json"
-    },
-    {
-      "key": "controls_button",
-      "texture": "spritesheets/buttons/controls.png",
-      "data": "spritesheets/buttons/controls.json"
-    },
-    {
-      "key": "credits_button",
-      "texture": "spritesheets/buttons/credits.png",
-      "data": "spritesheets/buttons/credits.json"
     },
     {
       "key": "projectiles",

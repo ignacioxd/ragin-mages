@@ -33,6 +33,11 @@ export default class LoaderScene extends Phaser.Scene {
    * @param {object} loader Instance of the global Phaser loader.
    */
   loadStart(loader) {
+    WebFont.load({
+      google: {
+        families: ['Jim Nightshade', 'Fjalla One']
+      }
+    });
 
     //Load Images
     for(let image of this.assets.image) {
