@@ -1,20 +1,21 @@
 export default class Checkbox extends Phaser.GameObjects.Group {
   constructor(scene, x, y, text, defaultChecked) {
     const scale = 0.3;
-    const fontSize = 66 * scale;
-
-    let tickbox = scene.add.image(x, y, 'checkbox', defaultChecked ? 'checked' : 'unchecked');
+    const fontSize = 30 //* scale;
+ 
+    let tickbox = scene.add.image(x, y, 'checkmark', defaultChecked ? 'checked' : 'unchecked');
     tickbox.setScale(scale);
-    let label = scene.add.text(x + tickbox.displayWidth - 15, y - fontSize / 2, text, {
-      font: `${fontSize}px Arial`,
-      fill: '#ffffff'
+    let label = scene.add.text(x + tickbox.displayWidth - 4, y - fontSize / 1.4, text, {
+      fontSize: fontSize,
+      fontFamily: "'Fjalla One', sans-serif",
+      fill: '#d3d3d3'
     });
     super(scene, [tickbox, label]);
 
     this.tickbox = tickbox;
     this.label = label;
 
-
+    label.setStroke('#00000', 6);
     this.tickbox.setInteractive();
     this.checked = defaultChecked == true;
 
@@ -23,6 +24,7 @@ export default class Checkbox extends Phaser.GameObjects.Group {
     this.tickbox.on('pointerdown', () => {
       this.toggle();
     });
+
 
   }
 

@@ -1,16 +1,8 @@
 {
   "image": [
     {
-      "key": "sky",
-      "texture": "https://labs.phaser.io/assets/skies/space3.png"
-    },
-    {
-      "key": "logo",
-      "texture": "https://labs.phaser.io/assets/sprites/phaser3-logo.png"
-    },
-    {
-      "key": "red",
-      "texture": "https://labs.phaser.io/assets/particles/red.png"
+      "key": "title_background",
+      "texture": "spritesheets/images/background.png"
     },
     {
       "key": "map_tiles",
@@ -66,9 +58,9 @@
       "data": "spritesheets/mage_hero.json"
     },
     {
-      "key": "checkbox",
-      "texture": "spritesheets/checkbox.png",
-      "data": "spritesheets/checkbox.json"
+      "key": "checkmark",
+      "texture": "spritesheets/buttons/checkmark.png",
+      "data": "spritesheets/buttons/checkmark.json"
     },
     {
       "key": "projectiles",
