@@ -17,6 +17,7 @@
   "globals": {
     "Phaser": true,
     "io": true,
-    "__dirname": true
+    "__dirname": true,
+    "WebFont": true
   }
 }
