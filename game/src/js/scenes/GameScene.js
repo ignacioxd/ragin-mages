@@ -13,8 +13,6 @@ export default class GameScene extends BaseScene {
   }
 
   preload() {
-    
-
     //Create collision groups and event handling
     this.projectiles = this.add.group();
     this.characters = this.add.group();

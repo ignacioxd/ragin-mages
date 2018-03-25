@@ -39,7 +39,6 @@ export default class LoaderScene extends Phaser.Scene {
   }
 
   create() {
-
     this.load.setBaseURL('./assets/');
     this.load.on('start', this.loadStart, this);
     this.load.on('progress', this.loadProgress, this);

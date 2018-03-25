@@ -16,45 +16,35 @@ export default class TitleScene extends Phaser.Scene {
     let background = this.add.image(800, 330, 'title_background');
     this.cameras.main.startFollow(background);
     
-
     let logoStyle = {fontSize: 85, fontFamily: "'Jim Nightshade', cursive", color: '#000000'};
     let logo = this.add.text(450, 50, 'Ragin\' Mages', logoStyle);
     logo.setStroke('#ae7f00', 16);
     
-
     //multi player button
-    
-    let multi_player_button = new Button(this, 450, 250, 'PLAY MULTI PLAYER');
-   
-    multi_player_button.buttonDown(() => 
-    {
+    let multiPlayerButton = new Button(this, 450, 250, 'PLAY MULTI PLAYER');
+    multiPlayerButton.buttonDown(() => {
       this.scene.start('CharacterSelectionScene', {type: 'multi_player'});
-    })
+    });
     
     //single player button
-    let single_player_button = new Button(this, 450, 300, 'PLAY SINGLE PLAYER');
-   
-    single_player_button.buttonDown(_ => 
-    {
+    let singlePlayerButton = new Button(this, 450, 300, 'PLAY SINGLE PLAYER');
+    singlePlayerButton.buttonDown(() => {
       this.scene.start('CharacterSelectionScene', {type: 'single_player'});
-    })
-
+    });
 
     //controls, credits, offline mode buttons
-    let controls_button = new Button(this, 450, 350, 'CONTROLS');
+    let controlsButton = new Button(this, 450, 350, 'CONTROLS');
+    controlsButton.buttonDown(() => {
+    });
   
-    let credits_button = new Button(this, 450, 400, 'CREDITS');
- 
+    let creditsButton = new Button(this, 450, 400, 'CREDITS');
+    creditsButton.buttonDown(() => {
+    });
 
     if(ServiceWorker.isSupported()) {
       let serviceWorker = new ServiceWorker();
-      
       let checkbox = new Checkbox(this, 470, 500, 'ENABLE OFFLINE MODE', serviceWorker.isRegistered());
-
       checkbox.onPointerDown(function(obj) {
-        //TODO: add service worker
-        console.log('checked', obj.isChecked() ? 'yes' : 'no');
-
         if(obj.isChecked()) {
           serviceWorker.register();
         }
@@ -64,9 +54,6 @@ export default class TitleScene extends Phaser.Scene {
       });
     }
 
-
-    
-    
     this.startKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER);
     this.startKey2 = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
   }
