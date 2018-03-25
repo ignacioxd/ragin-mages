@@ -31,7 +31,7 @@ export default class Projectile extends Phaser.Physics.Arcade.Sprite {
 
     let tween= scene.add.tween({
       targets: this,
-      alpha: 0.1,
+      alpha: 0.4,
       ease: 'Linear',
       delay: 0,
       duration: this.props.range,
@@ -42,7 +42,6 @@ export default class Projectile extends Phaser.Physics.Arcade.Sprite {
   }
 
   _rangeReached(tween, targets, projectile) {
-    console.log('Kill message received');
     projectile.destroy();
   }  
 
