@@ -5,7 +5,7 @@ export default class Checkbox extends Phaser.GameObjects.Group {
  
     let tickbox = scene.add.image(x, y, 'checkmark', defaultChecked ? 'checked' : 'unchecked');
     tickbox.setScale(scale);
-    let label = scene.add.text(x + tickbox.displayWidth - 5, y - fontSize / 1, text, {
+    let label = scene.add.text(x + tickbox.displayWidth - 4, y - fontSize / 1.4, text, {
       fontSize: fontSize,
       fontFamily: 'Fjalla One, sans-serif',
       fill: '#d3d3d3'
@@ -15,7 +15,7 @@ export default class Checkbox extends Phaser.GameObjects.Group {
     this.tickbox = tickbox;
     this.label = label;
 
-    label.setStroke('#00000', 18);
+    label.setStroke('#00000', 6);
     this.tickbox.setInteractive();
     this.checked = defaultChecked == true;
 

@@ -13,8 +13,8 @@ export default class TitleScene extends Phaser.Scene {
   }
 
   create() {
-    this.add.image(600, 430, 'sky');
-
+    this.add.image(200, 430, 'sky');
+    
     // let particles = this.add.particles('red');
 
     // let emitter = particles.createEmitter({
@@ -23,7 +23,7 @@ export default class TitleScene extends Phaser.Scene {
     //   blendMode: 'ADD'
     // });
     let logoStyle = {fontSize: 85, fontFamily: "'Jim Nightshade', cursive", color: '#000000'};
-    let logo = this.add.text(0, 100, 'Ragin\' Mages', logoStyle);
+    let logo = this.add.text(-70, 100, 'Ragin\' Mages', logoStyle);
     logo.setStroke('#ae7f00', 16);
     
     // let logo = this.add.image(400, 100, 'logo');
@@ -31,7 +31,7 @@ export default class TitleScene extends Phaser.Scene {
     
     let multi_player_button = new Button(this, 0, 300, 'PLAY MULTI PLAYER');
    
-    multi_player_button.buttonDown(button => 
+    multi_player_button.buttonDown(() => 
     {
       this.scene.start('CharacterSelectionScene', {type: 'multi_player'});
     })
@@ -54,23 +54,25 @@ export default class TitleScene extends Phaser.Scene {
     let credits_button = new Button(this, 0, 450, 'CREDITS');
 
   
+    this.cameras.main.startFollow(credits_button);
+    if(ServiceWorker.isSupported()) {
+      let serviceWorker = new ServiceWorker();
+      
+      let checkbox = new Checkbox(this, 23, 560, 'ENABLE OFFLINE MODE', serviceWorker.isRegistered());
 
-    let serviceWorker = new ServiceWorker();
-    this.cameras.main.startFollow(controls_button);
+      checkbox.onPointerDown(function(obj) {
+        //TODO: add service worker
+        console.log('checked', obj.isChecked() ? 'yes' : 'no');
+
+        if(obj.isChecked()) {
+          serviceWorker.register();
+        }
+        else {
+          serviceWorker.unregister();
+        }
+      });
+    }
     
-    let checkbox = new Checkbox(this, 0, 600, 'ENABLE OFFLINE MODE', serviceWorker.isRegistered());
-
-    checkbox.onPointerDown(function(obj) {
-      //TODO: add service worker
-      console.log('checked', obj.isChecked() ? 'yes' : 'no');
-
-      if(obj.isChecked()) {
-        serviceWorker.register();
-      }
-      else {
-        serviceWorker.unregister();
-      }
-    })  
       
     this.startKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER);
     this.startKey2 = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
