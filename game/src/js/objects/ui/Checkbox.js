@@ -7,7 +7,7 @@ export default class Checkbox extends Phaser.GameObjects.Group {
     tickbox.setScale(scale);
     let label = scene.add.text(x + tickbox.displayWidth - 4, y - fontSize / 1.4, text, {
       fontSize: fontSize,
-      fontFamily: 'Fjalla One, sans-serif',
+      fontFamily: "'Fjalla One', sans-serif",
       fill: '#d3d3d3'
     });
     super(scene, [tickbox, label]);

@@ -38,33 +38,3 @@ export default class Button extends Phaser.GameObjects.Text {
   }
   
 }
-
-
-// export default class Button extends Phaser.GameObjects.Group {
-//     constructor(scene, x, y, text) {
-
-//       let button = scene.add.image(x, y, text, 'norm').setInteractive();
-//       super(scene, [button]);
-//       this.button = button;
-
-//       this.button.on('pointerout', () => {
-//         this.button.setFrame('norm');
-   
-//         });
-
-//       this.button.on('pointerover', () => {
-
-//         this.button.setFrame('hover');
-        
-//       });
-
-
-//     }
-  
-//   buttonDown(handler) {
-//     this.button.on('pointerdown', () => {
-//     handler(this);
-//     })
-//   }
-    
-//   }

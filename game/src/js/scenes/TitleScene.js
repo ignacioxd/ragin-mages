@@ -13,7 +13,8 @@ export default class TitleScene extends Phaser.Scene {
   }
 
   create() {
-    this.add.image(800, 330, 'sky');
+    let background = this.add.image(800, 330, 'sky');
+    this.cameras.main.startFollow(background);
     
     // let particles = this.add.particles('red');
 
@@ -73,7 +74,7 @@ export default class TitleScene extends Phaser.Scene {
       });
     }
 
-    // this.cameras.main.startFollow(credits_button);
+
     
     
     this.startKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER);
