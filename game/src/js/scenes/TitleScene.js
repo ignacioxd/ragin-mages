@@ -16,18 +16,12 @@ export default class TitleScene extends Phaser.Scene {
     let background = this.add.image(800, 330, 'title_background');
     this.cameras.main.startFollow(background);
     
-    // let particles = this.add.particles('red');
 
-    // let emitter = particles.createEmitter({
-    //   speed: 100,
-    //   scale: { start: 1, end: 0 },
-    //   blendMode: 'ADD'
-    // });
     let logoStyle = {fontSize: 85, fontFamily: "'Jim Nightshade', cursive", color: '#000000'};
     let logo = this.add.text(450, 50, 'Ragin\' Mages', logoStyle);
     logo.setStroke('#ae7f00', 16);
     
-    // let logo = this.add.image(400, 100, 'logo');
+
     //multi player button
     
     let multi_player_button = new Button(this, 450, 250, 'PLAY MULTI PLAYER');
@@ -37,7 +31,6 @@ export default class TitleScene extends Phaser.Scene {
       this.scene.start('CharacterSelectionScene', {type: 'multi_player'});
     })
     
-    // emitter.startFollow(logo);
     //single player button
     let single_player_button = new Button(this, 450, 300, 'PLAY SINGLE PLAYER');
    
@@ -47,13 +40,10 @@ export default class TitleScene extends Phaser.Scene {
     })
 
 
-    
-    //controls, credits, offline mode buttons + their texts
+    //controls, credits, offline mode buttons
     let controls_button = new Button(this, 450, 350, 'CONTROLS');
   
     let credits_button = new Button(this, 450, 400, 'CREDITS');
-
-  
  
 
     if(ServiceWorker.isSupported()) {
