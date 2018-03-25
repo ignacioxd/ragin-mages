@@ -7,7 +7,6 @@ export default class BootScene extends Phaser.Scene {
   preload() {
     this.load.setBaseURL('./assets/');
     this.load.json('assets');
-    this.load.json('config','../config.json');
   }
 
   create() {

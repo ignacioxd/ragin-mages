@@ -10,6 +10,7 @@ export default class LoaderScene extends Phaser.Scene {
   preload() {
     this.load.setBaseURL('./assets/');
     this.assets =  this.cache.json.get('assets');
+    this.load.json('config','../config.json');
 
     this.progress = this.add.graphics();
 

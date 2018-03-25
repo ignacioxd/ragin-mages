@@ -12,6 +12,18 @@ let source = require('vinyl-source-stream');
 let buffer = require('vinyl-buffer');
 let path = require('path');
 let rename = require('gulp-rename');
+let jsonModify = require('gulp-json-modify');
+
+/******* NOTE: When testing using SocketIO to your local server set the variables below to the SocketIO server
+        That you wish to communicate with
+        This setting will be used when you do "yarn start" for socket communication
+        If you do a yarn build it will use the production server raginmages.com
+*/
+let  testProtocol= 'http';
+let testHost = 'localhost';
+let testIOPort = 3030;
+
+/************End test server configuation settings ******************/
 
 const paths = {
   phaser: './node_modules/phaser/dist/',
@@ -38,14 +50,10 @@ const paths = {
     entry: './src/js/sw.js',
     dest: 'sw.js'
   },
-  devconfig: {
-    entry:'../config/dev.config.json',
+  config: {
+    entry:'../config/config.json',
     dest:'config.json'
-  },
-  distconfig: {
-    entry:'../config/prod.config.json',
-    dest:'config.json'
-  },
+  }
 };
 
 gulp.task('default', ['serve']);
@@ -54,9 +62,8 @@ gulp.task('serve', ['build-dev'], function() {
   gulp.watch(paths.styles.src + '/**/*', ['styles']);
   gulp.watch(paths.assets.src + '/**/*', ['copy-assets']);
   gulp.watch(paths.script.src + '/**/*.js', ['lint', 'scripts']);
-  gulp.watch(paths.devconfig.entry, ['config-dev']);
+  gulp.watch(paths.config.entry, ['config-dev']);
   gulp.watch(paths.base + '/index.html', ['copy-html']);
-
   gulp.watch(paths.build + '/**/*').on('change', browserSync.reload);
 
   browserSync.init({
@@ -80,14 +87,15 @@ gulp.task('copy-html', function() {
 });
 
 gulp.task('config-dev', function() {
-  gulp.src(paths.devconfig.entry)
-    .pipe(rename(paths.devconfig.dest))
+  gulp.src(paths.config.entry)
+    .pipe(jsonModify({ key: 'protocol', value: testProtocol }))
+    .pipe(jsonModify({ key: 'host', value: testHost }))
+    .pipe(jsonModify({ key: 'ioport', value: testIOPort }))
     .pipe(gulp.dest(paths.build));
 });
 
 gulp.task('config-dist', function() {
-  gulp.src(paths.distconfig.entry)
-    .pipe(rename(paths.distconfig.dest))
+  gulp.src(paths.config.entry)
     .pipe(gulp.dest(paths.build));
 });
 
