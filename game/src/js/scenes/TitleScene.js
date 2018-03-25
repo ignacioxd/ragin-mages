@@ -23,7 +23,7 @@ export default class TitleScene extends Phaser.Scene {
     //   blendMode: 'ADD'
     // });
     let logoStyle = {fontSize: 85, fontFamily: "'Jim Nightshade', cursive", color: '#000000'};
-    let logo = this.add.text(390, 50, 'Ragin\' Mages', logoStyle);
+    let logo = this.add.text(450, 50, 'Ragin\' Mages', logoStyle);
     logo.setStroke('#ae7f00', 16);
     
     // let logo = this.add.image(400, 100, 'logo');
@@ -53,7 +53,8 @@ export default class TitleScene extends Phaser.Scene {
     let credits_button = new Button(this, 450, 400, 'CREDITS');
 
   
-    // this.cameras.main.startFollow(credits_button);
+ 
+
     if(ServiceWorker.isSupported()) {
       let serviceWorker = new ServiceWorker();
       
@@ -71,8 +72,10 @@ export default class TitleScene extends Phaser.Scene {
         }
       });
     }
+
+    // this.cameras.main.startFollow(credits_button);
     
-      
+    
     this.startKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER);
     this.startKey2 = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
   }

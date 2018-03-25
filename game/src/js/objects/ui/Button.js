@@ -5,11 +5,9 @@ export default class Button extends Phaser.GameObjects.Text {
       fontFamily: "'Fjalla One', sans-serif",
       fill: '#d3d3d3',
       width: '500px',
-      align: 'center',
-      wordWrap: true,
-      wordWrapWidth: '100'
+
     });
-    let padding = {left: 5, right: 50, top: 0, bottom: 0};
+    let padding = {left: 5, right: 400 - this.width, top: 0, bottom: 0};
     this.setInteractive();
     this.setStroke('#000000', 6);
     this.setShadow(0, 0, '#000000', 4, false, false);
@@ -17,7 +15,7 @@ export default class Button extends Phaser.GameObjects.Text {
 
     this.on('pointerover', () => {
       this.setFill('#ffffff');
-      this.setBackgroundColor('#ffffff55').setPadding(padding);
+      this.setBackgroundColor('#ffffff55').setPadding(padding);;
       
       this.setStroke('#00000000', 6);
       this.setShadow(0, 0, '#000000', 4, false, true);
