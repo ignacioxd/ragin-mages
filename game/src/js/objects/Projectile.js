@@ -29,22 +29,22 @@ export default class Projectile extends Phaser.Physics.Arcade.Sprite {
 
     scene.add.existing(this);
 
-    this.timedEvent = scene.time.addEvent({
-      delay: this.props.range,  
-      callback: this._rangeReached,
-      callbackScope: this,
-      loop: false
+    let tween= scene.add.tween({
+      targets: this,
+      alpha: 0.1,
+      ease: 'Linear',
+      delay: 0,
+      duration: this.props.range,
+      onComplete: this._rangeReached,
+      onCompleteParams: [ this ]
     });
-
+    
   }
 
-  // Slowly displays the text in the window to make it appear annimated
-  _rangeReached() {
+  _rangeReached(tween, targets, projectile) {
     console.log('Kill message received');
-    this.timedEvent.remove(false);
-    this.destroy();
-  }
-  
+    projectile.destroy();
+  }  
 
   setColliderSize(projectileType){
     switch(projectileType){
