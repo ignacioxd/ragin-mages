@@ -5,6 +5,7 @@ export default class Projectile extends Phaser.Physics.Arcade.Sprite {
     this.props = {
       ...{
         type: key,
+        scale: .4,
         speed: 250,
         motionVector: new Phaser.Math.Vector2(targetX, targetY).subtract({x: x, y: y}).normalize(),
         range: 1000
@@ -24,7 +25,7 @@ export default class Projectile extends Phaser.Physics.Arcade.Sprite {
     this.setRotation(this.props.motionVector.angle());
     this.setVelocity(this.props.motionVector.x * this.props.speed, this.props.motionVector.y * this.props.speed);
 
-    this.setScale(.4);
+    this.setScale(this.props.scale);
 
     scene.add.existing(this);
 
