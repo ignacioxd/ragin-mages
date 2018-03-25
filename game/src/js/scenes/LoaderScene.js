@@ -12,22 +12,25 @@ export default class LoaderScene extends Phaser.Scene {
     this.assets = this.cache.json.get('assets');
 
     this.loadingText = this.make.text({
-      x: 32,
-      y: 32,
+      x: width / 2,
+      y: height / 2 - 75,
       text: 'Loading...',
       style: {
         font: '50px monospace',
         fill: '#ffffff'
       }
     });
+    this.loadingText.setOrigin(0.5, 0.5);
+
     this.assetText = this.make.text({
-      x: 32,
-      y: 96,
+      x: width / 2,
+      y: height / 2 + 60,
       style: {
         font: '14px monospace',
         fill: '#ffffff'
       }
     });
+    this.assetText.setOrigin(0.5, 0.5);
 
     this.progressBar = this.add.graphics();
     this.progressBar.lineStyle(2, 0xffffff, 1);
