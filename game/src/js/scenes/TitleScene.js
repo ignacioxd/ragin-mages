@@ -13,7 +13,7 @@ export default class TitleScene extends Phaser.Scene {
   }
 
   create() {
-    this.add.image(200, 430, 'sky');
+    this.add.image(800, 330, 'sky');
     
     // let particles = this.add.particles('red');
 
@@ -23,13 +23,13 @@ export default class TitleScene extends Phaser.Scene {
     //   blendMode: 'ADD'
     // });
     let logoStyle = {fontSize: 85, fontFamily: "'Jim Nightshade', cursive", color: '#000000'};
-    let logo = this.add.text(-70, 100, 'Ragin\' Mages', logoStyle);
+    let logo = this.add.text(390, 50, 'Ragin\' Mages', logoStyle);
     logo.setStroke('#ae7f00', 16);
     
     // let logo = this.add.image(400, 100, 'logo');
     //multi player button
     
-    let multi_player_button = new Button(this, 0, 300, 'PLAY MULTI PLAYER');
+    let multi_player_button = new Button(this, 450, 250, 'PLAY MULTI PLAYER');
    
     multi_player_button.buttonDown(() => 
     {
@@ -38,9 +38,9 @@ export default class TitleScene extends Phaser.Scene {
     
     // emitter.startFollow(logo);
     //single player button
-    let single_player_button = new Button(this, 0, 350, 'PLAY SINGLE PLAYER');
+    let single_player_button = new Button(this, 450, 300, 'PLAY SINGLE PLAYER');
    
-    single_player_button.buttonDown(button => 
+    single_player_button.buttonDown(_ => 
     {
       this.scene.start('CharacterSelectionScene', {type: 'single_player'});
     })
@@ -48,17 +48,16 @@ export default class TitleScene extends Phaser.Scene {
 
     
     //controls, credits, offline mode buttons + their texts
-    let controls_button = new Button(this, 0, 400, 'CONTROLS');
-    
-
-    let credits_button = new Button(this, 0, 450, 'CREDITS');
+    let controls_button = new Button(this, 450, 350, 'CONTROLS');
+  
+    let credits_button = new Button(this, 450, 400, 'CREDITS');
 
   
-    this.cameras.main.startFollow(credits_button);
+    // this.cameras.main.startFollow(credits_button);
     if(ServiceWorker.isSupported()) {
       let serviceWorker = new ServiceWorker();
       
-      let checkbox = new Checkbox(this, 23, 560, 'ENABLE OFFLINE MODE', serviceWorker.isRegistered());
+      let checkbox = new Checkbox(this, 470, 500, 'ENABLE OFFLINE MODE', serviceWorker.isRegistered());
 
       checkbox.onPointerDown(function(obj) {
         //TODO: add service worker
