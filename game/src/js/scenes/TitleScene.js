@@ -13,7 +13,7 @@ export default class TitleScene extends Phaser.Scene {
   }
 
   create() {
-    let background = this.add.image(800, 330, 'sky');
+    let background = this.add.image(800, 330, 'title_background');
     this.cameras.main.startFollow(background);
     
     // let particles = this.add.particles('red');

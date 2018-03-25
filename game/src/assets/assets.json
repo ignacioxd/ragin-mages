@@ -1,7 +1,7 @@
 {
   "image": [
     {
-      "key": "sky",
+      "key": "title_background",
       "texture": "spritesheets/images/background.png"
     },
     {
