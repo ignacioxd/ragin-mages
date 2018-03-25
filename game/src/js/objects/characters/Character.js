@@ -9,7 +9,7 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
         type: key,
         lastOrientation: 'E',
         motionVector: new Phaser.Math.Vector2(0, 0),
-        speed: 100,
+        speed: 200,
         projectileType: 'fire',
         projectileRange: 1000,
         colliderSize: 70,
@@ -111,7 +111,7 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
             scene.anims.create({
               key: `${characterType}-${animation.name}-${coordinate}`,
               frames: animFrames,
-              frameRate: 7,
+              frameRate: 10,
               repeat: -1,
               onComplete: Character.animationCompleted,
               onRepeat: Character.animationLoop
