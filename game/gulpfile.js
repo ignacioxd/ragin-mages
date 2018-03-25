@@ -11,7 +11,6 @@ let babelify = require('babelify');
 let source = require('vinyl-source-stream');
 let buffer = require('vinyl-buffer');
 let path = require('path');
-let rename = require('gulp-rename');
 let jsonModify = require('gulp-json-modify');
 
 /******* NOTE: When testing using SocketIO to your local server set the variables below to the SocketIO server
