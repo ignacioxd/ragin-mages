@@ -8,13 +8,31 @@ export default class LoaderScene extends Phaser.Scene {
   }
 
   preload() {
-    this.assets =  this.cache.json.get('assets');
+    const { width, height } = this.cameras.main;
+    this.assets = this.cache.json.get('assets');
 
-    this.loadtext = this.add.text(this.cameras.main.width / 2, this.cameras.main.height / 2, 'Loading...', {
-      font: '50px Times',
-      fill: '#ffffff'
+    this.loadingText = this.make.text({
+      x: 32,
+      y: 32,
+      text: 'Loading...',
+      style: {
+        font: '50px monospace',
+        fill: '#ffffff'
+      }
     });
-    this.rotAngle = 0;
+    this.assetText = this.make.text({
+      x: 32,
+      y: 96,
+      style: {
+        font: '14px monospace',
+        fill: '#ffffff'
+      }
+    });
+
+    this.progressBar = this.add.graphics();
+    this.progressBar.lineStyle(2, 0xffffff, 1);
+    this.progressBar.fillStyle(0xb4d455);
+    this.progressBar.strokeRect(width * .2, height / 2, width * .8 - width * .2, 32);
   }
 
   create() {
@@ -24,7 +42,7 @@ export default class LoaderScene extends Phaser.Scene {
     this.load.on('progress', this.loadProgress, this);
     this.load.on('fileprogress', this.loadFileProgress, this);
     this.load.on('complete', this.loadCompleted, this);
-    
+
     this.load.start();
   }
 
@@ -56,6 +74,9 @@ export default class LoaderScene extends Phaser.Scene {
       loader.tilemapTiledJSON(tileMap.key, tileMap.data);
     }
 
+    // Hack to fix progress loaders
+    this.load.totalToLoad = this.load.list.size;
+
     /*
       Assets from
       https://opengameart.org/content/dungeon-crawl-32x32-tiles
@@ -69,6 +90,7 @@ export default class LoaderScene extends Phaser.Scene {
    * @param {float} value Percentage of load of this file ranging from 0 to 1.
    */
   loadFileProgress(file, value) {
+    this.assetText.setText(`${file.url} ${((value || 1) * 100).toFixed(2)}%`)
   }
 
   /**
@@ -76,6 +98,8 @@ export default class LoaderScene extends Phaser.Scene {
    * @param {float} value Percentage of load progress. Appears to be currently broken in Phaser 3.
    */
   loadProgress(value) {
+    const { width, height } = this.cameras.main;
+    this.progressBar.fillRect(width * .2, height / 2, (width * .8 - width * .2) * value, 32)
   }
 
   /**
@@ -89,7 +113,5 @@ export default class LoaderScene extends Phaser.Scene {
   }
 
   update() {
-    this.rotAngle += 0.1;
-    this.loadtext.setRotation(this.rotAngle);
   }
 }
