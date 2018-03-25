@@ -7,11 +7,13 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
     this.props = {
       ...{
         type: key,
+        scale: 0.35,
         lastOrientation: 'E',
         motionVector: new Phaser.Math.Vector2(0, 0),
         speed: 200,
         projectileType: 'fire',
         projectileRange: 1000,
+        projectileFireOffset: {x: 0, y: -150},
         colliderSize: 70,
         colliderOffsetX: 0,
         colliderOffsetY: 0
@@ -31,9 +33,9 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
     this.scene = scene;
     this.isFiring = false;
     this.isDead = false;
-    this.setScale(.35);
+    this.setScale(this.props.scale);
 
-    this.setAnimation('stance', 'E');
+    this.setAnimation('stance', this.props.lastOrientation);
     scene.add.existing(this);
   }
 
@@ -72,7 +74,9 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
     this.setAnimation('fight', this.props.lastOrientation);
     this.isFiring = true;
     this.setVelocity(0, 0);
-    let projectile = new Projectile(this.scene, this.x, this.y, this.props.projectileType, targetX, targetY, {range: this.props.projectileRange});
+    let fireFromX = this.x + this.props.projectileFireOffset.x * this.props.scale;
+    let fireFromY = this.y + this.props.projectileFireOffset.y * this.props.scale;
+    let projectile = new Projectile(this.scene, fireFromX, fireFromY, this.props.projectileType, targetX, targetY, {range: this.props.projectileRange});
     return projectile;
   }
 
