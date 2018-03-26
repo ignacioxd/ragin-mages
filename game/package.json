@@ -34,11 +34,7 @@
     "vinyl-source-stream": "^2.0.0"
   },
   "dependencies": {
-<<<<<<< HEAD
-    "phaser": "^3.3.0",
-=======
     "phaser": "^3.3.0",   
->>>>>>> upstream/game-dev
     "socket.io": "^2.0.4"
   }
 }
