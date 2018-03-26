@@ -14,9 +14,6 @@ export default class GameScene extends BaseScene {
   }
 
   preload() {
-
-    //load config file for socket information
-    this.config=this.cache.json.get('config');
     
     //Create collision groups and event handling
     this.projectiles = this.add.group();
@@ -58,10 +55,9 @@ export default class GameScene extends BaseScene {
   }
 
   create() {
-    //TODO: This should be configurable. Change IP to localhost if using a local server
-  //  this.socket = io('http://152.46.18.48:443');
-    //this.socket = io('http://localhost:3030');
-    this.socket = io(this.config.protocol + '://' + this.config.host + ':'  + this.config.ioport);
+    //load config file for socket information
+    let serverConfig = this.cache.json.get('config');
+    this.socket = io(`${serverConfig.protocol}://${serverConfig.host}:${serverConfig.ioport}`);
 
     this.socket.on('connect', this.serverConnected.bind(this));
     this.socket.on('setId', this.setId.bind(this));

@@ -12,7 +12,6 @@ export default class LoaderScene extends Phaser.Scene {
 
     this.load.setBaseURL('./assets/');
     this.assets =  this.cache.json.get('assets');
-    this.load.json('config','../config.json');
 
     this.loadingText = this.make.text({
       x: width / 2,
@@ -84,9 +83,10 @@ export default class LoaderScene extends Phaser.Scene {
       loader.tilemapTiledJSON(tileMap.key, tileMap.data);
     }
 
-    //Load json files
+    //Load JSON files
+    this.load.json('config', '../config.json');
     for(let json of this.assets.json){
-      this.load.json(json.key,json.path);
+      this.load.json(json.key, json.path);
     }
 
     // Hack to fix progress loaders

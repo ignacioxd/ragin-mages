@@ -18,7 +18,7 @@ let jsonModify = require('gulp-json-modify');
         This setting will be used when you do "yarn start" for socket communication
         If you do a yarn build it will use the production server raginmages.net
 */
-let  testProtocol= 'http';
+let testProtocol= 'http';
 let testHost = 'localhost';
 let testIOPort = 3030;
 
@@ -72,9 +72,9 @@ gulp.task('serve', ['build-dev'], function() {
   });
 });
 
-gulp.task('build', ['copy-static', 'styles', 'lint', 'sw-dist', 'scripts-dist','config-dist']);
+gulp.task('build', ['copy-static', 'styles', 'lint', 'sw-dist', 'scripts-dist', 'config-dist']);
 
-gulp.task('build-dev', ['copy-static', 'styles', 'lint', 'sw', 'scripts','config-dev']);
+gulp.task('build-dev', ['copy-static', 'styles', 'lint', 'sw', 'scripts', 'config-dev']);
 
 gulp.task('clean', function() {
   del([paths.build]);
@@ -105,9 +105,6 @@ gulp.task('config-dist', function() {
 
 gulp.task('copy-assets', function() {
   gulp.src(paths.assets.src + '/**/*')
-    .pipe(gulp.dest(paths.assets.dest));
-
-  gulp.src(paths.assets.src + '/json/**/*')
     .pipe(gulp.dest(paths.assets.dest));
 });
 

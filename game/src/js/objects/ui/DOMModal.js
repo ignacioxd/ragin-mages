@@ -7,8 +7,8 @@ export default class DOMModal {
         gravity: DOMModal.GRAVITY_MIDDLE,
         acceptButtonSelector: null,
         cancelButtonSelector: null,
-        onAccept: (modal) => {},
-        onCancel: (modal) => {}
+        onAccept: () => {},
+        onCancel: () => {}
       },
       ...opts
     };
@@ -40,12 +40,12 @@ export default class DOMModal {
   populateWindow(html) {
     this.root.innerHTML=html;
     this.root.querySelectorAll(this.props.acceptButtonSelector).forEach(element => {
-      element.addEventListener('click', event => {
+      element.addEventListener('click', () => {
         this.props.onAccept(this);
       });
     });
     this.root.querySelectorAll(this.props.cancelButtonSelector).forEach(element => {
-      element.addEventListener('click', event => {
+      element.addEventListener('click', () => {
         this.props.onCancel(this);
       });
     });

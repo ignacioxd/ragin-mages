@@ -15,7 +15,7 @@ export default class Button extends Phaser.GameObjects.Text {
 
     this.on('pointerover', () => {
       this.setFill('#ffffff');
-      this.setBackgroundColor('#ffffff55').setPadding(padding);;
+      this.setBackgroundColor('#ffffff55').setPadding(padding);
       
       this.setStroke('#00000000', 6);
       this.setShadow(0, 0, '#000000', 4, false, true);
