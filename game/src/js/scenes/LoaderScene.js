@@ -9,7 +9,10 @@ export default class LoaderScene extends Phaser.Scene {
 
   preload() {
     const { width, height } = this.cameras.main;
-    this.assets = this.cache.json.get('assets');
+
+    this.load.setBaseURL('./assets/');
+    this.assets =  this.cache.json.get('assets');
+    this.load.json('config','../config.json');
 
     this.loadingText = this.make.text({
       x: width / 2,
