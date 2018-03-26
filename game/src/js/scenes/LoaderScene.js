@@ -55,7 +55,7 @@ export default class LoaderScene extends Phaser.Scene {
   loadStart(loader) {
     WebFont.load({
       google: {
-        families: ['Jim Nightshade', 'Fjalla One']
+        families: ['Jim Nightshade', 'Fjalla One', 'Noto Sans']
       }
     });
 
