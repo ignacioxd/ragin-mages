@@ -81,6 +81,11 @@ export default class LoaderScene extends Phaser.Scene {
       loader.tilemapTiledJSON(tileMap.key, tileMap.data);
     }
 
+    //Load json files
+    for(let json of this.assets.json){
+      this.load.json(json.key,json.path);
+    }
+
     // Hack to fix progress loaders
     this.load.totalToLoad = this.load.list.size;
 

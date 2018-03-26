@@ -1,5 +1,4 @@
-import Checkbox from 'objects/ui/Checkbox';
-import Button from 'objects/ui/Button'
+import Button from 'objects/ui/Button';
 
 export default class CharacterSelectionScene extends Phaser.Scene {
 
@@ -11,7 +10,7 @@ export default class CharacterSelectionScene extends Phaser.Scene {
     console.log('user mode=' + this._userMode);
   }
   preload() {
-    this.assets =  this.cache.json.get('assets');
+    this.characterList =  this.cache.json.get('characters');
   }
     
   create() {
@@ -21,8 +20,9 @@ export default class CharacterSelectionScene extends Phaser.Scene {
     let logoStyle = {fontSize: 85, fontFamily: "'Jim Nightshade', cursive", color: '#000000'};
     let logo = this.add.text(450, 50, 'Ragin\' Mages', logoStyle);
     logo.setStroke('#ae7f00', 16);
-
-    this.add.text(450, 200, 'Select your character',{
+    let playerMode= this._userMode == 'single_player' ? 'single player mode' : 'multiplayer on-line battle mode';
+    
+    this.add.text(450, 200, 'Select your character for ' + playerMode  ,{
       fontSize: 30,
       fontFamily: "'Fjalla One', sans-serif",
       fill: '#ae7f00',
@@ -32,14 +32,14 @@ export default class CharacterSelectionScene extends Phaser.Scene {
     let btnX=450;
     let btnY=250;
     let btnSpacing=50;
-    for(let character of this.assets.characters) {
+    for(let character of this.characterList.characters) {
       this._addCharacterButton(character,this,btnX,btnY );
       btnY +=btnSpacing;
     }
   }
 
   _addCharacterButton(btnData,scene,x,y){
-    let chkButton = new Button(this, x, y, btnData.label);
+    let chkButton = new Button(this, x, y, btnData.name);
     chkButton.key=btnData.key;
     chkButton.scene=scene;
     chkButton.buttonDown(() => {
