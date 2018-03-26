@@ -63,6 +63,8 @@ gulp.task('serve', ['build-dev'], function() {
   gulp.watch(paths.script.src + '/**/*.js', ['lint', 'scripts']);
   gulp.watch(paths.config.entry, ['config-dev']);
   gulp.watch(paths.base + '/index.html', ['copy-html']);
+  gulp.watch(paths.base + '/templates/**/*', ['copy-html']);
+
   gulp.watch(paths.build + '/**/*').on('change', browserSync.reload);
 
   browserSync.init({
@@ -83,6 +85,9 @@ gulp.task('copy-static', ['copy-html', 'copy-assets', 'copy-phaser', 'copy-socke
 gulp.task('copy-html', function() {
   gulp.src([paths.base + '/index.html', paths.base + '/manifest.json'])
     .pipe(gulp.dest(paths.build));
+  
+  gulp.src(paths.base + '/templates/**/*')
+    .pipe(gulp.dest(paths.build+'/templates'));
 });
 
 gulp.task('config-dev', function() {

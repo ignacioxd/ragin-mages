@@ -1,6 +1,7 @@
 import BaseScene from './BaseScene';
 import Controller from '../util/Controller';
 import Priest from 'objects/characters/Priest';
+import DOMModal from 'objects/ui/DOMModal';
 
 export default class GameScene extends BaseScene {
 
@@ -88,6 +89,18 @@ export default class GameScene extends BaseScene {
     projectile.destroy();
     this.socket.emit('death', this.localCharacter.x, this.localCharacter.y);
     character.die();
+    new DOMModal('killed', {
+      acceptButtonSelector: '#respawn',
+      cancelButtonSelector: '.exit',
+      onAccept: (modal) => {
+        modal.close();
+        this.socket.emit('respawn');
+      },
+      onCancel: (modal) => {
+        modal.close();
+        this.scene.start('TitleScene');
+      }
+    });
   }
 
 
