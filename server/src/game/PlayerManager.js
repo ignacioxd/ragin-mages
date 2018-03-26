@@ -79,6 +79,14 @@ export default class PlayerManager {
       socket.broadcast.emit('playerDied', socket.id, posX, posY);
     });
 
+    socket.on('respawn', () => {
+      socket.x = Math.random() * 400 - 200;
+      socket.y = Math.random() * 400 - 200;
+      //Notify everyone of this new player
+      socket.broadcast.emit('playerJoined', socket.id, socket.character, socket.handle, socket.x, socket.y);
+      console.log(this.lobbyPlayerMap.size + this.gamePlayerMap.size, 'players connected,', this.gamePlayerMap.size, 'in game');
+    });
+
     socket.on('exitGame', () => {
       this.gamePlayerMap.delete(socket.id);
       this.lobbyPlayerMap.set(socket.id, socket);
