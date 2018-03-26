@@ -83,5 +83,35 @@
     "js/phaser.min.js",
     "js/game.js",
     "css/main.css"
+  ],
+  "characters": [
+    {
+      "key": "knight_hero",
+      "label": "Valiant Knight"
+    },
+    {
+      "key": "priest_hero",
+      "label": "Avenging Priest"
+    },
+    {
+      "key": "mage_hero",
+      "label": "Magical Mage"
+    },
+    {
+      "key": "fire_monster",
+      "label": "Fire Monster"
+    },
+    {
+      "key": "ice_monster",
+      "label": "Ice Monster"
+    },
+    {
+      "key": "golem_monster",
+      "label": "Golem"
+    },
+    {
+      "key": "spider_hero",
+      "label": "Spider Monster"
+    }
   ]
 }
