@@ -33,7 +33,7 @@
     "vinyl-source-stream": "^2.0.0"
   },
   "dependencies": {
-    "phaser": "^3.3.0",   
+    "phaser": "^3.3.0",
     "socket.io": "^2.0.4"
   }
 }
