@@ -106,6 +106,9 @@ gulp.task('config-dist', function() {
 gulp.task('copy-assets', function() {
   gulp.src(paths.assets.src + '/**/*')
     .pipe(gulp.dest(paths.assets.dest));
+
+  gulp.src(paths.assets.src + '/json/**/*')
+    .pipe(gulp.dest(paths.assets.dest));
 });
 
 gulp.task('copy-phaser', function() {

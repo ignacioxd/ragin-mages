@@ -1,0 +1,32 @@
+{
+  "characters": [
+    {
+      "key": "knight_hero",
+      "name": "Valiant Knight"
+    },
+    {
+      "key": "priest_hero",
+      "name": "Avenging Priest"
+    },
+    {
+      "key": "mage_hero",
+      "name": "Magical Mage"
+    },
+    {
+      "key": "fire_monster",
+      "name": "Fire Monster"
+    },
+    {
+      "key": "ice_monster",
+      "name": "Ice Monster"
+    },
+    {
+      "key": "golem_monster",
+      "name": "Golem"
+    },
+    {
+      "key": "spider_monster",
+      "name": "Spider Monster"
+    }
+  ]
+}

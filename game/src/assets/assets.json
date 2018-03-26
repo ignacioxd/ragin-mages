@@ -83,5 +83,11 @@
     "js/phaser.min.js",
     "js/game.js",
     "css/main.css"
+  ],
+  "json": [
+    {
+      "key": "characters",
+      "path": "./json/characters.json"
+    }
   ]
 }
