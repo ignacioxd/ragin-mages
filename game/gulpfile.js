@@ -16,7 +16,7 @@ let jsonModify = require('gulp-json-modify');
 /******* NOTE: When testing using SocketIO to your local server set the variables below to the SocketIO server
         That you wish to communicate with
         This setting will be used when you do "yarn start" for socket communication
-        If you do a yarn build it will use the production server raginmages.com
+        If you do a yarn build it will use the production server raginmages.net
 */
 let  testProtocol= 'http';
 let testHost = 'localhost';
