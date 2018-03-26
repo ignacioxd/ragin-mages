@@ -1,36 +1,53 @@
 import Projectile from '../Projectile';
 
 export default class Character extends Phaser.Physics.Arcade.Sprite {
-  constructor(scene, x, y, key, colSize, offsetX, offsetY) {
+  constructor(scene, x, y, key, options = {}) {
     super(scene, x, y, key);
+
+    this.props = {
+      ...{
+        type: key,
+        scale: 0.35,
+        lastOrientation: 'E',
+        motionVector: new Phaser.Math.Vector2(0, 0),
+        speed: 200,
+        projectileType: 'fire',
+        projectileRange: 1000,
+        projectileFireOffset: {x: 0, y: -150},
+        colliderSize: 70,
+        colliderOffsetX: 0,
+        colliderOffsetY: 0
+      },
+      ...options
+    };
+
+
     scene.physics.world.enable(this);
-    scene.characters.add(this);
+    //scene.characters.add(this);
     //make the physics body a circle instead of box
     this.body.isCircle = true;
     //set the size based on the constructor parameter set from the scene constructor
-    this.body.setCircle(colSize);
+    this.body.setCircle(this.props.colliderSize);
     //unique offset for each character to make collider fit properly
-    this.setOffset(offsetX, offsetY);
+    this.setOffset(this.props.colliderOffsetX, this.props.colliderOffsetY);
     this.scene = scene;
-    this.lastOrientation = 'E';
-    this.projectileType = 'fire';
     this.isFiring = false;
     this.isDead = false;
-    this.speed = 100;
-    this.motionVector = new Phaser.Math.Vector2(0, 0);
-    this.setScale(.35);
-    this.type = key;
+    this.setScale(this.props.scale);
+
+    this.setAnimation('stance', this.props.lastOrientation);
+    scene.add.existing(this);
   }
 
   setAnimation(animation, orientation, force = false) {
     if(!force && (this.isDead || this.isFiring)) return;
-    orientation = orientation ? orientation : this.lastOrientation;
-    this.lastOrientation = orientation;
-    this.anims.play(`${this.type}-${animation}-${orientation}`, true);
+    orientation = orientation ? orientation : this.props.lastOrientation;
+    this.props.lastOrientation = orientation;
+    this.anims.play(`${this.props.type}-${animation}-${orientation}`, true);
   }
 
   motionChanged(vector) {
-    return this.motionVector.x !== vector.x || this.motionVector.y !== vector.y;
+    return this.props.motionVector.x !== vector.x || this.props.motionVector.y !== vector.y;
   }
   
   /**
@@ -39,31 +56,33 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
    */
   setMotion(vector) {
     if(this.isDead || this.isFiring) return;
-    this.motionVector = vector;
-    this.setVelocity(vector.x * this.speed, vector.y * this.speed);
+    this.props.motionVector = vector;
+    this.setVelocity(vector.x * this.props.speed, vector.y * this.props.speed);
     let animation = 'stance';
     if(vector.length() != 0) {
       animation = 'walk';
-      this.lastOrientation = vector.y > 0 ? 'S' : (vector.y < 0 ? 'N' : '');
-      this.lastOrientation += vector.x > 0  ? 'E' : (vector.x < 0  ? 'W' : '');
+      this.props.lastOrientation = vector.y > 0 ? 'S' : (vector.y < 0 ? 'N' : '');
+      this.props.lastOrientation += vector.x > 0  ? 'E' : (vector.x < 0  ? 'W' : '');
     }
     
-    this.setAnimation(animation, this.lastOrientation);
+    this.setAnimation(animation, this.props.lastOrientation);
     
   }
 
   fire(targetX, targetY) {
     if(this.isDead || this.isFiring) return;
-    this.setAnimation('fight', this.lastOrientation);
+    this.setAnimation('fight', this.props.lastOrientation);
     this.isFiring = true;
     this.setVelocity(0, 0);
-    let projectile = new Projectile(this.scene, this.x, this.y, this.projectileType, targetX, targetY);
-    this.scene.projectiles.add(projectile);
+    let fireFromX = this.x + this.props.projectileFireOffset.x * this.props.scale;
+    let fireFromY = this.y + this.props.projectileFireOffset.y * this.props.scale;
+    let projectile = new Projectile(this.scene, fireFromX, fireFromY, this.props.projectileType, targetX, targetY, {range: this.props.projectileRange});
+    return projectile;
   }
 
   die() {
     this.isDead = true;
-    this.setAnimation('death', this.lastOrientation, true);
+    this.setAnimation('death', this.props.lastOrientation, true);
     this.setVelocity(0, 0);
   }
 
@@ -96,7 +115,7 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
             scene.anims.create({
               key: `${characterType}-${animation.name}-${coordinate}`,
               frames: animFrames,
-              frameRate: 7,
+              frameRate: 10,
               repeat: -1,
               onComplete: Character.animationCompleted,
               onRepeat: Character.animationLoop

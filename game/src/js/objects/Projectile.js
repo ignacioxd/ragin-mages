@@ -1,6 +1,17 @@
 export default class Projectile extends Phaser.Physics.Arcade.Sprite {
-  constructor(scene, x, y, key, targetX, targetY) {
+  constructor(scene, x, y, key, targetX, targetY, options = {}) {
     super(scene, x, y, key);
+
+    this.props = {
+      ...{
+        type: key,
+        scale: .4,
+        speed: 250,
+        motionVector: new Phaser.Math.Vector2(targetX, targetY).subtract({x: x, y: y}).normalize(),
+        range: 1000
+      },
+      ...options};
+
     this.anims.play(`proj_${key}-E`, true);
 
     // Dynamically modify this sprite based on the type of projectile
@@ -11,17 +22,28 @@ export default class Projectile extends Phaser.Physics.Arcade.Sprite {
     // Set the size of the collider based on the type of projectile
     this.setColliderSize(key);
 
-    this.type = key;
-    this.speed = 250;
+    this.setRotation(this.props.motionVector.angle());
+    this.setVelocity(this.props.motionVector.x * this.props.speed, this.props.motionVector.y * this.props.speed);
 
-    this.vector = new Phaser.Math.Vector2(targetX, targetY).subtract({x: x, y: y}).normalize();
-    this.setRotation(this.vector.angle());
-    this.setVelocity(this.vector.x * this.speed, this.vector.y * this.speed);
-
-    this.setScale(.4);
+    this.setScale(this.props.scale);
 
     scene.add.existing(this);
+
+    let tween= scene.add.tween({
+      targets: this,
+      alpha: 0.4,
+      ease: 'Linear',
+      delay: 0,
+      duration: this.props.range,
+      onComplete: this._rangeReached,
+      onCompleteParams: [ this ]
+    });
+    
   }
+
+  _rangeReached(tween, targets, projectile) {
+    projectile.destroy();
+  }  
 
   setColliderSize(projectileType){
     switch(projectileType){
@@ -49,6 +71,10 @@ export default class Projectile extends Phaser.Physics.Arcade.Sprite {
     case 'ice' :
       this.body.setCircle(20);
       break;
+      
+    case 'rock' :
+      this.body.setCircle(20);
+      break;
    
     }
   }
@@ -74,6 +100,9 @@ export default class Projectile extends Phaser.Physics.Arcade.Sprite {
         },
         {
           name: 'ice', frames: 6
+        },
+        {
+          name: 'rock', frames: 6
         }
       ];
 

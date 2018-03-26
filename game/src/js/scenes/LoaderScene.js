@@ -8,21 +8,47 @@ export default class LoaderScene extends Phaser.Scene {
   }
 
   preload() {
+    const { width, height } = this.cameras.main;
+
     this.load.setBaseURL('./assets/');
     this.assets =  this.cache.json.get('assets');
     this.load.json('config','../config.json');
 
-    this.progress = this.add.graphics();
+    this.loadingText = this.make.text({
+      x: width / 2,
+      y: height / 2 - 75,
+      text: 'Loading...',
+      style: {
+        font: '50px monospace',
+        fill: '#ffffff'
+      }
+    });
+    this.loadingText.setOrigin(0.5, 0.5);
 
+    this.assetText = this.make.text({
+      x: width / 2,
+      y: height / 2 + 60,
+      style: {
+        font: '14px monospace',
+        fill: '#ffffff'
+      }
+    });
+    this.assetText.setOrigin(0.5, 0.5);
+
+    this.progressBar = this.add.graphics();
+    this.progressBar.lineStyle(2, 0xffffff, 1);
+    this.progressBar.fillStyle(0xb4d455);
+    this.progressBar.strokeRect(width * .2, height / 2, width * .8 - width * .2, 32);
+  }
+
+  create() {
+    this.load.setBaseURL('./assets/');
     this.load.on('start', this.loadStart, this);
     this.load.on('progress', this.loadProgress, this);
     this.load.on('fileprogress', this.loadFileProgress, this);
     this.load.on('complete', this.loadCompleted, this);
-    
-    this.load.start();
-  }
 
-  create() {
+    this.load.start();
   }
 
   /**
@@ -30,6 +56,11 @@ export default class LoaderScene extends Phaser.Scene {
    * @param {object} loader Instance of the global Phaser loader.
    */
   loadStart(loader) {
+    WebFont.load({
+      google: {
+        families: ['Jim Nightshade', 'Fjalla One']
+      }
+    });
 
     //Load Images
     for(let image of this.assets.image) {
@@ -53,6 +84,9 @@ export default class LoaderScene extends Phaser.Scene {
       loader.tilemapTiledJSON(tileMap.key, tileMap.data);
     }
 
+    // Hack to fix progress loaders
+    this.load.totalToLoad = this.load.list.size;
+
     /*
       Assets from
       https://opengameart.org/content/dungeon-crawl-32x32-tiles
@@ -66,6 +100,7 @@ export default class LoaderScene extends Phaser.Scene {
    * @param {float} value Percentage of load of this file ranging from 0 to 1.
    */
   loadFileProgress(file, value) {
+    this.assetText.setText(`${file.url} ${((value || 1) * 100).toFixed(2)}%`)
   }
 
   /**
@@ -73,9 +108,8 @@ export default class LoaderScene extends Phaser.Scene {
    * @param {float} value Percentage of load progress. Appears to be currently broken in Phaser 3.
    */
   loadProgress(value) {
-    this.progress.clear();
-    this.progress.fillStyle(0xffffff, 1);
-    this.progress.fillRect(0, 270, 800 * value, 60);
+    const { width, height } = this.cameras.main;
+    this.progressBar.fillRect(width * .2, height / 2, (width * .8 - width * .2) * value, 32)
   }
 
   /**
@@ -85,7 +119,9 @@ export default class LoaderScene extends Phaser.Scene {
     //Build animations
     Character.buildAnimations(this);
     Projectile.buildAnimations(this);
-    this.progress.destroy();
     this.scene.start('TitleScene');
+  }
+
+  update() {
   }
 }

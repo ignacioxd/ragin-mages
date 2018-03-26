@@ -1,6 +1,7 @@
 {
   "presets": [
     ["@babel/env", {
+      "shippedProposals": true,
       "targets": {
         "browsers": ["last 2 versions", "safari >= 7"]
       }

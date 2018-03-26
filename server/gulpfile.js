@@ -1,10 +1,8 @@
 let gulp = require('gulp');
-let uglify = require('gulp-uglify');
 let del = require('del');
 let sourcemaps = require('gulp-sourcemaps');
 let eslint = require('gulp-eslint');
 let babel = require('gulp-babel');
-let concat = require('gulp-concat');
 
 const paths = {
   base: './src',
@@ -38,8 +36,6 @@ gulp.task('scripts', function() {
   return gulp.src(paths.script.src + '/**/*.js')
     .pipe(sourcemaps.init())
     .pipe(babel())
-    //.pipe(concat('index.js'))
-    .pipe(uglify())
     .pipe(sourcemaps.write('.'))
     .pipe(gulp.dest(paths.build));
 });

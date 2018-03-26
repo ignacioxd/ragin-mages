@@ -4,17 +4,20 @@
     "sourceType": "module"
   },
   "rules": {
-      "no-console": 0,
-      "indent": ["error", 2],
-      "quotes": [2, "single", "avoid-escape"]
+    "no-console": 0,
+    "indent": ["error", 2],
+    "quotes": [2, "single", "avoid-escape"]
   },
   "env": {
-      "browser": true,
-      "commonjs": true
+    "es6": true,
+    "browser": true,
+    "commonjs": true
   },
   "extends": "eslint:recommended",
   "globals": {
     "Phaser": true,
-    "__dirname": true
+    "io": true,
+    "__dirname": true,
+    "WebFont": true
   }
 }

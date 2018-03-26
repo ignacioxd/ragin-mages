@@ -23,6 +23,21 @@ class Game extends Phaser.Game {
       },
       scene: [BootScene, LoaderScene, TitleScene, CharacterSelectionScene, GameScene, DungeonScene, PauseMenuScene, DialogScene]
     });
+
+    window.addEventListener('resize', this.resizeGame.bind(this));
+  }
+
+  resizeGame() {
+    var width = window.innerWidth;
+    var height = window.innerHeight;
+    //Resize game
+    this.resize(width, height);
+    //Let all scenes know of our new size
+    for(let sceneKey in this.scene.keys) {
+      if(this.scene.keys[sceneKey].resize) {
+        this.scene.keys[sceneKey].resize(width, height);
+      }
+    }
   }
 
 }
