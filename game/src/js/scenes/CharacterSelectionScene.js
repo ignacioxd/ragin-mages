@@ -10,7 +10,7 @@ export default class CharacterSelectionScene extends Phaser.Scene {
   }
 
   preload() {
-    this.characterList =  this.cache.json.get('characters');
+    this.characterList =  this.cache.json.get('characters').characters;
   }
     
   create() {
