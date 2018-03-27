@@ -29,7 +29,7 @@ export default class Projectile extends Phaser.Physics.Arcade.Sprite {
 
     scene.add.existing(this);
 
-    let tween= scene.add.tween({
+    scene.add.tween({
       targets: this,
       alpha: 0.4,
       ease: 'Linear',

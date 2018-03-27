@@ -1,6 +1,7 @@
 import BaseScene from './BaseScene';
 import Controller from '../util/Controller';
-import Priest from 'objects/characters/Priest';
+import Character from 'objects/characters/Character';
+import DOMModal from 'objects/ui/DOMModal';
 
 export default class GameScene extends BaseScene {
 
@@ -12,7 +13,12 @@ export default class GameScene extends BaseScene {
     this.localCharacter = null;
   }
 
+  init(data){
+    this.characterType = data.character;
+  }
+
   preload() {
+    
     //Create collision groups and event handling
     this.projectiles = this.add.group();
     this.characters = this.add.group();
@@ -53,8 +59,9 @@ export default class GameScene extends BaseScene {
   }
 
   create() {
-    //TODO: This should be configurable. Change IP to localhost if using a local server
-    this.socket = io('http://152.46.19.3:443');
+    //load config file for socket information
+    let serverConfig = this.cache.json.get('config');
+    this.socket = io(`${serverConfig.protocol}://${serverConfig.host}:${serverConfig.ioport}`);
 
     this.socket.on('connect', this.serverConnected.bind(this));
     this.socket.on('setId', this.setId.bind(this));
@@ -82,6 +89,18 @@ export default class GameScene extends BaseScene {
     projectile.destroy();
     this.socket.emit('death', this.localCharacter.x, this.localCharacter.y);
     character.die();
+    new DOMModal('killed', {
+      acceptButtonSelector: '#respawn',
+      cancelButtonSelector: '.exit',
+      onAccept: (modal) => {
+        modal.close();
+        this.socket.emit('respawn');
+      },
+      onCancel: (modal) => {
+        modal.close();
+        this.scene.start('TitleScene');
+      }
+    });
   }
 
 
@@ -93,28 +112,28 @@ export default class GameScene extends BaseScene {
 
   setId(id) {
     this.clientId = id;
-    this.socket.emit('joinGame', 'priest', 'Player1');
+    this.socket.emit('joinGame', this.characterType, '');
   }
 
   existingPlayers(existingPlayers) {
     console.log('existingPlayers');
     console.log(existingPlayers);
     existingPlayers.forEach(value => {
-      this.playerJoined(value.id, value.handle, value.character, value.x, value.y);
+      this.playerJoined(value.id, value.character, value.handle, value.x, value.y);
     });
   }
 
-  playerJoined(id, handle, character, x, y) {
+  playerJoined(id, character, handle, x, y) {
+    character = character == 'priest' ? 'priest_hero' : character; //Temp fix for compatibility with old clients
     console.log('playerJoined');
-    //TODO: Choose character based on value.character
     if(this.clientId !== id) {
-      let remotePlayer = new Priest(this, x, y);
+      let remotePlayer = new Character(this, x, y, character);
       this.players.set(id, remotePlayer);
       remotePlayer.id = id;
       //remotePlayer.setHandle(handle);
     }
     else {
-      this.localCharacter = new Priest(this, x, y);
+      this.localCharacter = new Character(this, x, y, character);
       this.characters.add(this.localCharacter); //this is us.
       this.cameras.main.startFollow(this.localCharacter);
     }

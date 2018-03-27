@@ -2,7 +2,6 @@ import ServiceWorker from 'util/ServiceWorker';
 import Checkbox from 'objects/ui/Checkbox';
 import Button from 'objects/ui/Button'
 
-
 export default class TitleScene extends Phaser.Scene {
 
   constructor() {

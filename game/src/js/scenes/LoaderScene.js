@@ -9,7 +9,9 @@ export default class LoaderScene extends Phaser.Scene {
 
   preload() {
     const { width, height } = this.cameras.main;
-    this.assets = this.cache.json.get('assets');
+
+    this.load.setBaseURL('./assets/');
+    this.assets =  this.cache.json.get('assets');
 
     this.loadingText = this.make.text({
       x: width / 2,
@@ -55,7 +57,7 @@ export default class LoaderScene extends Phaser.Scene {
   loadStart(loader) {
     WebFont.load({
       google: {
-        families: ['Jim Nightshade', 'Fjalla One']
+        families: ['Jim Nightshade', 'Fjalla One', 'Noto Sans']
       }
     });
 
@@ -79,6 +81,12 @@ export default class LoaderScene extends Phaser.Scene {
     //Load TileMaps
     for(let tileMap of this.assets.tileMap) {
       loader.tilemapTiledJSON(tileMap.key, tileMap.data);
+    }
+
+    //Load JSON files
+    this.load.json('config', '../config.json');
+    for(let json of this.assets.json){
+      this.load.json(json.key, json.path);
     }
 
     // Hack to fix progress loaders
