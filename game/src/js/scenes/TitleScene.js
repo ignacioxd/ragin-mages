@@ -7,6 +7,13 @@ export default class TitleScene extends Phaser.Scene {
 
   constructor() {
     super({key: 'TitleScene'});
+    this.onlineIndicator = this.onlineIndicator.bind(this);
+  }
+
+  init() {
+    this.online = navigator.onLine;
+    window.addEventListener('online',  this.onlineIndicator);
+    window.addEventListener('offline', this.onlineIndicator);
   }
   
   preload() {
@@ -21,8 +28,8 @@ export default class TitleScene extends Phaser.Scene {
     logo.setStroke('#ae7f00', 16);
     
     //multi player button
-    let multiPlayerButton = new Button(this, 450, 250, 'PLAY MULTI PLAYER');
-    multiPlayerButton.buttonDown(() => {
+    this.multiPlayerButton = new Button(this, 450, 250, 'PLAY MULTI PLAYER', !this.online);
+    this.multiPlayerButton.buttonDown(() => {
       this.scene.start('CharacterSelectionScene', {type: 'multi_player'});
     });
     
@@ -66,6 +73,11 @@ export default class TitleScene extends Phaser.Scene {
     if(this.startKey2.isDown) {
       this.scene.start('DungeonScene');
     }
+  }
+
+  onlineIndicator() {
+    this.online = navigator.onLine;
+    this.multiPlayerButton.setDisabled(!this.online);
   }
 
 }
