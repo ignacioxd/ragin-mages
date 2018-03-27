@@ -1,30 +1,113 @@
-[
-  {
+{"knight_hero":  {
+    "name": "Valiant Knight",
     "key": "knight_hero",
-    "name": "Valiant Knight"
+    "scale": 0.35,
+    "orientation": "E",
+    "baseSpeed": 200,
+    "projectile": {
+      "type": "light",
+      "baseRange": 1000,
+      "fireOffset": {"x": 0, "y": -150}
+    },
+    "collider": {
+      "size": 70,
+      "offset": {"x": 87, "y": 80}
+    }
   },
-  {
+  "priest_hero": {
+    "name": "Avenging Priest",
     "key": "priest_hero",
-    "name": "Avenging Priest"
+    "scale": 0.35,
+    "orientation": "E",
+    "baseSpeed": 200,
+    "projectile": {
+      "type": "orb",
+      "baseRange": 1000,
+      "fireOffset": {"x": 0, "y": -150}
+    },
+    "collider": {
+      "size": 70,
+      "offset": {"x": 92, "y": 80}
+    }
   },
-  {
+  "mage_hero":{
+    "name": "Magical Mage",
     "key": "mage_hero",
-    "name": "Magical Mage"
+    "scale": 0.35,
+    "orientation": "E",
+    "baseSpeed": 200,
+    "projectile": {
+      "type": "orb_p",
+      "baseRange": 1000,
+      "fireOffset": {"x": 0, "y": -150}
+    },
+    "collider": {
+      "size": 70,
+      "offset": {"x": 92, "y": 90}
+    }
   },
-  {
+  "fire_monster":{
+    "name": "Fire Monster",
     "key": "fire_monster",
-    "name": "Fire Monster"
+    "scale": 0.35,
+    "orientation": "E",
+    "baseSpeed": 200,
+    "projectile": {
+      "type": "fire",
+      "baseRange": 1000,
+      "fireOffset": {"x": 0, "y": -150}
+    },
+    "collider": {
+      "size": 70,
+      "offset": {"x": 95, "y": 60}
+    }
   },
-  {
+  "ice_monster":{
+    "name": "Ice Monster",
     "key": "ice_monster",
-    "name": "Ice Monster"
+    "scale": 0.35,
+    "orientation": "E",
+    "baseSpeed": 200,
+    "projectile": {
+      "type": "ice",
+      "baseRange": 1000,
+      "fireOffset": {"x": 0, "y": -150}
+    },
+    "collider": {
+      "size": 70,
+      "offset": {"x": 88, "y": 60}
+    }
   },
-  {
+  "golem_monster":{
+    "name": "Rock Golem",
     "key": "golem_monster",
-    "name": "Golem"
+    "scale": 0.35,
+    "orientation": "E",
+    "baseSpeed": 200,
+    "projectile": {
+      "type": "rock",
+      "baseRange": 1000,
+      "fireOffset": {"x": 0, "y": -150}
+    },
+    "collider": {
+      "size": 70,
+      "offset": {"x": 85, "y": 70}
+    }
   },
-  {
+  "spider_monster":{
+    "name": "Menacing Spider",
     "key": "spider_monster",
-    "name": "Spider Monster"
+    "scale": 0.35,
+    "orientation": "E",
+    "baseSpeed": 200,
+    "projectile": {
+      "type": "ven",
+      "baseRange": 1000,
+      "fireOffset": {"x": 0, "y": -150}
+    },
+    "collider": {
+      "size": 70,
+      "offset": {"x": 84, "y": 115}
+    }
   }
-]
+}
