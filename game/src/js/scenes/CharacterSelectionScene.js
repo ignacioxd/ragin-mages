@@ -33,16 +33,10 @@ export default class CharacterSelectionScene extends Phaser.Scene {
     let btnY=250;
     let btnSpacing=50;
     for (const key of Object.keys(this.characterList)) {
-      console.log(key, this.characterList[key]);
       this.addCharacterButton(this.characterList[key], this, btnX, btnY);
       btnY +=btnSpacing;
     }
-    // for(let character in this.characterList) {
-    //   console.log(character[name]);
-    //   // console.log(character[key]);
-    //   this.addCharacterButton(character, this, btnX, btnY);
-    //   btnY +=btnSpacing;
-    // }
+   
   }
 
   addCharacterButton(btnData, scene, x, y){
