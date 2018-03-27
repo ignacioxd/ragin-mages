@@ -4,10 +4,11 @@ import jsonPath from '../../util/jsonpath-0.8.0';
 export default class Character extends Phaser.Physics.Arcade.Sprite {
   constructor(scene, x, y, key, options = {}) {
     super(scene, x, y, key);
+    
+    //pull specific character config information from characters.json
+    //jsonPath returns query results as an array so reference 0 element to get plan config information
     const filter=`$..characters[?(@.key =="${key}")]`;
-    // let filter2="$..characters[?(@.key =='knight_hero')]";
-    // let filter3='$..characters[?(@.baseSpeed ==200)]';
-    // console.log(filter);
+
     this.config=jsonPath(scene.cache.json.get('characters'), filter)[0];
     this.props={
       type: key,
@@ -15,46 +16,21 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
       ...this.config,
       ...options
     };
-    console.log(this.config);
-    console.log(this.props);
-    console.log(this.config.key);
-    console.log(this.props.key);
     
-    // this.props = {
-    //   ...{
-    //     type: key,
-    //     scale: 0.35,
-    //     lastOrientation: 'E',
-    //     motionVector: new Phaser.Math.Vector2(0, 0),
-    //     speed: 200,
-    //     projectileType: 'fire',
-    //     projectileRange: 1000,
-    //     projectileFireOffset: {x: 0, y: -150},
-    //     colliderSize: 70,
-    //     colliderOffsetX: 0,
-    //     colliderOffsetY: 0
-    //   },
-    //   ...options
-    // };
-
-
     scene.physics.world.enable(this);
+    
     //scene.characters.add(this);
     //make the physics body a circle instead of box
     this.body.isCircle = true;
     //set the size based on the constructor parameter set from the scene constructor
     this.body.setCircle(this.props.collider.size);
-    console.log(this.props.collider.size);
     //unique offset for each character to make collider fit properly
     this.setOffset(this.props.collider.offset.x, this.props.collider.offset.y);
-    console.log(this.props.collider.offset.x,this.props.collider.offset.y);
     this.scene = scene;
     this.isFiring = false;
     this.isDead = false;
     this.setScale(this.props.scale);
-    console.log(this.props.scale);
     this.setAnimation('stance', this.props.orientation);
-    console.log(this.props.orientation);
     scene.add.existing(this);
   }
 
