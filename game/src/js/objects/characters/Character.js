@@ -1,5 +1,5 @@
 import Projectile from '../Projectile';
-import jsonPath from '../../util/jsonpath-0.8.0';
+//import jsonPath from '../../util/jsonpath-0.8.0';
 
 export default class Character extends Phaser.Physics.Arcade.Sprite {
   constructor(scene, x, y, key, options = {}) {
@@ -7,9 +7,10 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
     
     //pull specific character config information from characters.json
     //jsonPath returns query results as an array so reference 0 element to get plan config information
-    const filter=`$..characters[?(@.key =="${key}")]`;
+    //const filter=`$..characters[?(@.key =="${key}")]`;
 
-    this.config=jsonPath(scene.cache.json.get('characters'), filter)[0];
+    this.config=scene.cache.json.get('characters')[key];
+    console.log(this.config);
     this.props={
       type: key,
       motionVector: new Phaser.Math.Vector2(0, 0),

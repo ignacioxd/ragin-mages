@@ -10,7 +10,7 @@ export default class CharacterSelectionScene extends Phaser.Scene {
   }
 
   preload() {
-    this.characterList =  this.cache.json.get('characters').characters;
+    this.characterList =  this.cache.json.get('characters');
   }
     
   create() {
@@ -32,10 +32,17 @@ export default class CharacterSelectionScene extends Phaser.Scene {
     let btnX=450;
     let btnY=250;
     let btnSpacing=50;
-    for(let character of this.characterList) {
-      this.addCharacterButton(character, this, btnX, btnY);
+    for (const key of Object.keys(this.characterList)) {
+      console.log(key, this.characterList[key]);
+      this.addCharacterButton(this.characterList[key], this, btnX, btnY);
       btnY +=btnSpacing;
     }
+    // for(let character in this.characterList) {
+    //   console.log(character[name]);
+    //   // console.log(character[key]);
+    //   this.addCharacterButton(character, this, btnX, btnY);
+    //   btnY +=btnSpacing;
+    // }
   }
 
   addCharacterButton(btnData, scene, x, y){
