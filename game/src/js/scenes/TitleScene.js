@@ -6,13 +6,12 @@ export default class TitleScene extends Phaser.Scene {
 
   constructor() {
     super({key: 'TitleScene'});
-    this.onlineIndicator = this.onlineIndicator.bind(this);
   }
 
   init() {
     this.online = navigator.onLine;
-    window.addEventListener('online',  this.onlineIndicator);
-    window.addEventListener('offline', this.onlineIndicator);
+    window.addEventListener('online',  this.onlineIndicator.bind(this));
+    window.addEventListener('offline', this.onlineIndicator.bind(this));
   }
   
   preload() {
