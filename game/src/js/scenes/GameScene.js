@@ -1,6 +1,6 @@
 import BaseScene from './BaseScene';
 import Controller from '../util/Controller';
-import Priest from 'objects/characters/Priest';
+import Character from 'objects/characters/Character';
 import DOMModal from 'objects/ui/DOMModal';
 
 export default class GameScene extends BaseScene {
@@ -11,6 +11,10 @@ export default class GameScene extends BaseScene {
 
     this.players = new Map();
     this.localCharacter = null;
+  }
+
+  init(data){
+    this.characterType = data.character;
   }
 
   preload() {
@@ -108,28 +112,28 @@ export default class GameScene extends BaseScene {
 
   setId(id) {
     this.clientId = id;
-    this.socket.emit('joinGame', 'priest', 'Player1');
+    this.socket.emit('joinGame', this.characterType, '');
   }
 
   existingPlayers(existingPlayers) {
     console.log('existingPlayers');
     console.log(existingPlayers);
     existingPlayers.forEach(value => {
-      this.playerJoined(value.id, value.handle, value.character, value.x, value.y);
+      this.playerJoined(value.id, value.character, value.handle, value.x, value.y);
     });
   }
 
-  playerJoined(id, handle, character, x, y) {
+  playerJoined(id, character, handle, x, y) {
+    character = character == 'priest' ? 'priest_hero' : character; //Temp fix for compatibility with old clients
     console.log('playerJoined');
-    //TODO: Choose character based on value.character
     if(this.clientId !== id) {
-      let remotePlayer = new Priest(this, x, y);
+      let remotePlayer = new Character(this, x, y, character);
       this.players.set(id, remotePlayer);
       remotePlayer.id = id;
       //remotePlayer.setHandle(handle);
     }
     else {
-      this.localCharacter = new Priest(this, x, y);
+      this.localCharacter = new Character(this, x, y, character);
       this.characters.add(this.localCharacter); //this is us.
       this.cameras.main.startFollow(this.localCharacter);
     }
