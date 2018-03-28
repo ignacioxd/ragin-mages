@@ -31,6 +31,13 @@ export default class CharacterSelectionScene extends Phaser.Scene {
       width: '500px',
     });
 
+
+    this.characterBackdrop = this.add.graphics();
+    this.characterBackdrop.x = 755;
+    this.characterBackdrop.y = 275;
+    this.characterBackdrop.fillStyle(0xffffff, 0.5);
+    this.characterBackdrop.fillRect(0, 0, 300, 300);
+
     let btnX=450;
     let btnY=250;
     let btnSpacing=50;
@@ -43,7 +50,7 @@ export default class CharacterSelectionScene extends Phaser.Scene {
   }
 
   addCharacterButton(btnData, scene, x, y){
-    let chkButton = new Button(this, x, y, btnData.name);
+    let chkButton = new Button(this, x, y, btnData.name, {width: 250});
     chkButton.key=btnData.key;
     chkButton.scene=scene;
     chkButton.buttonDown(() => {
@@ -59,7 +66,7 @@ export default class CharacterSelectionScene extends Phaser.Scene {
 
   showCharacter(key) {
     if(this.chosenCharacter) this.chosenCharacter.destroy();
-    this.chosenCharacter = new Character(this, 900, 450, key, {
+    this.chosenCharacter = new Character(this, this.characterBackdrop.x + 150, this.characterBackdrop.y + 300 * 0.8, key, {
       scale: 1,
       orientation: 'S',
     });
