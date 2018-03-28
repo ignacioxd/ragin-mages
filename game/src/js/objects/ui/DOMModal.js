@@ -1,15 +1,15 @@
 export default class DOMModal {
   constructor(template, opts) {
     this.props = {
-      ...{
-        width: '50%',
-        height: 'auto',
-        gravity: DOMModal.GRAVITY_MIDDLE,
-        acceptButtonSelector: null,
-        cancelButtonSelector: null,
-        onAccept: () => {},
-        onCancel: () => {}
-      },
+      width: '50%',
+      height: 'auto',
+      gravity: DOMModal.GRAVITY_MIDDLE,
+      acceptButtonSelector: null,
+      cancelButtonSelector: null,
+      showBackdrop: true,
+      closeOnBackdropClick: false,
+      onAccept: () => {},
+      onCancel: () => {},
       ...opts
     };
 
@@ -29,22 +29,36 @@ export default class DOMModal {
 
   // Creates the dialog window
   createWindow() {
-    this.root = document.createElement('div');
-    this.root.className = 'modal';
-    this.root.style.width = this.props.width;
-    this.root.style.height = this.props.height;
 
+    this.modal = document.createElement('div');
+    this.modal.className = 'modal';
+    this.modal.style.width = this.props.width;
+    this.modal.style.height = this.props.height;
+
+    this.root = this.modal;
+    if(this.props.showBackdrop) { //Add backdrop if requested
+      this.root = document.createElement('div');
+      this.root.className = 'backdrop';
+      
+      this.root.appendChild(this.modal);
+      if(this.props.closeOnBackdropClick) {
+        this.root.addEventListener('click', () => {
+          this.close();
+        });
+      }
+    }
+    //Add root element to the DOM
     document.body.appendChild(this.root);
   }
 
   populateWindow(html) {
-    this.root.innerHTML=html;
-    this.root.querySelectorAll(this.props.acceptButtonSelector).forEach(element => {
+    this.modal.innerHTML=html;
+    this.modal.querySelectorAll(this.props.acceptButtonSelector).forEach(element => {
       element.addEventListener('click', () => {
         this.props.onAccept(this);
       });
     });
-    this.root.querySelectorAll(this.props.cancelButtonSelector).forEach(element => {
+    this.modal.querySelectorAll(this.props.cancelButtonSelector).forEach(element => {
       element.addEventListener('click', () => {
         this.props.onCancel(this);
       });
