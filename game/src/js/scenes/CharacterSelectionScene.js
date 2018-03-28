@@ -1,4 +1,6 @@
 import Button from 'objects/ui/Button';
+import Controller from '../util/Controller';
+import Character from 'objects/characters/Character';
 
 export default class CharacterSelectionScene extends Phaser.Scene {
   constructor() {
@@ -10,7 +12,7 @@ export default class CharacterSelectionScene extends Phaser.Scene {
   }
 
   preload() {
-    this.characterList =  this.cache.json.get('characters');
+    this.controller = new Controller(this);
   }
     
   create() {
@@ -32,11 +34,12 @@ export default class CharacterSelectionScene extends Phaser.Scene {
     let btnX=450;
     let btnY=250;
     let btnSpacing=50;
-    for (const key of Object.keys(this.characterList)) {
-      this.addCharacterButton(this.characterList[key], this, btnX, btnY);
+
+    let characterList = this.cache.json.get('characters');
+    for (const key in characterList) {
+      this.addCharacterButton(characterList[key], this, btnX, btnY);
       btnY +=btnSpacing;
     }
-   
   }
 
   addCharacterButton(btnData, scene, x, y){
@@ -46,10 +49,27 @@ export default class CharacterSelectionScene extends Phaser.Scene {
     chkButton.buttonDown(() => {
       this.scene.start(this.gameType == 'multi_player' ? 'GameScene' : 'DungeonScene', {character: btnData.key});  
     });
+
+    chkButton.on('pointerover', () => {
+      this.showCharacter(btnData.key);
+    });
+
+
+  }
+
+  showCharacter(key) {
+    if(this.chosenCharacter) this.chosenCharacter.destroy();
+    this.chosenCharacter = new Character(this, 900, 450, key, {
+      scale: 1,
+      orientation: 'S',
+    });
   }
 
   update() {
-
+    if(this.chosenCharacter) {
+      const orientation = this.controller.getWASDCoordinate();
+      this.chosenCharacter.setAnimation(orientation != '' ? 'walk' : 'stance', orientation);
+    }
   }
 
 }
