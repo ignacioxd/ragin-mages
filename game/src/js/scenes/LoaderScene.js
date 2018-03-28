@@ -10,9 +10,6 @@ export default class LoaderScene extends Phaser.Scene {
   preload() {
     const { width, height } = this.cameras.main;
 
-    this.load.setBaseURL('./assets/');
-    this.assets =  this.cache.json.get('assets');
-
     this.loadingText = this.make.text({
       x: width / 2,
       y: height / 2 - 75,
@@ -61,31 +58,33 @@ export default class LoaderScene extends Phaser.Scene {
       }
     });
 
+    const assets =  this.cache.json.get('assets');
+
     //Load Images
-    for(let image of this.assets.image) {
+    for(let image of assets.image) {
       loader.image(image.key, image.texture);
       //loader.image(image);
     }
-    //loader.image(this.assets.image);
+    //loader.image(assets.image);
 
     //Load Spritesheets
-    for(let spritesheet of this.assets.spritesheet) {
+    for(let spritesheet of assets.spritesheet) {
       loader.spritesheet(spritesheet.key, spritesheet.texture, spritesheet);
     }
 
     //Load Atlas
-    for(let atlas of this.assets.atlas) {
+    for(let atlas of assets.atlas) {
       loader.atlas(atlas);
     }
 
     //Load TileMaps
-    for(let tileMap of this.assets.tileMap) {
+    for(let tileMap of assets.tileMap) {
       loader.tilemapTiledJSON(tileMap.key, tileMap.data);
     }
 
     //Load JSON files
     this.load.json('config', '../config.json');
-    for(let json of this.assets.json){
+    for(let json of assets.json){
       this.load.json(json.key, json.path);
     }
 

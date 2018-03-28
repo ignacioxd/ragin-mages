@@ -2,7 +2,7 @@
   "image": [
     {
       "key": "title_background",
-      "texture": "spritesheets/images/background.png"
+      "texture": "sprites/background.png"
     },
     {
       "key": "map_tiles",
