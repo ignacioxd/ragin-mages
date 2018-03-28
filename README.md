@@ -1,4 +1,4 @@
-# Offline-first JavaScript Game
+# Ragin' Mages
 
 This is a [Phaser 3](https://phaser.io/) game that is being collaboratively built as part of the 2018 Grow with Google Scholarship: Mobile Web Udacity course.
 

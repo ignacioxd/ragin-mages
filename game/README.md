@@ -1,4 +1,4 @@
-# Ragin' Mages
+# Ragin' Mages Game
 
 This is Game component of the project. It may be run independently from the server. If the server is not available, only single-player mode will be enabled.
 
