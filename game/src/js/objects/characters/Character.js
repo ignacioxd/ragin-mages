@@ -1,26 +1,19 @@
 import Projectile from '../Projectile';
-//import jsonPath from '../../util/jsonpath-0.8.0';
 
 export default class Character extends Phaser.Physics.Arcade.Sprite {
   constructor(scene, x, y, key, options = {}) {
     super(scene, x, y, key);
     
     //pull specific character config information from characters.json
-    //jsonPath returns query results as an array so reference 0 element to get plan config information
-    //const filter=`$..characters[?(@.key =="${key}")]`;
-
-    this.config=scene.cache.json.get('characters')[key];
-    console.log(this.config);
     this.props={
       type: key,
       motionVector: new Phaser.Math.Vector2(0, 0),
-      ...this.config,
+      ...scene.cache.json.get('characters')[key],
       ...options
     };
     
     scene.physics.world.enable(this);
     
-    //scene.characters.add(this);
     //make the physics body a circle instead of box
     this.body.isCircle = true;
     //set the size based on the constructor parameter set from the scene constructor
