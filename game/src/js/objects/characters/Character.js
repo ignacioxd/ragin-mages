@@ -5,7 +5,7 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
     super(scene, x, y, key);
     
     //pull specific character config information from characters.json
-    this.props={
+    this.props= {
       type: key,
       motionVector: new Phaser.Math.Vector2(0, 0),
       ...scene.cache.json.get('characters')[key],

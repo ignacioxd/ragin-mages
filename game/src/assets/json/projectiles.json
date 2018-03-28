@@ -1,0 +1,72 @@
+{
+  "orb":  {
+    "key": "orb",
+    "scale": 0.4,
+    "speed": 250,
+    "range": 1000,
+    "collider": {
+      "size": 20,
+      "offset": {"x": 0, "y": 0}
+    }
+  },
+  "orb_p":  {
+    "key": "orb_p",
+    "scale": 0.4,
+    "speed": 250,
+    "range": 1000,
+    "collider": {
+      "size": 15,
+      "offset": {"x": 0, "y": 0}
+    }
+  },
+  "ven":  {
+    "key": "ven",
+    "scale": 0.4,
+    "speed": 250,
+    "range": 1000,
+    "collider": {
+      "size": 10,
+      "offset": {"x": 0, "y": 0}
+    }
+  },
+  "fire":  {
+    "key": "fire",
+    "scale": 0.4,
+    "speed": 250,
+    "range": 1000,
+    "collider": {
+      "size": 30,
+      "offset": {"x": 0, "y": 0}
+    }
+  },
+  "light":  {
+    "key": "light",
+    "scale": 0.4,
+    "speed": 250,
+    "range": 1000,
+    "collider": {
+      "size": 20,
+      "offset": {"x": 0, "y": 0}
+    }
+  },
+  "ice":  {
+    "key": "ice",
+    "scale": 0.4,
+    "speed": 250,
+    "range": 1000,
+    "collider": {
+      "size": 20,
+      "offset": {"x": 0, "y": 0}
+    }
+  },
+  "rock":  {
+    "key": "rock",
+    "scale": 0.4,
+    "speed": 250,
+    "range": 1000,
+    "collider": {
+      "size": 20,
+      "offset": {"x": 0, "y": 0}
+    }
+  }
+}

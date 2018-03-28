@@ -85,7 +85,7 @@ export default class LoaderScene extends Phaser.Scene {
     //Load JSON files
     this.load.json('config', '../config.json');
     for(let json of assets.json){
-      this.load.json(json.key, json.path);
+      this.load.json(json.key, json.data);
     }
 
     // Hack to fix progress loaders

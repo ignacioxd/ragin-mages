@@ -87,7 +87,11 @@
   "json": [
     {
       "key": "characters",
-      "path": "./json/characters.json"
+      "data": "json/characters.json"
+    },
+    {
+      "key": "projectiles",
+      "data": "json/projectiles.json"
     }
   ]
 }
