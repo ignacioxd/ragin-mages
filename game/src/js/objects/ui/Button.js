@@ -1,11 +1,6 @@
 export default class Button extends Phaser.GameObjects.Text {
-  constructor(scene, x, y, text, options = {}) {
-    super(scene, x, y, text, {
-      fontSize: 30,
-      fontFamily: "'Fjalla One', sans-serif"
-    });
-
-    this.props = {
+  constructor(scene, x, y, text, options = {
+    //use array destructuring to pass default parameters to the child class.
       width: 400,
       disabled: false,
       fontColorNormal: '#d3d3d3',
@@ -13,9 +8,13 @@ export default class Button extends Phaser.GameObjects.Text {
       fontColorDisabled: '#333333',
       backgroundColorNormal: '#ffffff00',
       backgroundColorOver: '#ffffff55',
-      backgroundColorDisabled: '#00000000',
-      ...options
-    };
+      backgroundColorDisabled: '#00000000'
+
+    }){
+    super(scene, x, y, text, {
+      fontSize: 30,
+      fontFamily: "'Fjalla One', sans-serif"
+    });
 
     let padding = {left: 5, right: this.props.width - this.width, top: 0, bottom: 0};
 
