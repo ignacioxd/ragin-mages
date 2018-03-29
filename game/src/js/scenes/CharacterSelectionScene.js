@@ -61,13 +61,12 @@ export default class CharacterSelectionScene extends Phaser.Scene {
       this.showCharacter(btnData.key);
     });
     
-    let backToMenuButton = new Button(this, 450, 610, 'Return To Menu!');
-    backToMenuButton.props={
-    fontColorNormal: '#0000ff',
-    fontColorOver: '#458b74',
-    backgroundColorOver: '#ffffff55'
-    }
-    backToMenuButton.setFill(backToMenuButton.props.fontColorNormal);
+    let backToMenuButton = new Button(this, 450, 610, 'Return To Menu!',props={
+      backgroundColorOver: '#ffffff55',
+      fontColorNormal: '#0000ff',
+      setFill:'#0000ff',
+      fontColorOver: '#458b74',
+    });
     backToMenuButton.buttonDown(() => {
       this.scene.start('TitleScene');
     });
