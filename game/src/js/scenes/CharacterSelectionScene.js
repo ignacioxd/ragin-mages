@@ -61,7 +61,7 @@ export default class CharacterSelectionScene extends Phaser.Scene {
       this.showCharacter(btnData.key);
     });
     
-    let backToMenuButton = new Button(this, 450, 610, 'Return To Menu!',props={
+    let backToMenuButton = new Button(this, 450, 610, 'BACK',props={
       backgroundColorOver: '#ffffff55',
       fontColorNormal: '#0000ff',
       setFill:'#0000ff',
