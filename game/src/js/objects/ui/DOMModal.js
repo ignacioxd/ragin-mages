@@ -10,9 +10,9 @@ export default class DOMModal {
       closeOnBackdropClick: false,
       onAccept: () => {},
       onCancel: () => {},
+      data: {},
       ...opts
     };
-
     this.createWindow();
     
     fetch(`templates/${template}.html`)
@@ -63,7 +63,11 @@ export default class DOMModal {
         this.props.onCancel(this);
       });
     });
-  }
+    this.modal.querySelectorAll('div.data').forEach(element => {
+      element.innerHTML =  element.innerHTML.replace('[' + element.getAttribute('replaceField') + ']',  this.props.data[element.getAttribute('object')][element.getAttribute('property')]); 
+ 
+    });
+  } 
 
   // Hide/Show the dialog window
   close() {

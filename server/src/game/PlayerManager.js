@@ -73,10 +73,10 @@ export default class PlayerManager {
       socket.broadcast.emit('playerFired', socket.id, posX, posY, toX, toY);
     });
 
-    socket.on('death', (posX, posY) => {
+    socket.on('death', (posX, posY, killedById) => {
       socket.x = posX;
       socket.y = posY;
-      socket.broadcast.emit('playerDied', socket.id, posX, posY);
+      socket.broadcast.emit('playerDied', socket.id, posX, posY, killedById);
     });
 
     socket.on('respawn', () => {
