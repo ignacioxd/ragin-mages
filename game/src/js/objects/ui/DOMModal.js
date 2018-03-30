@@ -10,7 +10,7 @@ export default class DOMModal {
       closeOnBackdropClick: false,
       onAccept: () => {},
       onCancel: () => {},
-      data: {},
+      data: null,
       ...opts
     };
     this.createWindow();
@@ -52,7 +52,7 @@ export default class DOMModal {
   }
 
   populateWindow(html) {
-    this.modal.innerHTML=html;
+    this.modal.innerHTML = html;
     this.modal.querySelectorAll(this.props.acceptButtonSelector).forEach(element => {
       element.addEventListener('click', () => {
         this.props.onAccept(this);
@@ -63,10 +63,21 @@ export default class DOMModal {
         this.props.onCancel(this);
       });
     });
-    this.modal.querySelectorAll('div.data').forEach(element => {
-      element.innerHTML =  element.innerHTML.replace('[' + element.getAttribute('replaceField') + ']',  this.props.data[element.getAttribute('object')][element.getAttribute('property')]); 
- 
-    });
+    // Process data into HTML
+    if(this.props.data) {
+      const objResolve = function(rootObj, string) {
+        let value = rootObj;
+        let parts = string.split('.');
+        while(parts.length != 0) {
+          value = value[parts.shift()];
+        }
+        return value;
+      }
+      this.modal.querySelectorAll('*[data-value]').forEach(element => {
+        element.innerHTML = objResolve(this.props.data, element.getAttribute('data-value'));
+  
+      });
+    }
   } 
 
   // Hide/Show the dialog window
