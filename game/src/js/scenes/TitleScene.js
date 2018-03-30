@@ -41,6 +41,12 @@ export default class TitleScene extends Phaser.Scene {
     //controls, credits, offline mode buttons
     let settingsButton = new Button(this, 450, 350, 'SETTINGS');
     settingsButton.buttonDown(() => {
+      new DOMModal('settings', {
+        cancelButtonSelector: '.exit',
+        onCancel: (modal) => {
+          modal.close();
+        }
+      });
     });
   
     let creditsButton = new Button(this, 450, 400, 'CREDITS');
@@ -50,7 +56,6 @@ export default class TitleScene extends Phaser.Scene {
         cancelButtonSelector: '.exit',
         onCancel: (modal) => {
           modal.close();
-          this.scene.start('TitleScene');
         }
       });
 
