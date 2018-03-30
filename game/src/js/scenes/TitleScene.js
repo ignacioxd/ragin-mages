@@ -1,6 +1,7 @@
 import ServiceWorker from 'util/ServiceWorker';
 import Checkbox from 'objects/ui/Checkbox';
-import Button from 'objects/ui/Button'
+import Button from 'objects/ui/Button';
+import DOMModal from 'objects/ui/DOMModal';
 
 export default class TitleScene extends Phaser.Scene {
 
@@ -38,12 +39,26 @@ export default class TitleScene extends Phaser.Scene {
     });
 
     //controls, credits, offline mode buttons
-    let controlsButton = new Button(this, 450, 350, 'CONTROLS');
-    controlsButton.buttonDown(() => {
+    let settingsButton = new Button(this, 450, 350, 'SETTINGS');
+    settingsButton.buttonDown(() => {
+      new DOMModal('settings', {
+        cancelButtonSelector: '.exit',
+        onCancel: (modal) => {
+          modal.close();
+        }
+      });
     });
   
     let creditsButton = new Button(this, 450, 400, 'CREDITS');
     creditsButton.buttonDown(() => {
+
+      new DOMModal('credits', {
+        cancelButtonSelector: '.exit',
+        onCancel: (modal) => {
+          modal.close();
+        }
+      });
+
     });
 
     if(ServiceWorker.isSupported()) {
