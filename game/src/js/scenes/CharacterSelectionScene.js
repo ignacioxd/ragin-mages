@@ -1,6 +1,6 @@
 import Button from 'objects/ui/Button';
 import Controller from '../util/Controller';
-import Character from 'objects/characters/Character';
+import Character from 'objects/Character';
 
 export default class CharacterSelectionScene extends Phaser.Scene {
   constructor() {
@@ -24,7 +24,7 @@ export default class CharacterSelectionScene extends Phaser.Scene {
     logo.setStroke('#ae7f00', 16);
     let playerMode= this.gameType == 'single_player' ? 'single player mode' : 'multiplayer on-line battle mode';
     
-    this.add.text(450, 200, `Select your character for ${playerMode}` ,{
+    this.add.text(450, 200, `Select your character for ${playerMode}`, {
       fontSize: 30,
       fontFamily: "'Fjalla One', sans-serif",
       fill: '#ae7f00',
@@ -61,11 +61,9 @@ export default class CharacterSelectionScene extends Phaser.Scene {
       this.showCharacter(btnData.key);
     });
     
-    let backToMenuButton = new Button(this, 450, 610, 'BACK',{
-      backgroundColorOver: '#ffffff55',
-      fontColorNormal: '#0000ff',
-      setFill:'#0000ff',
-      fontColorOver: '#458b74',
+    let backToMenuButton = new Button(this, 450, 625, 'BACK', {
+      width: 250,
+      fontColorNormal: '#ffffff'
     });
     backToMenuButton.buttonDown(() => {
       this.scene.start('TitleScene');

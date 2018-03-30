@@ -1,8 +1,5 @@
 import BaseScene from './BaseScene';
-import FireMonster from 'objects/characters/FireMonster';
-import IceMonster from 'objects/characters/IceMonster';
-import SpiderMonster from 'objects/characters/SpiderMonster';
-import GolemMonster from 'objects/characters/GolemMonster';
+import Character from 'objects/Character';
 
 export default class DungeonScene extends BaseScene {
 
@@ -25,10 +22,10 @@ export default class DungeonScene extends BaseScene {
   create() {
     
 
-    this.fireMonster = new FireMonster(this, -100, 0);
-    this.iceMonster = new IceMonster(this, 100, -100);
-    this.spiderMonster = new SpiderMonster(this, -300, 100);
-    this.golemMonster = new GolemMonster(this, -300, -100);
+    this.fireMonster = new Character(this, -100, 0, 'fire_monster');
+    this.iceMonster = new Character(this, 100, -100, 'ice_monster');
+    this.spiderMonster = new Character(this, -300, 100, 'spider_monster');
+    this.golemMonster = new Character(this, -300, -100, 'golem_monster');
 
     this.cameras.main.startFollow(this.fireMonster);
 

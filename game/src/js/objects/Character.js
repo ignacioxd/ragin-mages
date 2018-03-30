@@ -1,4 +1,4 @@
-import Projectile from '../Projectile';
+import Projectile from 'objects/Projectile';
 
 export default class Character extends Phaser.Physics.Arcade.Sprite {
   constructor(scene, x, y, key, options = {}) {

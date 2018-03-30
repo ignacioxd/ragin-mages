@@ -17,11 +17,10 @@ app.use((req, res, next) => {
   next();
 });
 
-new PlayerManager(socketio);
-
-
 server.listen(3030, function() {
   console.log('Server listening on *:3030 (e.g., http://localhost:3030)');
 });
 
 socketio.listen(server);
+
+new PlayerManager(socketio);

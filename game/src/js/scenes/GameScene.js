@@ -1,6 +1,6 @@
 import BaseScene from './BaseScene';
 import Controller from '../util/Controller';
-import Character from 'objects/characters/Character';
+import Character from 'objects/Character';
 import DOMModal from 'objects/ui/DOMModal';
 
 export default class GameScene extends BaseScene {
