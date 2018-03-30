@@ -12,6 +12,38 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
       ...options
     };
     
+    /*
+    This was an attempt to have accuracy and timeAlive as calculated properties
+    this worked when output immediately after creation
+    but didn't work when passed into DOMModal
+    when passed in I would get "cannot access kills on undefined"
+    so it seems to be a scope/this issue, but not sure how to solve
+
+    var stats={
+      kills :0,
+      shots: 0,
+      accuracy2() {return this.shots>0 ? Math.round(this.kills/this.shots * 100 * 100) / 100 : 0},
+      accuracy:0,
+      timeBorn: Date.now(),
+      timeAlive2() {return Math.round((Date.now() - this.timeBorn) / 1000 * 10)/10},
+      timeAlive:0,
+      HighestRanking: 'Coming Soon',
+      HitsReceived: 0
+    };
+    this.stats=stats;
+    console.log(this.stats.accuracy2); // outputs function definition
+    console.log(this.stats.accurracy2()) //outputs numeric value
+  */
+    this.stats = {
+      kills :0,
+      shots: 0,
+      accuracy:0,
+      timeBorn: Date.now(),
+      timeAlive:0,
+      HighestRanking: 'Coming Soon',
+      HitsReceived: 0
+    };
+
     scene.physics.world.enable(this);
     
     //make the physics body a circle instead of box
@@ -58,19 +90,23 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
     
   }
 
-  fire(targetX, targetY) {
+  fire(targetX, targetY,id) {
     if(this.isDead || this.isFiring) return;
+    this.stats.shots ++;
     this.setAnimation('fight', this.props.orientation);
     this.isFiring = true;
     this.setVelocity(0, 0);
     let fireFromX = this.x + this.props.projectile.fireOffset.x * this.props.scale;
     let fireFromY = this.y + this.props.projectile.fireOffset.y * this.props.scale;
-    let projectile = new Projectile(this.scene, fireFromX, fireFromY, this.props.projectile.type, targetX, targetY, {range: this.props.projectile.baseRange});
+    let projectile = new Projectile(this.scene, fireFromX, fireFromY, this.props.projectile.type, targetX, targetY, {range: this.props.projectile.baseRange,id: id});
     return projectile;
   }
 
   die() {
     this.isDead = true;
+
+    this.stats.accuracy= this.stats.shots>0 ? Math.round(this.stats.kills/this.stats.shots * 100 * 100) / 100 : 0;
+    this.stats.timeAlive=Math.round((Date.now() - this.stats.timeBorn) / 1000 * 10)/10;
     this.setAnimation('death', this.props.orientation, true);
     this.setVelocity(0, 0);
   }
