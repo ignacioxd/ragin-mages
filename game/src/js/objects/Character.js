@@ -27,21 +27,22 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
       timeBorn: Date.now(),
       timeAlive2() {return Math.round((Date.now() - this.timeBorn) / 1000 * 10)/10},
       timeAlive:0,
-      HighestRanking: 'Coming Soon',
-      HitsReceived: 0
+      highestRanking: 'Coming Soon',
+      hitsReceived: 0
     };
     this.stats=stats;
     console.log(this.stats.accuracy2); // outputs function definition
     console.log(this.stats.accurracy2()) //outputs numeric value
   */
     this.stats = {
-      kills :0,
+      health: 1,
+      kills: 0,
       shots: 0,
-      accuracy:0,
+      accuracy: 0,
       timeBorn: Date.now(),
-      timeAlive:0,
-      HighestRanking: 'Coming Soon',
-      HitsReceived: 0
+      timeAlive: 0,
+      highestRanking: 'Coming Soon',
+      hitsReceived: 0
     };
 
     scene.physics.world.enable(this);
@@ -100,7 +101,7 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
       this.setAnimation(animation, this.props.orientation);
   }
 
-  fire(targetX, targetY,id) {
+  fire(targetX, targetY) {
     if(this.isDead || this.isFiring) return;
     this.stats.shots ++;
     this.setAnimation('fight', this.props.orientation);
@@ -108,15 +109,29 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
     this.setVelocity(0, 0);
     let fireFromX = this.x + this.props.projectile.fireOffset.x * this.props.scale;
     let fireFromY = this.y + this.props.projectile.fireOffset.y * this.props.scale;
-    let projectile = new Projectile(this.scene, fireFromX, fireFromY, this.props.projectile.type, targetX, targetY, {range: this.props.projectile.baseRange,id: id});
+    let projectile = new Projectile(this.scene, fireFromX, fireFromY, this.props.projectile.type, targetX, targetY, {owner: this, range: this.props.projectile.baseRange});
     return projectile;
+  }
+
+  /**
+   * Inflict damage to player caused by projectile. Returns true if this hit causes the player to die or false otherwise.
+   * @param {Projectile} projectile 
+   */
+  hit(projectile) {
+    this.stats.hitsReceived++;
+    this.stats.health -= projectile.props.damage;
+
+    if(this.stats.health <= 0) {
+      this.die();
+      return true;
+    }
+    return false;
   }
 
   die() {
     this.isDead = true;
-
-    this.stats.accuracy= this.stats.shots>0 ? Math.round(this.stats.kills/this.stats.shots * 100 * 100) / 100 : 0;
-    this.stats.timeAlive=Math.round((Date.now() - this.stats.timeBorn) / 1000 * 10)/10;
+    this.stats.accuracy = this.stats.shots > 0 ? Math.round(this.stats.kills/this.stats.shots * 100 * 100) / 100 : 0;
+    this.stats.timeAlive = Math.round((Date.now() - this.stats.timeBorn) / 1000 * 10)/10;
     this.setAnimation('death', this.props.orientation, true);
     this.setVelocity(0, 0);
   }
