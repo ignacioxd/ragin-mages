@@ -70,7 +70,7 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
   motionChanged(vector) {
     return this.props.motionVector.x !== vector.x || this.props.motionVector.y !== vector.y;
   }
-  
+
   /**
    * Moves the character in the specified direction and animates it appropriately
    * @param {Vector2} vector Specifies the direction of motion
@@ -82,12 +82,22 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
     let animation = 'stance';
     if(vector.length() != 0) {
       animation = 'walk';
-      this.props.orientation = vector.y > 0 ? 'S' : (vector.y < 0 ? 'N' : '');
-      this.props.orientation += vector.x > 0  ? 'E' : (vector.x < 0  ? 'W' : '');
+      this.props.orientation = this.getOrientation();
     }
     
     this.setAnimation(animation, this.props.orientation);
-    
+  }
+
+  setPositionWithVector(vector) {
+      if(this.isDead || this.isFiring) return;
+      this.props.motionVector = vector;
+      let animation = 'stance';
+      if(vector.length() != 0) {
+          animation = 'walk';
+          this.props.orientation = this.getOrientation();
+      }
+
+      this.setAnimation(animation, this.props.orientation);
   }
 
   fire(targetX, targetY,id) {
@@ -160,5 +170,17 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
     else if(animation.key.includes('death')) {
       character.destroy();
     }
+  }
+
+  getOrientation() {
+    const vector = this.props.motionVector;
+    return  (vector.y > 0 ? 'S' : (vector.y < 0 ? 'N' : '')) +
+        (vector.x > 0  ? 'E' : (vector.x < 0  ? 'W' : ''));
+  }
+
+  isPositionDifferent(x, y, vector) {
+    return x !== this.x ||
+        y !== this.y ||
+        !vector.equals(this.props.motionVector);
   }
 }

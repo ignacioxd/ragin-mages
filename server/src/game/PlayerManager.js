@@ -59,11 +59,12 @@ export default class PlayerManager {
       socket.broadcast.emit('setMotion', socket.id, posX, posY, vecX, vecY);
     });
 
-    socket.on('setPosition', (x, y, orientation) => {
+    socket.on('setPosition', (x, y, vecX, vecY) => {
+      console.log(vecX, vecY);
       socket.x = x;
       socket.y = y;
-      socket.orientation = orientation;
-      socket.broadcast.emit('setPosition', socket.id, x, y, orientation);
+      socket.motionVector = {x: vecX, y: vecY};
+      socket.broadcast.emit('setPosition', socket.id, x, y, vecX, vecY);
     });
 
     
