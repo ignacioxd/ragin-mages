@@ -83,7 +83,7 @@ export default class GameScene extends BaseScene {
       }
 
       if (this.localCharacter.isPositionDifferent(vector) &&
-        Date.now() - this.localCharacter.lastEmitPosition >= 75) {
+        Date.now() - this.localCharacter.lastEmitPosition >= 200) {
         console.log('Changing position');
         this.localCharacter.lastPosition.x = this.localCharacter.x;
         this.localCharacter.lastPosition.y = this.localCharacter.y;
