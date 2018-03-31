@@ -45,6 +45,13 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
       hitsReceived: 0
     };
 
+    this.lastEmitPosition = Date.now();
+    this.lastPosition = {
+      x: 0,
+      y: 0,
+      vector: null
+    };
+
     scene.physics.world.enable(this);
 
     //make the physics body a circle instead of box
@@ -196,9 +203,9 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
       (vector.x > 0 ? 'E' : (vector.x < 0 ? 'W' : ''));
   }
 
-  isPositionDifferent(x, y, vector) {
-    return x !== this.x ||
-      y !== this.y ||
-      !vector.equals(this.props.motionVector);
+  isPositionDifferent(vector) {
+    return this.lastPosition.x !== this.x ||
+      this.lastPosition.y !== this.y ||
+      !vector.equals(this.lastPosition.vector);
   }
 }

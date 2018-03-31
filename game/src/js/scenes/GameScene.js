@@ -11,12 +11,6 @@ export default class GameScene extends BaseScene {
 
     this.players = new Map();
     this.localCharacter = null;
-    this.lastEmitPosition = Date.now();
-    this.lastPosition = {
-      x: 0,
-      y: 0,
-      vector: null
-    }
   }
 
   init(data) {
@@ -88,13 +82,13 @@ export default class GameScene extends BaseScene {
         this.localCharacter.setMotion(vector);
       }
 
-      if (this.localCharacter.isPositionDifferent(this.lastPosition.x, this.lastPosition.y, vector) &&
-        Date.now() - this.lastEmitPosition >= 75) {
+      if (this.localCharacter.isPositionDifferent(vector) &&
+        Date.now() - this.localCharacter.lastEmitPosition >= 75) {
         console.log('Changing position');
-        this.lastPosition.x = this.localCharacter.x;
-        this.lastPosition.y = this.localCharacter.y;
-        this.vector = vector;
-        this.lastEmitPosition = Date.now();
+        this.localCharacter.lastPosition.x = this.localCharacter.x;
+        this.localCharacter.lastPosition.y = this.localCharacter.y;
+        this.localCharacter.lastPosition.vector = vector;
+        this.localCharacter.lastEmitPosition = Date.now();
         this.socket.emit('move', this.localCharacter.x, this.localCharacter.y, vector.x, vector.y);
       }
     }
