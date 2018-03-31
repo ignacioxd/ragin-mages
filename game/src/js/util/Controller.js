@@ -36,6 +36,4 @@ export default class Controller {
 
     return new Phaser.Math.Vector2(x, y).normalize();
   }
-
-
 }

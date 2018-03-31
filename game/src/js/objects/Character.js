@@ -3,15 +3,15 @@ import Projectile from 'objects/Projectile';
 export default class Character extends Phaser.Physics.Arcade.Sprite {
   constructor(scene, x, y, key, options = {}) {
     super(scene, x, y, key);
-    
+
     //pull specific character config information from characters.json
-    this.props= {
+    this.props = {
       type: key,
       motionVector: new Phaser.Math.Vector2(0, 0),
       ...scene.cache.json.get('characters')[key],
       ...options
     };
-    
+
     /*
     This was an attempt to have accuracy and timeAlive as calculated properties
     this worked when output immediately after creation
@@ -45,8 +45,15 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
       hitsReceived: 0
     };
 
+    this.lastEmitPosition = Date.now();
+    this.lastPosition = {
+      x: 0,
+      y: 0,
+      vector: null
+    };
+
     scene.physics.world.enable(this);
-    
+
     //make the physics body a circle instead of box
     this.body.isCircle = true;
     //set the size based on the constructor parameter set from the scene constructor
@@ -62,7 +69,7 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
   }
 
   setAnimation(animation, orientation, force = false) {
-    if(!force && (this.isDead || this.isFiring)) return;
+    if (!force && (this.isDead || this.isFiring)) return;
     orientation = orientation ? orientation : this.props.orientation;
     this.props.orientation = orientation;
     this.anims.play(`${this.props.type}-${animation}-${orientation}`, true);
@@ -71,47 +78,60 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
   motionChanged(vector) {
     return this.props.motionVector.x !== vector.x || this.props.motionVector.y !== vector.y;
   }
-  
+
   /**
    * Moves the character in the specified direction and animates it appropriately
    * @param {Vector2} vector Specifies the direction of motion
    */
   setMotion(vector) {
-    if(this.isDead || this.isFiring) return;
+    if (this.isDead || this.isFiring) return;
     this.props.motionVector = vector;
     this.setVelocity(vector.x * this.props.baseSpeed, vector.y * this.props.baseSpeed);
     let animation = 'stance';
-    if(vector.length() != 0) {
+    if (vector.length() != 0) {
       animation = 'walk';
-      this.props.orientation = vector.y > 0 ? 'S' : (vector.y < 0 ? 'N' : '');
-      this.props.orientation += vector.x > 0  ? 'E' : (vector.x < 0  ? 'W' : '');
+      this.props.orientation = this.getOrientation();
     }
-    
+
     this.setAnimation(animation, this.props.orientation);
-    
+  }
+
+  setOrientationState(vector) {
+    if (this.isDead || this.isFiring) return;
+    this.props.motionVector = vector;
+    let animation = 'stance';
+    if (vector.length() != 0) {
+      animation = 'walk';
+      this.props.orientation = this.getOrientation();
+    }
+
+    this.setAnimation(animation, this.props.orientation);
   }
 
   fire(targetX, targetY) {
-    if(this.isDead || this.isFiring) return;
-    this.stats.shots ++;
+    if (this.isDead || this.isFiring) return;
+    this.stats.shots++;
     this.setAnimation('fight', this.props.orientation);
     this.isFiring = true;
     this.setVelocity(0, 0);
     let fireFromX = this.x + this.props.projectile.fireOffset.x * this.props.scale;
     let fireFromY = this.y + this.props.projectile.fireOffset.y * this.props.scale;
-    let projectile = new Projectile(this.scene, fireFromX, fireFromY, this.props.projectile.type, targetX, targetY, {owner: this, range: this.props.projectile.baseRange});
+    let projectile = new Projectile(this.scene, fireFromX, fireFromY, this.props.projectile.type, targetX, targetY, {
+      owner: this,
+      range: this.props.projectile.baseRange
+    });
     return projectile;
   }
 
   /**
    * Inflict damage to player caused by projectile. Returns true if this hit causes the player to die or false otherwise.
-   * @param {Projectile} projectile 
+   * @param {Projectile} projectile
    */
   hit(projectile) {
     this.stats.hitsReceived++;
     this.stats.health -= projectile.props.damage;
 
-    if(this.stats.health <= 0) {
+    if (this.stats.health <= 0) {
       this.die();
       return true;
     }
@@ -120,14 +140,14 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
 
   die() {
     this.isDead = true;
-    this.stats.accuracy = this.stats.shots > 0 ? Math.round(this.stats.kills/this.stats.shots * 100 * 100) / 100 : 0;
-    this.stats.timeAlive = Math.round((Date.now() - this.stats.timeBorn) / 1000 * 10)/10;
+    this.stats.accuracy = this.stats.shots > 0 ? Math.round(this.stats.kills / this.stats.shots * 100 * 100) / 100 : 0;
+    this.stats.timeAlive = Math.round((Date.now() - this.stats.timeBorn) / 1000 * 10) / 10;
     this.setAnimation('death', this.props.orientation, true);
     this.setVelocity(0, 0);
   }
 
   static buildAnimations(scene) {
-    if(!this.animationsCreated) {
+    if (!this.animationsCreated) {
       const characterTypes = ['fire_monster', 'golem_monster', 'ice_monster', 'knight_hero', 'mage_hero', 'priest_hero', 'spider_monster'];
       const coordinates = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'];
       const animations = [
@@ -145,9 +165,9 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
         },
       ];
 
-      for(const characterType of characterTypes) {
-        for(const animation of animations) {
-          for(const coordinate of coordinates) {
+      for (const characterType of characterTypes) {
+        for (const animation of animations) {
+          for (const coordinate of coordinates) {
             let animFrames = scene.anims.generateFrameNames(characterType, {
               start: 1, end: animation.frames, zeroPad: 4,
               prefix: `${animation.name}/${coordinate}/`, suffix: ''
@@ -168,12 +188,24 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
   }
 
   static animationLoop(character, animation) {
-    if(animation.key.includes('fight')) {
+    if (animation.key.includes('fight')) {
       character.isFiring = false;
       character.setAnimation('stance', character.orientation);
     }
-    else if(animation.key.includes('death')) {
+    else if (animation.key.includes('death')) {
       character.destroy();
     }
+  }
+
+  getOrientation() {
+    const vector = this.props.motionVector;
+    return (vector.y > 0 ? 'S' : (vector.y < 0 ? 'N' : '')) +
+      (vector.x > 0 ? 'E' : (vector.x < 0 ? 'W' : ''));
+  }
+
+  isMotionStateDifferent(vector) {
+    return this.lastPosition.x !== this.x ||
+      this.lastPosition.y !== this.y ||
+      !vector.equals(this.lastPosition.vector);
   }
 }
