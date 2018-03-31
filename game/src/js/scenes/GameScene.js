@@ -82,7 +82,7 @@ export default class GameScene extends BaseScene {
         this.localCharacter.setMotion(vector);
       }
 
-      if (this.localCharacter.isPositionDifferent(vector) &&
+      if (this.localCharacter.isMotionStateDifferent(vector) &&
         Date.now() - this.localCharacter.lastEmitPosition >= 200) {
         console.log('Changing position');
         this.localCharacter.lastPosition.x = this.localCharacter.x;

@@ -203,7 +203,7 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
       (vector.x > 0 ? 'E' : (vector.x < 0 ? 'W' : ''));
   }
 
-  isPositionDifferent(vector) {
+  isMotionStateDifferent(vector) {
     return this.lastPosition.x !== this.x ||
       this.lastPosition.y !== this.y ||
       !vector.equals(this.lastPosition.vector);
