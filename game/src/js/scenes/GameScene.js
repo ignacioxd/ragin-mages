@@ -167,7 +167,7 @@ export default class GameScene extends BaseScene {
     let player = this.players.get(id);
     if (!player) return;
     player.setPosition(x, y);
-    player.setPositionWithVector(new Phaser.Math.Vector2(vecX, vecY));
+    player.setOrientationState(new Phaser.Math.Vector2(vecX, vecY));
   }
 
   playerFired(id, fromX, fromY, toX, toY) {

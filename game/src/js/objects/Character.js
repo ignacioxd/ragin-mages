@@ -96,7 +96,7 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
     this.setAnimation(animation, this.props.orientation);
   }
 
-  setPositionWithVector(vector) {
+  setOrientationState(vector) {
     if (this.isDead || this.isFiring) return;
     this.props.motionVector = vector;
     let animation = 'stance';
