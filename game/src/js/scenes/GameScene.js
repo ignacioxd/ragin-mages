@@ -27,7 +27,7 @@ export default class GameScene extends BaseScene {
 
     this.controller = new Controller(this);
     this.input.keyboard.on('keydown_ESC', function () {
-      if (this.sys.isActive()) this.sys.pause();
+      if(this.sys.isActive()) this.sys.pause();
       else this.sys.resume();
     }, this);
 
@@ -66,10 +66,10 @@ export default class GameScene extends BaseScene {
     this.socket.on('connect', this.serverConnected.bind(this));
     this.socket.on('setId', this.setId.bind(this));
     this.socket.on('existingPlayers', this.existingPlayers.bind(this));
+    this.socket.on('spawn', this.spawn.bind(this));
     this.socket.on('playerJoined', this.playerJoined.bind(this));
     this.socket.on('playerLeft', this.playerLeft.bind(this));
-    this.socket.on('spawn', this.spawn.bind(this));
-    this.socket.on('setMotion', this.setMotion.bind(this));
+    this.socket.on('playerMoved', this.playerMoved.bind(this));
     this.socket.on('playerFired', this.playerFired.bind(this));
     this.socket.on('playerDied', this.playerDied.bind(this));
     this.socket.on('playerDisconnected', this.playerDisconnected.bind(this));
@@ -156,11 +156,11 @@ export default class GameScene extends BaseScene {
     player.die();
   }
 
-  setMotion(id, posX, posY, vecX, vecY) {
-    console.log('setMotion');
+  playerMoved(id, x, y, vecX, vecY) {
+    console.log('playerMoved');
     let player = this.players.get(id);
     if(!player) return;
-    player.setPosition(posX, posY);
+    player.setPosition(x, y);
     player.setMotion(new Phaser.Math.Vector2(vecX, vecY));
   }
 
@@ -176,7 +176,7 @@ export default class GameScene extends BaseScene {
 
   playerDied(id, posX, posY, killedById) {
     if(killedById == this.clientId) {
-      this.localCharacter.stats.kills ++; 
+      this.localCharacter.stats.kills++; 
     }
     console.log('playerDied');
     let player = this.players.get(id);
