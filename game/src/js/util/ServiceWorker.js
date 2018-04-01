@@ -9,16 +9,16 @@ export default class ServiceWorker {
 
     navigator.serviceWorker.register('/sw.js', { scope: '/' })
       .then(reg => {
-        if (!navigator.serviceWorker.controller) {
+        if(!navigator.serviceWorker.controller) {
           return;
         }
 
-        if (reg.waiting) {
+        if(reg.waiting) {
           this.updateReady(reg.waiting);
           return;
         }
 
-        if (reg.installing) {
+        if(reg.installing) {
           this.trackInstalling(reg.installing);
           return;
         }
@@ -31,7 +31,7 @@ export default class ServiceWorker {
 
   updateReady(worker) {
     const shouldUpdate = confirm('Game update available! Reload?');
-    if (shouldUpdate) {
+    if(shouldUpdate) {
       worker.postMessage({ action: 'skipWaiting' });
       return;
     }
@@ -39,12 +39,12 @@ export default class ServiceWorker {
 
   trackInstalling(worker) {
     worker.addEventListener('statechange', () => {
-      if (worker.state === 'installed') {
+      if(worker.state === 'installed') {
         this.updateReady(worker);
       }
 
-      if (worker.state === 'activated') {
-        if (this.refreshing) return;
+      if(worker.state === 'activated') {
+        if(this.refreshing) return;
         window.location.reload();
         this.refreshing = true;
       }

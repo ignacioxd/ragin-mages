@@ -44,28 +44,28 @@ export default class DungeonScene extends BaseScene {
   update() {
     let direction = null;
     let animation = 'walk';
-    if (this.cursors.up.isDown) {
+    if(this.cursors.up.isDown) {
       direction = 'N';
-      if (this.cursors.left.isDown) { //NW
+      if(this.cursors.left.isDown) { //NW
         direction += 'W';
       }
-      else if (this.cursors.right.isDown) { //NE
+      else if(this.cursors.right.isDown) { //NE
         direction += 'E';
       }
     }
-    else if (this.cursors.down.isDown) {
+    else if(this.cursors.down.isDown) {
       direction = 'S';
-      if (this.cursors.left.isDown) { //NW
+      if(this.cursors.left.isDown) { //NW
         direction += 'W';
       }
-      else if (this.cursors.right.isDown) { //NE
+      else if(this.cursors.right.isDown) { //NE
         direction += 'E';
       }
     }
-    else if (this.cursors.left.isDown) { //W
+    else if(this.cursors.left.isDown) { //W
       direction = 'W';
     }
-    else if (this.cursors.right.isDown) { //E
+    else if(this.cursors.right.isDown) { //E
       direction = 'E';
     }
     else {

@@ -29,7 +29,7 @@ export default class Button extends Phaser.GameObjects.Text {
     this.setDisabled(this.props.disabled);
 
     this.on('pointerover', () => {
-      if (!this.props.disabled) {
+      if(!this.props.disabled) {
         this.setFill(this.props.fontColorOver);
         this.setBackgroundColor(this.props.backgroundColorOver);
         
@@ -39,7 +39,7 @@ export default class Button extends Phaser.GameObjects.Text {
     });
 
     this.on('pointerout', () => {
-      if (!this.props.disabled) {
+      if(!this.props.disabled) {
         this.setFill(this.props.fontColorNormal);
         this.setBackgroundColor(this.props.backgroundColorNormal);
         this.setStroke('#000000', 6);
@@ -52,7 +52,7 @@ export default class Button extends Phaser.GameObjects.Text {
 
   buttonDown(handler) {
     this.on('pointerdown', () => {
-      if (!this.props.disabled) handler(this);
+      if(!this.props.disabled) handler(this);
     })
   }
 

@@ -39,13 +39,13 @@ self.addEventListener('activate', e => {
 self.addEventListener('fetch', e => {
   const requestUrl = new URL(e.request.url);
 
-  if (requestUrl.origin === location.origin) {
-    if (requestUrl.pathname === '/') {
+  if(requestUrl.origin === location.origin) {
+    if(requestUrl.pathname === '/') {
       e.respondWith(caches.match('/index.html'));
       return;
     }
   }
-  if (requestUrl.pathname.startsWith('/assets/')) {
+  if(requestUrl.pathname.startsWith('/assets/')) {
     e.respondWith(fetchAsset(e.request));
     return;
   }
@@ -56,7 +56,7 @@ self.addEventListener('fetch', e => {
 });
 
 self.addEventListener('message', e => {
-  if (e.data.action === 'skipWaiting') {
+  if(e.data.action === 'skipWaiting') {
     self.skipWaiting();
   }
 });

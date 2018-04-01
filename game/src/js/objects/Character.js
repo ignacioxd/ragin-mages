@@ -5,7 +5,7 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
     super(scene, x, y, key);
     
     //pull specific character config information from characters.json
-    this.props= {
+    this.props = {
       type: key,
       motionVector: new Phaser.Math.Vector2(0, 0),
       ...scene.cache.json.get('characters')[key],
@@ -45,6 +45,13 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
       hitsReceived: 0
     };
 
+    this.lastPosition = {
+      x: x,
+      y: y,
+      vector: this.props.motionVector,
+      emittedOn: Date.now()
+    };
+
     scene.physics.world.enable(this);
     
     //make the physics body a circle instead of box
@@ -68,18 +75,20 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
     this.anims.play(`${this.props.type}-${animation}-${orientation}`, true);
   }
 
-  motionChanged(vector) {
+  /*motionChanged(vector) {
     return this.props.motionVector.x !== vector.x || this.props.motionVector.y !== vector.y;
-  }
+  }*/
   
   /**
    * Moves the character in the specified direction and animates it appropriately
    * @param {Vector2} vector Specifies the direction of motion
    */
-  setMotion(vector) {
+  setMotion(vector, move = true) {
     if(this.isDead || this.isFiring) return;
     this.props.motionVector = vector;
-    this.setVelocity(vector.x * this.props.baseSpeed, vector.y * this.props.baseSpeed);
+    if(move) {
+      this.setVelocity(vector.x * this.props.baseSpeed, vector.y * this.props.baseSpeed);
+    }
     let animation = 'stance';
     if(vector.length() != 0) {
       animation = 'walk';
@@ -124,6 +133,19 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
     this.stats.timeAlive = Math.round((Date.now() - this.stats.timeBorn) / 1000 * 10)/10;
     this.setAnimation('death', this.props.orientation, true);
     this.setVelocity(0, 0);
+  }
+
+  shouldBroadcastMotion() {
+    const positionChanged = this.lastPosition.x !== this.x || this.lastPosition.y !== this.y;
+    const vectorChanged = !this.props.motionVector.equals(this.lastPosition.vector);
+    if((positionChanged && (Date.now() - this.lastPosition.emittedOn) >= 75) || vectorChanged) {
+      this.lastPosition.x = this.x;
+      this.lastPosition.y = this.y;
+      this.lastPosition.vector = this.props.motionVector;
+      this.lastPosition.emittedOn = Date.now();
+      return true;
+    }
+    return false;
   }
 
   static buildAnimations(scene) {

@@ -12,7 +12,7 @@ export default class DialogScene extends Phaser.Scene {
   }
 
   setDialogText(text) {
-    if (!this.sampleDialog.visible) this.sampleDialog.toggleWindow();
+    if(!this.sampleDialog.visible) this.sampleDialog.toggleWindow();
     this.sampleDialog.setText(text, true);
   }
 }

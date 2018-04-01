@@ -78,9 +78,9 @@ export default class GameScene extends BaseScene {
   update() {
     if(this.localCharacter) {
       const vector = this.controller.getWASDVector();
-      if(this.localCharacter.motionChanged(vector)) {
+      this.localCharacter.setMotion(vector);
+      if(this.localCharacter.shouldBroadcastMotion()) {
         console.log('motion changed locally');
-        this.localCharacter.setMotion(vector);
         this.socket.emit('move', this.localCharacter.x, this.localCharacter.y, vector.x, vector.y);
       }
     }
@@ -160,10 +160,18 @@ export default class GameScene extends BaseScene {
     console.log('playerMoved');
     let player = this.players.get(id);
     if(!player) return;
-    player.setPosition(x, y);
-    player.setMotion(new Phaser.Math.Vector2(vecX, vecY));
-  }
+    this.tweens.killTweensOf(player);
+    this.tweens.add({
+      targets: player,
+      x: x,
+      y: y,
+      duration: 75,
+      ease: 'Linear'
+    });
 
+    //player.setPosition(x, y);
+    player.setMotion(new Phaser.Math.Vector2(vecX, vecY), false);
+  }
 
   playerFired(id, fromX, fromY, toX, toY) {
     console.log('playerFired');
@@ -174,20 +182,23 @@ export default class GameScene extends BaseScene {
     this.projectiles.add(projectile);
   }
 
-  playerDied(id, posX, posY, killedById) {
+  playerDied(id, x, y, killedById) {
     if(killedById == this.clientId) {
       this.localCharacter.stats.kills++; 
     }
     console.log('playerDied');
     let player = this.players.get(id);
     if(!player) return;
-    player.setPosition(posX, posY);
+    this.tweens.killTweensOf(player);
+    player.setPosition(x, y);
     player.die();
   }
 
   playerDisconnected(id) {
+    this.tweens.killTweensOf(player);
     let player = this.players.get(id);
     if(!player) return;
+    this.tweens.killTweensOf(player);
     this.characters.remove(player);
     this.players.delete(id);
     player.die();
