@@ -1,5 +1,5 @@
 /* global Promise */
-const RM_CACHE = 'raginmagin-cache-v4';
+const RM_CACHE = 'raginmages-cache-v4';
 
 self.addEventListener('install', e => {
   e.waitUntil(
@@ -10,8 +10,8 @@ self.addEventListener('install', e => {
           return response.json();
         }).catch(function(err) {
           console.log('fetch:', err);
-        }).then(function(files) {
-          cache.addAll(files.cache);
+        }).then(function(assetManifest) {
+          cache.addAll(assetManifest.cache);
         }).catch(function(err) {
           console.log('cache files:', err);
         });
@@ -23,7 +23,7 @@ self.addEventListener('activate', e => {
   e.waitUntil(
     caches.keys().then(cacheNames =>
       Promise.all(cacheNames
-        .filter(n => n.startsWith('raginmagin-') && !RM_CACHE)
+        .filter(n => n.startsWith('raginmages-') && !RM_CACHE)
         .map(n => caches.delete(n))
       )
     )
@@ -56,7 +56,7 @@ self.addEventListener('message', e => {
   if(e.data.action === 'deleteCache') {
     caches.keys().then(cacheNames =>
       Promise.all(cacheNames
-        .filter(n => n.startsWith('raginmagin-'))
+        .filter(n => n.startsWith('raginmages-'))
         .map(n => caches.delete(n))
       )
     )
