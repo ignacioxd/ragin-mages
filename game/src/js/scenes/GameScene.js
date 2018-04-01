@@ -27,7 +27,7 @@ export default class GameScene extends BaseScene {
 
     this.controller = new Controller(this);
     this.input.keyboard.on('keydown_ESC', function () {
-      if (this.sys.isActive()) this.sys.pause();
+      if(this.sys.isActive()) this.sys.pause();
       else this.sys.resume();
     }, this);
 
@@ -45,7 +45,7 @@ export default class GameScene extends BaseScene {
     }, this);
 
     this.input.on('pointerdown', function (event) {
-      if (this.localCharacter && event.buttons === 1) {
+      if(this.localCharacter && event.buttons === 1) {
         let worldX = event.x + event.camera.scrollX * event.camera.zoom;
         let worldY = event.y + event.camera.scrollY * event.camera.zoom;
         this.localCharacter.fire(worldX, worldY, this.clientId);
@@ -66,29 +66,22 @@ export default class GameScene extends BaseScene {
     this.socket.on('connect', this.serverConnected.bind(this));
     this.socket.on('setId', this.setId.bind(this));
     this.socket.on('existingPlayers', this.existingPlayers.bind(this));
+    this.socket.on('spawn', this.spawn.bind(this));
     this.socket.on('playerJoined', this.playerJoined.bind(this));
     this.socket.on('playerLeft', this.playerLeft.bind(this));
-    this.socket.on('spawn', this.spawn.bind(this));
-    this.socket.on('move', this.move.bind(this));
+    this.socket.on('playerMoved', this.playerMoved.bind(this));
     this.socket.on('playerFired', this.playerFired.bind(this));
     this.socket.on('playerDied', this.playerDied.bind(this));
     this.socket.on('playerDisconnected', this.playerDisconnected.bind(this));
   }
 
   update() {
-    if (this.localCharacter) {
+    if(this.localCharacter) {
       const vector = this.controller.getWASDVector();
-      if (this.localCharacter.motionChanged(vector)) {
-        this.localCharacter.setMotion(vector);
-      }
+      this.localCharacter.move(vector);
 
-      if (this.localCharacter.isMotionStateDifferent(vector) &&
-        Date.now() - this.localCharacter.lastEmitPosition >= 100) {
+      if(this.localCharacter.shouldBroadcastMotion()) {
         console.log('Changing position');
-        this.localCharacter.lastPosition.x = this.localCharacter.x;
-        this.localCharacter.lastPosition.y = this.localCharacter.y;
-        this.localCharacter.lastPosition.vector = vector;
-        this.localCharacter.lastEmitPosition = Date.now();
         this.socket.emit('move', this.localCharacter.x, this.localCharacter.y, vector.x, vector.y);
       }
     }
@@ -96,7 +89,7 @@ export default class GameScene extends BaseScene {
 
   playerHit(projectile, character) {
     projectile.destroy();
-    if (character.hit(projectile)) { //If the hit causes the player to die
+    if(character.hit(projectile)) { //If the hit causes the player to die
       this.socket.emit('die', character.x, character.y, projectile.props.owner.id);
       new DOMModal('killed', {
         acceptButtonSelector: '#respawn',
@@ -144,55 +137,50 @@ export default class GameScene extends BaseScene {
   playerJoined(id, character, handle, x, y) {
     character = character == 'priest' ? 'priest_hero' : character; //Temp fix for compatibility with old clients
     console.log('playerJoined');
-    if (this.clientId !== id) {
-      let remotePlayer = new Character(this, x, y, character);
-      this.players.set(id, remotePlayer);
-      remotePlayer.id = id;
-      //remotePlayer.setHandle(handle);
-    }
-    else {
-      console.log('this should never happen!!!!!');
-    }
+    let remotePlayer = new Character(this, x, y, character);
+    this.players.set(id, remotePlayer);
+    remotePlayer.id = id;
+    //remotePlayer.setHandle(handle);
   }
 
   playerLeft(id) {
     console.log('playerLeft');
     let player = this.players.get(id);
-    if (!player) return;
+    if(!player) return;
     player.die();
   }
 
-  move(id, x, y, vecX, vecY) {
-    console.log('move');
+  playerMoved(id, x, y, vecX, vecY) {
+    console.log('playerMoved');
     let player = this.players.get(id);
-    if (!player) return;
+    if(!player) return;
     player.setPosition(x, y);
-    player.setOrientationState(new Phaser.Math.Vector2(vecX, vecY));
+    player.setMotion(new Phaser.Math.Vector2(vecX, vecY));
   }
 
   playerFired(id, fromX, fromY, toX, toY) {
     console.log('playerFired');
     let player = this.players.get(id);
-    if (!player) return;
+    if(!player) return;
     player.setPosition(fromX, fromY);
     let projectile = player.fire(toX, toY);
     this.projectiles.add(projectile);
   }
 
   playerDied(id, posX, posY, killedById) {
-    if (killedById == this.clientId) {
+    if(killedById == this.clientId) {
       this.localCharacter.stats.kills++;
     }
     console.log('playerDied');
     let player = this.players.get(id);
-    if (!player) return;
+    if(!player) return;
     player.setPosition(posX, posY);
     player.die();
   }
 
   playerDisconnected(id) {
     let player = this.players.get(id);
-    if (!player) return;
+    if(!player) return;
     this.characters.remove(player);
     this.players.delete(id);
     player.die();

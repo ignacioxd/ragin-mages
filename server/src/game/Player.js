@@ -71,7 +71,7 @@ export default class Player {
     this.position.x = posX;
     this.position.y = posY;
     this.position.motionVector = {x: vecX, y: vecY};
-    this.socket.to('game').emit('move', this.id, posX, posY, vecX, vecY);
+    this.socket.to('game').emit('playerMoved', this.id, posX, posY, vecX, vecY);
   }
 
   fire(posX, posY, toX, toY) {

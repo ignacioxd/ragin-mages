@@ -45,11 +45,11 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
       hitsReceived: 0
     };
 
-    this.lastEmitPosition = Date.now();
     this.lastPosition = {
       x: 0,
       y: 0,
-      vector: null
+      vector: null,
+      emittedOn: Date.now()
     };
 
     scene.physics.world.enable(this);
@@ -69,47 +69,35 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
   }
 
   setAnimation(animation, orientation, force = false) {
-    if (!force && (this.isDead || this.isFiring)) return;
+    if(!force && (this.isDead || this.isFiring)) return;
     orientation = orientation ? orientation : this.props.orientation;
     this.props.orientation = orientation;
     this.anims.play(`${this.props.type}-${animation}-${orientation}`, true);
-  }
-
-  motionChanged(vector) {
-    return this.props.motionVector.x !== vector.x || this.props.motionVector.y !== vector.y;
   }
 
   /**
    * Moves the character in the specified direction and animates it appropriately
    * @param {Vector2} vector Specifies the direction of motion
    */
-  setMotion(vector) {
-    if (this.isDead || this.isFiring) return;
-    this.props.motionVector = vector;
+  move(vector) {
+    if(this.isDead || this.isFiring) return;
+    this.setMotion(vector);
     this.setVelocity(vector.x * this.props.baseSpeed, vector.y * this.props.baseSpeed);
-    let animation = 'stance';
-    if (vector.length() != 0) {
-      animation = 'walk';
-      this.props.orientation = this.getOrientation();
-    }
-
-    this.setAnimation(animation, this.props.orientation);
   }
 
-  setOrientationState(vector) {
-    if (this.isDead || this.isFiring) return;
+  setMotion(vector) {
+    if(this.isDead || this.isFiring) return;
     this.props.motionVector = vector;
     let animation = 'stance';
-    if (vector.length() != 0) {
+    if(vector.length() != 0) {
       animation = 'walk';
       this.props.orientation = this.getOrientation();
     }
-
     this.setAnimation(animation, this.props.orientation);
   }
 
   fire(targetX, targetY) {
-    if (this.isDead || this.isFiring) return;
+    if(this.isDead || this.isFiring) return;
     this.stats.shots++;
     this.setAnimation('fight', this.props.orientation);
     this.isFiring = true;
@@ -131,7 +119,7 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
     this.stats.hitsReceived++;
     this.stats.health -= projectile.props.damage;
 
-    if (this.stats.health <= 0) {
+    if(this.stats.health <= 0) {
       this.die();
       return true;
     }
@@ -147,7 +135,7 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
   }
 
   static buildAnimations(scene) {
-    if (!this.animationsCreated) {
+    if(!this.animationsCreated) {
       const characterTypes = ['fire_monster', 'golem_monster', 'ice_monster', 'knight_hero', 'mage_hero', 'priest_hero', 'spider_monster'];
       const coordinates = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'];
       const animations = [
@@ -188,11 +176,11 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
   }
 
   static animationLoop(character, animation) {
-    if (animation.key.includes('fight')) {
+    if(animation.key.includes('fight')) {
       character.isFiring = false;
       character.setAnimation('stance', character.orientation);
     }
-    else if (animation.key.includes('death')) {
+    else if(animation.key.includes('death')) {
       character.destroy();
     }
   }
@@ -203,9 +191,17 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
       (vector.x > 0 ? 'E' : (vector.x < 0 ? 'W' : ''));
   }
 
-  isMotionStateDifferent(vector) {
-    return this.lastPosition.x !== this.x ||
+  shouldBroadcastMotion() {
+    const motionChanged = this.lastPosition.x !== this.x ||
       this.lastPosition.y !== this.y ||
-      !vector.equals(this.lastPosition.vector);
+      !this.props.motionVector.equals(this.lastPosition.vector);
+    if(motionChanged && (Date.now() - this.lastPosition.emittedOn) >= 100) {
+      this.lastPosition.x = this.x;
+      this.lastPosition.y = this.y;
+      this.lastPosition.vector = this.props.motionVector;
+      this.lastPosition.emittedOn = Date.now();
+      return true;
+    }
+    return false;
   }
 }
