@@ -51,27 +51,24 @@ export default class TitleScene extends Phaser.Scene {
   
     let creditsButton = new Button(this, 450, 400, 'CREDITS');
     creditsButton.buttonDown(() => {
-
       new DOMModal(this, 'credits', {
         cancelButtonSelector: '.exit',
         onCancel: (modal) => {
           modal.close();
         }
       });
-
     });
 
     let controlsButton = new Button(this, 450, 450, 'HOW TO PLAY');
     controlsButton.buttonDown(() => {
-
-      new DOMModal('controls', {
+      new DOMModal(this, 'controls', {
         cancelButtonSelector: '.exit',
         onCancel: (modal) => {
           modal.close();
         }
       });
-
     });
+
     if(ServiceWorker.isSupported()) {
       let serviceWorker = new ServiceWorker();
       let checkbox = new Checkbox(this, 470, 550, 'ENABLE OFFLINE MODE', serviceWorker.isRegistered());

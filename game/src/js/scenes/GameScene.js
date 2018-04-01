@@ -90,7 +90,7 @@ export default class GameScene extends BaseScene {
     projectile.destroy();
     if(character.hit(projectile)) { //If the hit causes the player to die
       this.socket.emit('die', character.x, character.y, projectile.props.owner.id);
-      new DOMModal('killed', {
+      new DOMModal(this, 'killed', {
         acceptButtonSelector: '#respawn',
         cancelButtonSelector: '.exit',
         onAccept: (modal) => {

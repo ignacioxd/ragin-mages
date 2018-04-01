@@ -5,6 +5,10 @@
       "texture": "sprites/background.png"
     },
     {
+      "key": "trail",
+      "texture": "sprites/trail.png"
+    },
+    {
       "key": "map_tiles",
       "texture": "maps/map_tiles.png"
     },
@@ -100,6 +104,14 @@
     {
       "key": "killed",
       "data": "html/killed.html"
+    },
+    {
+      "key": "controls",
+      "data": "html/controls.html"
+    },
+    {
+      "key": "settings",
+      "data": "html/settings.html"
     }
   ],
   "cache": [

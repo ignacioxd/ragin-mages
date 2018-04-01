@@ -14,6 +14,15 @@ export default class Projectile extends Phaser.Physics.Arcade.Sprite {
 
     this.anims.play(`proj_${key}-E`, true);
 
+    //Trail emitter
+    this.particles = scene.add.particles('trail');
+    this.emmiter = this.particles.createEmitter({
+      speed: 25,
+      scale: { start: this.props.scale / 4, end: 0 },
+      blendMode: 'ADD'
+    })
+    this.emmiter.startFollow(this);
+
     // Dynamically modify this sprite based on the type of projectile
     this.setSizeToFrame(scene.anims.anims.entries[`proj_${key}-E`].frames[0]);
 
@@ -40,6 +49,11 @@ export default class Projectile extends Phaser.Physics.Arcade.Sprite {
       onCompleteParams: [ this ]
     });
     
+  }
+
+  destroy() {
+    super.destroy();
+    this.particles.destroy();
   }
 
   rangeReached(tween, targets, projectile) {
