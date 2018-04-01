@@ -4,8 +4,6 @@ import TitleScene from 'scenes/TitleScene';
 import CharacterSelectionScene from 'scenes/CharacterSelectionScene';
 import GameScene from 'scenes/GameScene';
 import DungeonScene from 'scenes/DungeonScene';
-import PauseMenuScene from 'scenes/PauseMenuScene';
-import DialogScene from 'scenes/DialogScene';
 
 class Game extends Phaser.Game {
 
@@ -21,7 +19,7 @@ class Game extends Phaser.Game {
           debug: true
         }
       },
-      scene: [BootScene, LoaderScene, TitleScene, CharacterSelectionScene, GameScene, DungeonScene, PauseMenuScene, DialogScene]
+      scene: [BootScene, LoaderScene, TitleScene, CharacterSelectionScene, GameScene, DungeonScene]
     });
 
     window.addEventListener('resize', this.resizeGame.bind(this));
