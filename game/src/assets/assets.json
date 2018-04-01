@@ -78,13 +78,11 @@
       "data": "maps/dungeon_map.json"
     }
   ],
-  "cache": [
-    "/index.html",
-    "js/phaser.min.js",
-    "js/game.js",
-    "css/main.css"
-  ],
   "json": [
+    {
+      "key": "config",
+      "data": "../config.json"
+    },
     {
       "key": "characters",
       "data": "json/characters.json"
@@ -93,5 +91,24 @@
       "key": "projectiles",
       "data": "json/projectiles.json"
     }
+  ],
+  "html": [
+    {
+      "key": "credits",
+      "data": "html/credits.html"
+    },
+    {
+      "key": "killed",
+      "data": "html/killed.html"
+    }
+  ],
+  "cache": [
+    "/index.html",
+    "js/phaser.min.js",
+    "js/socket.io.js",
+    "js/game.js",
+    "css/main.css",
+    "http://fonts.googleapis.com/css?family=Jim+Nightshade%7CFjalla+One%7CNoto+Sans",
+    "https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js"
   ]
 }
