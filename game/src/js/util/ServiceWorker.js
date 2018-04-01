@@ -51,15 +51,12 @@ export default class ServiceWorker {
     });
   }
 
-
-
-
-
   unregister() {
     ServiceWorker.requireSWSupport();
 
     navigator.serviceWorker.getRegistrations().then(function(registrations) { 
       for(let registration of registrations) {
+        registration.active.postMessage({ action: 'deleteCache' })
         registration.unregister();
       }
     }).catch(function() {
@@ -67,14 +64,10 @@ export default class ServiceWorker {
     });
   }
 
-
   isRegistered() {
     ServiceWorker.requireSWSupport();
     return navigator.serviceWorker.controller != null;
   }
-
-
-
 
   // STATIC METHODS
 
@@ -99,5 +92,4 @@ export default class ServiceWorker {
       console.log('Failed to delete service worker or service worker did not exist');
     });
   }
-
 }

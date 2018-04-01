@@ -53,6 +53,14 @@ self.addEventListener('message', e => {
   if(e.data.action === 'skipWaiting') {
     self.skipWaiting();
   }
+  if(e.data.action === 'deleteCache') {
+    caches.keys().then(cacheNames =>
+      Promise.all(cacheNames
+        .filter(n => n.startsWith('raginmagin-'))
+        .map(n => caches.delete(n))
+      )
+    )
+  }
 });
 
 function fetchAsset(req) {
