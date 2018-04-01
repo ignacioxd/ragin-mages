@@ -60,7 +60,6 @@ export default class ServiceWorker {
 
     navigator.serviceWorker.getRegistrations().then(function(registrations) { 
       for(let registration of registrations) {
-        console.log(registration);
         registration.unregister();
       }
     }).catch(function() {
@@ -94,7 +93,6 @@ export default class ServiceWorker {
 
     navigator.serviceWorker.getRegistrations().then(function(registrations) { 
       for(const registration of registrations) {
-        console.log(registration);
         registration.unregister();
       }
     }).catch(function() {
