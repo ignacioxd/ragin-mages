@@ -61,9 +61,20 @@ export default class TitleScene extends Phaser.Scene {
 
     });
 
+    let controlsButton = new Button(this, 450, 450, 'HOW TO PLAY');
+    controlsButton.buttonDown(() => {
+
+      new DOMModal('controls', {
+        cancelButtonSelector: '.exit',
+        onCancel: (modal) => {
+          modal.close();
+        }
+      });
+
+    });
     if(ServiceWorker.isSupported()) {
       let serviceWorker = new ServiceWorker();
-      let checkbox = new Checkbox(this, 470, 500, 'ENABLE OFFLINE MODE', serviceWorker.isRegistered());
+      let checkbox = new Checkbox(this, 470, 550, 'ENABLE OFFLINE MODE', serviceWorker.isRegistered());
       checkbox.onPointerDown(function(obj) {
         if(obj.isChecked()) {
           serviceWorker.register();
