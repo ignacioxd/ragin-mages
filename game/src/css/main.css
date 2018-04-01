@@ -1,3 +1,10 @@
+:root {
+  --modal-dark-bg-color: #836c00;
+  --modal-light-bg-color: #b7ac79;
+  --modal-border-color: #4a4a4a;
+  --modal-light-text-color: #dbdbdb;
+}
+
 html {
   width: 100%;
   height: 100%;
@@ -60,4 +67,63 @@ body {
 }
 .modal .button:hover {
   background: #a8a088;
+}
+
+/** DOMModal styles for credits, controls, settings **/
+
+/**credits**/
+ .fullContainer, .fullContainer a, .fullContainer ul {
+    color: #272727;
+    text-decoration: none;
+    list-style: none;
+    text-align: center;
+    padding: 0px;
+        }
+  .fullContainer a:hover {
+    color: #836c00;
+    text-decoration:underline;
+        }
+  .fullContainer li {
+    padding-bottom: 5px;
+        }
+  .fullContainer p {
+    text-align: center;
+    padding-bottom: 5px;
+    border-bottom: var(--modal-border-color) solid 1px;
+        }
+
+  .fullContainer ul {
+    padding-bottom: 10px;
+    border-bottom: var(--modal-border-color) solid 1px;
+        }
+/**controls**/
+  .tableControls table, .tableControls tr {
+    width:100%;
+      }
+  .tableControls td, .tableControls .divider, .tableControls .key{
+    height: 30px;
+      }
+  .tableControls .key {
+    background: var(--modal-dark-bg-color);
+    max-width: 10%;
+    text-align: center;
+    padding: 3px;
+    color: var(--modal-light-text-color);
+      }      
+  .tableControls .descript{
+    background: var(--modal-light-bg-color);
+    padding-left: 15px;
+      }
+
+.controlsContainer {
+  display: grid;
+  grid-gap: 5px;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto 1fr;
+}
+.controlsContainer .title {
+  display: grid;
+  grid-column: 1 / -1;
+  border-bottom: var(--modal-border-color) 1px solid;
+  line-height: 70px;
 }
