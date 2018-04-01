@@ -102,13 +102,15 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
 
   fire(targetX, targetY) {
     if(this.isDead || this.isFiring) return;
-    this.stats.shots ++;
-    this.setAnimation('fight', this.props.orientation);
-    this.isFiring = true;
-    this.setVelocity(0, 0);
+    this.stats.shots++;
     let fireFromX = this.x + this.props.projectile.fireOffset.x * this.props.scale;
     let fireFromY = this.y + this.props.projectile.fireOffset.y * this.props.scale;
     let projectile = new Projectile(this.scene, fireFromX, fireFromY, this.props.projectile.type, targetX, targetY, {owner: this, range: this.props.projectile.baseRange});
+    let fireOrientation = projectile.props.motionVector.y > 0 ? 'S' : (projectile.props.motionVector.y < 0 ? 'N' : '');
+    fireOrientation += projectile.props.motionVector.x > 0  ? 'E' : (projectile.props.motionVector.x < 0  ? 'W' : '');
+    this.setAnimation('fight', fireOrientation);
+    this.isFiring = true;
+    this.setVelocity(0, 0);
     return projectile;
   }
 

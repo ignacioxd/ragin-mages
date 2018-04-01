@@ -165,7 +165,7 @@ export default class GameScene extends BaseScene {
       targets: player,
       x: x,
       y: y,
-      duration: 75,
+      duration: 50,
       ease: 'Linear'
     });
 
