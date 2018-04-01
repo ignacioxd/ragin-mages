@@ -90,28 +90,28 @@ export default class DungeonScene extends BaseScene {
   }
 
   playerHit(projectile, character) {
-      projectile.destroy();
-      if(character.hit(projectile)) { //If the hit causes the player to die
-        this.socket.emit('die', character.x, character.y, projectile.props.owner.id);
-        new DOMModal('killed', {
-          acceptButtonSelector: '#respawn',
-          cancelButtonSelector: '.exit',
-          onAccept: (modal) => {
-            modal.close();
-            this.socket.emit('respawn');
-          },
-          onCancel: (modal) => {
-            modal.close();
-            this.socket.emit('leaveGame');
-            this.socket.disconnect();
-            this.scene.start('TitleScene');
-          },
-          data: character.stats
-        });
-        this.localCharacter = null;
-      }
+    projectile.destroy();
+    if(character.hit(projectile)) { //If the hit causes the player to die
+      this.socket.emit('die', character.x, character.y, projectile.props.owner.id);
+      new DOMModal('killed', {
+        acceptButtonSelector: '#respawn',
+        cancelButtonSelector: '.exit',
+        onAccept: (modal) => {
+          modal.close();
+          this.socket.emit('respawn');
+        },
+        onCancel: (modal) => {
+          modal.close();
+          this.socket.emit('leaveGame');
+          this.socket.disconnect();
+          this.scene.start('TitleScene');
+        },
+        data: character.stats
+      });
+      this.localCharacter = null;
     }
-    //WebSocket Messages
+  }
+  //WebSocket Messages
   serverConnected() {
     console.log('serverConnected');
   }
