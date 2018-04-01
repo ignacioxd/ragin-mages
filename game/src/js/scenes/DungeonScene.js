@@ -1,90 +1,206 @@
 import BaseScene from './BaseScene';
+import Controller from '../util/Controller';
 import Character from 'objects/Character';
+import DOMModal from 'objects/ui/DOMModal';
 
 export default class DungeonScene extends BaseScene {
 
   constructor() {
     super({ key: 'DungeonScene' });
+    this.clientId = null;
+
+    this.players = new Map();
+    this.localCharacter = null;
+  }
+
+  init(data) {
+    this.characterType = data.character;
   }
 
   preload() {
+
+    //Create collision groups and event handling
+    this.projectiles = this.add.group();
+    this.characters = this.add.group();
+    this.physics.add.overlap(this.projectiles, this.characters, this.playerHit, null, this);
+
+
+    this.controller = new Controller(this);
+    this.input.keyboard.on('keydown_ESC', function () {
+      if(this.sys.isActive()) this.sys.pause();
+      else this.sys.resume();
+    }, this);
+
+    this.input.keyboard.on('keydown_Q', function () {
+      const sampleDialog = 'Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...';
+      this.sys.game.scene.keys.DialogScene.setDialogText(sampleDialog);
+    }, this);
+
+    this.input.keyboard.on('keydown_PLUS', function () {
+      this.cameras.main.setZoom(this.cameras.main.zoom + 0.1);
+    }, this);
+
+    this.input.keyboard.on('keydown_MINUS', function () {
+      this.cameras.main.setZoom(this.cameras.main.zoom - 0.1);
+    }, this);
+
+    this.input.on('pointerdown', function(event) {
+      if(this.localCharacter && event.buttons === 1) {
+        let worldX = event.x + event.camera.scrollX * event.camera.zoom;
+        let worldY = event.y + event.camera.scrollY * event.camera.zoom;
+        this.localCharacter.fire(worldX, worldY, this.clientId);
+        this.socket.emit('fire', this.localCharacter.x, this.localCharacter.y, worldX, worldY);
+      }
+    }, this);
+
     
     this.map1 = this.add.tilemap('dungeon_map');
     this.tileset1 = this.map1.addTilesetImage('stone-tiles', 'stone-tiles');
     this.layer1 = this.map1.createStaticLayer('Dungeon Map', this.tileset1, -500, -340);
 
-    this.add.text(-390, -300, 'Dungeon Scene - Use the arrow keys for motion, spacebar to attack, k to die', {
-      font: '16px Arial',
-      fill: '#ffffff'
-    });
   }
 
   create() {
-    
+    //load config file for socket information
+    let serverConfig = this.cache.json.get('config');
+    this.socket = io(`${serverConfig.protocol}://${serverConfig.host}:${serverConfig.ioport}`);
 
-    this.fireMonster = new Character(this, -100, 0, 'fire_monster');
-    this.iceMonster = new Character(this, 100, -100, 'ice_monster');
-    this.spiderMonster = new Character(this, -300, 100, 'spider_monster');
-    this.golemMonster = new Character(this, -300, -100, 'golem_monster');
-
-    this.cameras.main.startFollow(this.fireMonster);
-
-    this.fightKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
-    this.deathKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.K);
-    this.cursors = this.input.keyboard.createCursorKeys();
-
-    this.input.on('pointerdown', function(event) {
-      if(event.buttons === 1) {
-        this.fireMonster.moveTo(this.input.x, this.input.y);
-      }
-    }, this)
+    this.socket.on('connect', this.serverConnected.bind(this));
+    this.socket.on('setId', this.setId.bind(this));
+    this.socket.on('existingPlayers', this.existingPlayers.bind(this));
+    this.socket.on('spawn', this.spawn.bind(this));
+    this.socket.on('playerJoined', this.playerJoined.bind(this));
+    this.socket.on('playerLeft', this.playerLeft.bind(this));
+    this.socket.on('playerMoved', this.playerMoved.bind(this));
+    this.socket.on('playerFired', this.playerFired.bind(this));
+    this.socket.on('playerDied', this.playerDied.bind(this));
+    this.socket.on('playerDisconnected', this.playerDisconnected.bind(this));
 
   }
 
   update() {
-    let direction = null;
-    let animation = 'walk';
-    if(this.cursors.up.isDown) {
-      direction = 'N';
-      if(this.cursors.left.isDown) { //NW
-        direction += 'W';
-      }
-      else if(this.cursors.right.isDown) { //NE
-        direction += 'E';
+    if(this.localCharacter) {
+      const vector = this.controller.getWASDVector();
+      this.localCharacter.setMotion(vector);
+      if(this.localCharacter.shouldBroadcastMotion()) {
+        console.log('motion changed locally');
+        this.socket.emit('move', this.localCharacter.x, this.localCharacter.y, vector.x, vector.y);
       }
     }
-    else if(this.cursors.down.isDown) {
-      direction = 'S';
-      if(this.cursors.left.isDown) { //NW
-        direction += 'W';
-      }
-      else if(this.cursors.right.isDown) { //NE
-        direction += 'E';
+  }
+
+  playerHit(projectile, character) {
+      projectile.destroy();
+      if(character.hit(projectile)) { //If the hit causes the player to die
+        this.socket.emit('die', character.x, character.y, projectile.props.owner.id);
+        new DOMModal('killed', {
+          acceptButtonSelector: '#respawn',
+          cancelButtonSelector: '.exit',
+          onAccept: (modal) => {
+            modal.close();
+            this.socket.emit('respawn');
+          },
+          onCancel: (modal) => {
+            modal.close();
+            this.socket.emit('leaveGame');
+            this.socket.disconnect();
+            this.scene.start('TitleScene');
+          },
+          data: character.stats
+        });
+        this.localCharacter = null;
       }
     }
-    else if(this.cursors.left.isDown) { //W
-      direction = 'W';
-    }
-    else if(this.cursors.right.isDown) { //E
-      direction = 'E';
+    //WebSocket Messages
+  serverConnected() {
+    console.log('serverConnected');
+  }
+
+  setId(id) {
+    this.clientId = id;
+    this.socket.emit('joinGame', this.characterType, '');
+  }
+
+  existingPlayers(existingPlayers) {
+    console.log('existingPlayers');
+    console.log(existingPlayers);
+    existingPlayers.forEach(value => {
+      this.playerJoined(value.id, value.character, value.handle, value.x, value.y);
+    });
+  }
+
+  spawn(x, y) {
+    this.localCharacter = new Character(this, x, y, this.characterType);
+    this.characters.add(this.localCharacter); //this is us.
+    this.cameras.main.startFollow(this.localCharacter);
+  }
+
+  playerJoined(id, character, handle, x, y) {
+    character = character == 'priest' ? 'priest_hero' : character; //Temp fix for compatibility with old clients
+    console.log('playerJoined');
+    if(this.clientId !== id) {
+      let remotePlayer = new Character(this, x, y, character);
+      this.players.set(id, remotePlayer);
+      remotePlayer.id = id;
+      //remotePlayer.setHandle(handle);
     }
     else {
-      animation = 'stance';
+      console.log('this should never happen!!!!!');
     }
+  }
 
-    if(this.fightKey.isDown) {
-      animation = 'fight';
+  playerLeft(id) {
+    console.log('playerLeft');
+    let player = this.players.get(id);
+    if(!player) return;
+    player.die();
+  }
+
+  playerMoved(id, x, y, vecX, vecY) {
+    console.log('playerMoved');
+    let player = this.players.get(id);
+    if(!player) return;
+    this.tweens.killTweensOf(player);
+    this.tweens.add({
+      targets: player,
+      x: x,
+      y: y,
+      duration: 50,
+      ease: 'Linear'
+    });
+
+    //player.setPosition(x, y);
+    player.setMotion(new Phaser.Math.Vector2(vecX, vecY), false);
+  }
+
+  playerFired(id, fromX, fromY, toX, toY) {
+    console.log('playerFired');
+    let player = this.players.get(id);
+    if(!player) return;
+    player.setPosition(fromX, fromY);
+    let projectile = player.fire(toX, toY);
+    this.projectiles.add(projectile);
+  }
+
+  playerDied(id, x, y, killedById) {
+    if(killedById == this.clientId) {
+      this.localCharacter.stats.kills++; 
     }
+    console.log('playerDied');
+    let player = this.players.get(id);
+    if(!player) return;
+    this.tweens.killTweensOf(player);
+    player.setPosition(x, y);
+    player.die();
+  }
 
-    if(this.deathKey.isDown) {
-      animation = 'death';
-    }
-
-    this.iceMonster.setAnimation(animation, direction);
-    this.fireMonster.setAnimation(animation, direction);
-    this.spiderMonster.setAnimation(animation, direction);
-    this.golemMonster.setAnimation(animation, direction);
-
-    this.fireMonster.update();
+  playerDisconnected(id) {
+    this.tweens.killTweensOf(player);
+    let player = this.players.get(id);
+    if(!player) return;
+    this.tweens.killTweensOf(player);
+    this.characters.remove(player);
+    this.players.delete(id);
+    player.die();
   }
 }
