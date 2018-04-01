@@ -1,4 +1,4 @@
-import Character from 'objects/characters/Character';
+import Character from 'objects/Character';
 import Projectile from 'objects/Projectile';
 
 export default class LoaderScene extends Phaser.Scene {

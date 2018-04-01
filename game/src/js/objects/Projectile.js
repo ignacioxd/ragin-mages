@@ -6,6 +6,7 @@ export default class Projectile extends Phaser.Physics.Arcade.Sprite {
       ...{
         type: key,
         motionVector: new Phaser.Math.Vector2(targetX, targetY).subtract({x: x, y: y}).normalize(),
+        owner: null
       },
       ...scene.cache.json.get('projectiles')[key],
       ...options
