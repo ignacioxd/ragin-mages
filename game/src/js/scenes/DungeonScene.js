@@ -24,13 +24,7 @@ export default class DungeonScene extends BaseScene {
 
     this.controller = new Controller(this);
     this.input.keyboard.on('keydown_ESC', function () {
-      if(this.sys.isActive()) this.sys.pause();
-      else this.sys.resume();
-    }, this);
-
-    this.input.keyboard.on('keydown_Q', function () {
-      const sampleDialog = 'Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...';
-      this.sys.game.scene.keys.DialogScene.setDialogText(sampleDialog);
+      //TODO: Quit game
     }, this);
 
     this.input.keyboard.on('keydown_PLUS', function () {

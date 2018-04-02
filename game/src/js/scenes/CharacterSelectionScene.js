@@ -1,8 +1,9 @@
+import BaseScene from './BaseScene';
 import Button from 'objects/ui/Button';
 import Controller from '../util/Controller';
 import Character from 'objects/Character';
 
-export default class CharacterSelectionScene extends Phaser.Scene {
+export default class CharacterSelectionScene extends BaseScene {
   constructor() {
     super({key: 'CharacterSelectionScene'});
   }
@@ -54,7 +55,7 @@ export default class CharacterSelectionScene extends Phaser.Scene {
     chkButton.key=btnData.key;
     chkButton.scene=scene;
     chkButton.buttonDown(() => {
-      this.scene.start(this.gameType == 'multi_player' ? 'GameScene' : 'DungeonScene', {character: btnData.key});  
+      this.changeToScene(this.gameType == 'multi_player' ? 'GameScene' : 'DungeonScene', {character: btnData.key});  
     });
 
     chkButton.on('pointerover', () => {
@@ -66,7 +67,7 @@ export default class CharacterSelectionScene extends Phaser.Scene {
       fontColorNormal: '#ffffff'
     });
     backToMenuButton.buttonDown(() => {
-      this.scene.start('TitleScene');
+      this.changeToScene('TitleScene');
     });
 
 

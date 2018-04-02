@@ -99,7 +99,7 @@ export default class GameScene extends BaseScene {
           modal.close();
           this.socket.emit('leaveGame');
           this.socket.disconnect();
-          this.scene.start('TitleScene');
+          this.changeToScene('TitleScene');
         },
         data: character.stats
       });

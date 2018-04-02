@@ -1,9 +1,10 @@
+import BaseScene from './BaseScene';
 import ServiceWorker from 'util/ServiceWorker';
 import Checkbox from 'objects/ui/Checkbox';
 import Button from 'objects/ui/Button';
 import DOMModal from 'objects/ui/DOMModal';
 
-export default class TitleScene extends Phaser.Scene {
+export default class TitleScene extends BaseScene {
 
   constructor() {
     super({key: 'TitleScene'});
@@ -29,13 +30,13 @@ export default class TitleScene extends Phaser.Scene {
     //multi player button
     this.multiPlayerButton = new Button(this, 450, 250, 'PLAY MULTI PLAYER', !this.online);
     this.multiPlayerButton.buttonDown(() => {
-      this.scene.start('CharacterSelectionScene', {type: 'multi_player'});
+      this.changeToScene('CharacterSelectionScene', {type: 'multi_player'});
     });
     
     //single player button
     let singlePlayerButton = new Button(this, 450, 300, 'PLAY SINGLE PLAYER');
     singlePlayerButton.buttonDown(() => {
-      this.scene.start('CharacterSelectionScene', {type: 'single_player'});
+      this.changeToScene('CharacterSelectionScene', {type: 'single_player'});
     });
 
     //controls, credits, offline mode buttons
@@ -81,19 +82,9 @@ export default class TitleScene extends Phaser.Scene {
         }
       });
     }
-
-    this.startKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER);
-    this.startKey2 = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
   }
 
   update() {
-    if(this.startKey.isDown) {
-      this.scene.start('CharacterSelectionScene');
-    }
-      
-    if(this.startKey2.isDown) {
-      this.scene.start('DungeonScene');
-    }
   }
 
   onlineIndicator() {
