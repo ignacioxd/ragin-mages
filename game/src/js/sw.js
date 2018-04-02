@@ -98,6 +98,16 @@ self.addEventListener('message', e => {
       cache.addAll(jsonUrls);
     });
   }
+  if(e.data.html) {
+    let htmlUrls = [];
+    e.data.html.forEach(function(html) {
+      htmlUrls.push('assets/' + html.data);
+    })
+
+    caches.open(RM_CACHE).then(function(cache) {
+      cache.addAll(htmlUrls);
+    })
+  }
 });
 
 // function fetchAsset(req) {

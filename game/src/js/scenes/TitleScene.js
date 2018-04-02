@@ -67,10 +67,10 @@ export default class TitleScene extends Phaser.Scene {
       let checkbox = new Checkbox(this, 470, 500, 'ENABLE OFFLINE MODE', serviceWorker.isRegistered());
       checkbox.onPointerDown(function(obj) {
         if(obj.isChecked()) {
-          serviceWorker.register();
-          setTimeout(function() {
+          serviceWorker.register().then(function() {
+            console.log('this got logged');
             serviceWorker.fetchAssets(assets);
-          }, 500)
+          })
         }
         else {
           serviceWorker.unregister();

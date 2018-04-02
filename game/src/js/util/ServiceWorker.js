@@ -7,26 +7,33 @@ export default class ServiceWorker {
   register() {
     ServiceWorker.requireSWSupport();
 
-    navigator.serviceWorker.register('/sw.js', { scope: '/' })
-      .then(reg => {
-        if(!navigator.serviceWorker.controller) {
-          return;
-        }
+    return new Promise(function(resolve,reject) {
+      navigator.serviceWorker.register('/sw.js', { scope: '/' })
+        .then(reg => {
+          resolve();
+          if(!navigator.serviceWorker.controller) {
+            return;
+          }
 
-        if(reg.waiting) {
-          this.updateReady(reg.waiting);
-          return;
-        }
+          if(reg.waiting) {
+            this.updateReady(reg.waiting);
+            return;
+          }
 
-        if(reg.installing) {
-          this.trackInstalling(reg.installing);
-          return;
-        }
 
-        reg.addEventListener('updatefound', () => {
-          this.trackInstalling(reg.installing);
-        });
-      });
+          if(reg.installing) {
+            this.trackInstalling(reg.installing);
+            return;
+          }
+
+          reg.addEventListener('updatefound', () => {
+            this.trackInstalling(reg.installing);
+          });
+        }).catch(function(err) {
+          // registration failed
+          reject(err);
+        })
+    });
   }
 
   updateReady(worker) {
