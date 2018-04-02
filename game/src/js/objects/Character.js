@@ -217,7 +217,7 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
 
   // performs one tick worth of time of what the AI is going to do.
   updateAI() {
-    if (!this.AIOn) {
+    if (this.isDead || !this.AIOn) {
       return;
     }
     const targetXPosition = this.targetPlayer.x;
