@@ -225,7 +225,7 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
     const xDifference = this.x - targetXPosition;
     const yDifference = this.y - targetYPosition;
     int distance = Math.sqrt(xDifference * xDifference + yDifference * yDifference);
-    if (difference > 300) {
+    if (distance > 300) {
       return;
     }
     var xChange = 0;
@@ -242,6 +242,8 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
     }
     setMotion(new Vector(xChange, yChange));
 
+    // This is the firing part.  It has returned already if distance > 300 so it doesn't fire when far away.
+    // The +25 * random part is to make it not have perfect aim.  It should aim somewhat realistically.
     const shouldFire = Math.random();
     if (shouldFire > 0.15) {
       fire(targetXPosition + 25 * (Math.random() - 0.5), targetYPosition + 25 * (Math.random() - 0.5));
