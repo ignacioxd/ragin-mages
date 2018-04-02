@@ -224,7 +224,7 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
     const targetYPosition = this.targetPlayer.y;
     const xDifference = this.x - targetXPosition;
     const yDifference = this.y - targetYPosition;
-    int distance = Math.sqrt(xDifference * xDifference + yDifference * yDifference);
+    var distance = Math.sqrt(xDifference * xDifference + yDifference * yDifference);
     if (distance > 300) {
       return;
     }
