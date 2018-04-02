@@ -77,7 +77,8 @@ export default class DungeonScene extends BaseScene {
     if (this.delay === 0) {
       const newMonster = new SpiderMonster(this, 250 * (Math.random() - 0.5), 250 * (Math.random() - 0.5));
       newMonster.setAIOn(this.localCharacter);
-      this.enemyList.push(newMonster);
+      this.enemyList.add(newMonster);
+      this.characters.add(newMonster);
       this.delay = 30;
     }
     
