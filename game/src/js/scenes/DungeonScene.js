@@ -75,7 +75,18 @@ export default class DungeonScene extends BaseScene {
   update() {
     --this.delay;
     if (this.delay === 0) {
-      const newMonster = new SpiderMonster(this, 250 * (Math.random() - 0.5), 250 * (Math.random() - 0.5));
+      var newMonster;
+      const randomNumber = Math.random();
+      if (randomNumber < 0.25) {
+          newMonster = new FireMonster(this, 250 * (Math.random() - 0.5), 250 * (Math.random() - 0.5));
+      } else if (randomNumber < 0.5) {
+          newMonster = new IceMonster(this, 250 * (Math.random() - 0.5), 250 * (Math.random() - 0.5));
+      } else if (randomNumber < 0.75) {
+          newMonster = new SpiderMonster(this, 250 * (Math.random() - 0.5), 250 * (Math.random() - 0.5));
+      } else {
+          newMonster = new GolemMonster(this, 250 * (Math.random() - 0.5), 250 * (Math.random() - 0.5));
+      }
+      
       newMonster.setAIOn(this.localCharacter);
       this.enemyList.add(newMonster);
       this.characters.add(newMonster);
