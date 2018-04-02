@@ -32,10 +32,12 @@ export default class DungeonScene extends BaseScene {
         cancelButtonSelector: '#stay',
         onAccept: (modal) => {
           modal.close();
+          this.currentModal = null;
           this.changeToScene('TitleScene');
         },
         onCancel: (modal) => {
           modal.close();
+          this.currentModal = null;
         }
       });
     }, this);
