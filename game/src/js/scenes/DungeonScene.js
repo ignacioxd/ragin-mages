@@ -67,14 +67,15 @@ export default class DungeonScene extends BaseScene {
 
   create() {
     this.spawn(0,0);
-    this.delay = 30;
+    this.delay = 10;
     this.enemyList = [];
-
+    this.virtualTime = 0;
   }
 
   update() {
     --this.delay;
-    if (this.delay === 0) {
+    ++this.virtualTime;
+    if (this.delay <= 0) {
       var newMonster;
       const randomNumber = Math.random();
       if (randomNumber < 0.25) {
@@ -90,7 +91,9 @@ export default class DungeonScene extends BaseScene {
       newMonster.setAIOn(this.localCharacter);
       this.enemyList.add(newMonster);
       this.characters.add(newMonster);
-      this.delay = 30;
+      
+      // Set new delay for next monster.  Starts at 1 every 100 updates but increases over time.
+      this.delay = 100 - Math.sqrt(this.virtualTime/15);
     }
     
     for (let i = 0; i < this.enemyList.length; ++i) {
