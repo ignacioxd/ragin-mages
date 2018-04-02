@@ -62,6 +62,10 @@ export default class Button extends Phaser.GameObjects.Text {
       this.setFill(this.props.fontColorDisabled);
       this.setBackgroundColor(this.props.backgroundColorDisabled);
     }
+    else {
+      this.setFill(this.props.fontColorNormal);
+      this.setBackgroundColor(this.props.backgroundColorNormal);
+    }
   }
   
 }
