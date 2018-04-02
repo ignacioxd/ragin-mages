@@ -200,4 +200,51 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
       character.destroy();
     }
   }
+  
+  // sets the character to use an AI, stalking and aiming at the player.
+  // doesn't deal with multiple opponents yet.
+  setAI(player) {
+    this.AIOn = true;
+    this.targetPlayer = player;
+
+  }
+
+  // turns off the current AI.
+  turnAIOff() {
+    this.AIOn = false;
+    this.targetPlayer = null;
+  }
+
+  // performs one tick worth of time of what the AI is going to do.
+  updateAI() {
+    if (!this.AIOn) {
+      return;
+    }
+    const targetXPosition = this.targetPlayer.x;
+    const targetYPosition = this.targetPlayer.y;
+    const xDifference = this.x - targetXPosition;
+    const yDifference = this.y - targetYPosition;
+    int distance = Math.sqrt(xDifference * xDifference + yDifference * yDifference);
+    if (difference > 300) {
+      return;
+    }
+    var xChange = 0;
+    var yChange = 0;
+    if (xDifference > 0) {
+      xChange = -1;
+    } else if (xDifference < 0) {
+      xChange = 1;
+    }
+    if (yDifference > 0) {
+      yChange = -1;
+    } else if (yDifference < 0) {
+      yChange = 1;
+    }
+    setMotion(new Vector(xChange, yChange));
+
+    const shouldFire = Math.random();
+    if (shouldFire > 0.15) {
+      fire(targetXPosition + 25 * (Math.random() - 0.5), targetYPosition + 25 * (Math.random() - 0.5));
+    }
+  }
 }
