@@ -1,23 +1,17 @@
 /* global Promise */
-const STATIC_CACHE = 'gosch-static-cache-v2';
-const ASSETS_CACHE = 'gosch-assets-cache-v2';
-const CACHES = [
-  STATIC_CACHE,
-  ASSETS_CACHE
-];
+const RM_CACHE = 'raginmages-cache-v4';
 
 self.addEventListener('install', e => {
   e.waitUntil(
     caches
-      .open(STATIC_CACHE)
+      .open(RM_CACHE)
       .then(cache => {
         fetch('../../assets/assets.json').then(function(response) {
           return response.json();
         }).catch(function(err) {
           console.log('fetch:', err);
-        }).then(function(files) {
-          let cacheFiles = files.cache;
-          cache.addAll(cacheFiles)
+        }).then(function(assetManifest) {
+          cache.addAll(assetManifest.cache);
         }).catch(function(err) {
           console.log('cache files:', err);
         });
@@ -29,7 +23,7 @@ self.addEventListener('activate', e => {
   e.waitUntil(
     caches.keys().then(cacheNames =>
       Promise.all(cacheNames
-        .filter(n => n.startsWith('gosch-') && !CACHES.includes(n))
+        .filter(n => n.startsWith('raginmages-') && !RM_CACHE)
         .map(n => caches.delete(n))
       )
     )
@@ -59,10 +53,18 @@ self.addEventListener('message', e => {
   if(e.data.action === 'skipWaiting') {
     self.skipWaiting();
   }
+  if(e.data.action === 'deleteCache') {
+    caches.keys().then(cacheNames =>
+      Promise.all(cacheNames
+        .filter(n => n.startsWith('raginmages-'))
+        .map(n => caches.delete(n))
+      )
+    )
+  }
 });
 
 function fetchAsset(req) {
-  return caches.open(ASSETS_CACHE).then(cache =>
+  return caches.open(RM_CACHE).then(cache =>
     cache.match(req.url).then(res =>
       res ? res : fetch(req).then(netRes => {
         cache.put(req.url, netRes.clone());
