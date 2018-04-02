@@ -1,23 +1,5 @@
 /* global Promise */
-const RM_CACHE = 'raginmages-cache-v4';
-
-self.addEventListener('install', e => {
-  e.waitUntil(
-    caches
-      .open(RM_CACHE)
-      .then(cache => {
-        fetch('../../assets/assets.json').then(function(response) {
-          return response.json();
-        }).catch(function(err) {
-          console.log('fetch:', err);
-        }).then(function(assetManifest) {
-          cache.addAll(assetManifest.cache);
-        }).catch(function(err) {
-          console.log('cache files:', err);
-        });
-      })
-  );
-});
+const RM_CACHE = 'raginmages-cache-v5';
 
 self.addEventListener('activate', e => {
   e.waitUntil(
@@ -39,10 +21,10 @@ self.addEventListener('fetch', e => {
       return;
     }
   }
-  if(requestUrl.pathname.startsWith('/assets/')) {
-    e.respondWith(fetchAsset(e.request));
-    return;
-  }
+  // if(requestUrl.pathname.startsWith('/assets/')) {
+  //   e.respondWith(fetchAsset(e.request));
+  //   return;
+  // }
 
   e.respondWith(
     caches.match(e.request).then(res => res || fetch(e.request))
@@ -61,15 +43,70 @@ self.addEventListener('message', e => {
       )
     )
   }
+  if(e.data.cache) {
+    caches.open(RM_CACHE).then(function(cache) {
+      cache.addAll(e.data.cache);
+    });
+  }
+  if(e.data.image) {
+    let imageUrls = [];
+    e.data.image.forEach(function(image) {
+      imageUrls.push('assets/' + image.texture);
+    })
+
+    caches.open(RM_CACHE).then(function(cache) {
+      cache.addAll(imageUrls);
+    });
+  }
+  if(e.data.spritesheet) {
+    let spritesheetUrls = [];
+    e.data.spritesheet.forEach(function(spritesheet) {
+      spritesheetUrls.push('assets/' + spritesheet.texture);
+    })
+
+    caches.open(RM_CACHE).then(function(cache) {
+      cache.addAll(spritesheetUrls);
+    });
+  }
+  if(e.data.atlas) {
+    let atlasUrls = [];
+    e.data.atlas.forEach(function(atlas) {
+      atlasUrls.push('assets/' + atlas.texture);
+    })
+
+    caches.open(RM_CACHE).then(function(cache) {
+      cache.addAll(atlasUrls);
+    });
+  }
+  if(e.data.tileMap) {
+    let tileMapJsons = [];
+    e.data.tileMap.forEach(function(tileMap) {
+      tileMapJsons.push('assets/' + tileMap.data);
+    })
+
+    caches.open(RM_CACHE).then(function(cache) {
+      cache.addAll(tileMapJsons);
+    });
+  }
+  if(e.data.json) {
+    let jsonUrls = [];
+    e.data.json.forEach(function(json) {
+      jsonUrls.push('assets/' + json.data);
+    })
+
+    caches.open(RM_CACHE).then(function(cache) {
+      cache.addAll(jsonUrls);
+    });
+  }
 });
 
-function fetchAsset(req) {
-  return caches.open(RM_CACHE).then(cache =>
-    cache.match(req.url).then(res =>
-      res ? res : fetch(req).then(netRes => {
-        cache.put(req.url, netRes.clone());
-        return netRes;
-      })
-    )
-  );
-}
+// function fetchAsset(req) {
+//   return caches.open(RM_CACHE).then(cache =>
+//     cache.match(req.url).then(res =>
+//       res ? res : fetch(req).then(netRes => {
+//         cache.put(req.url, netRes.clone());
+//         return netRes;
+//       })
+//     )
+//   );
+// }

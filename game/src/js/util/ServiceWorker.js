@@ -69,6 +69,15 @@ export default class ServiceWorker {
     return navigator.serviceWorker.controller != null;
   }
 
+  fetchAssets(assets) {
+    console.log('fetchAssets:', assets);
+    navigator.serviceWorker.getRegistrations().then(function(registrations) { 
+      for(let registration of registrations) {
+        registration.active.postMessage(assets);
+      }
+    })
+  }
+
   // STATIC METHODS
 
   static isSupported() {
