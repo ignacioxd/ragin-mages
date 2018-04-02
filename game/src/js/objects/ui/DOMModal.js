@@ -1,5 +1,5 @@
 export default class DOMModal {
-  constructor(template, opts) {
+  constructor(scene, template, opts) {
     this.props = {
       width: '50%',
       height: 'auto',
@@ -14,17 +14,9 @@ export default class DOMModal {
       ...opts
     };
     this.createWindow();
-    
-    fetch(`templates/${template}.html`)
-      .then(response => {
-        return response.text();
-      })
-      .then(html => {
-        this.populateWindow(html);
-      })
-      .catch(error => {
-        console.log(error);
-      });
+
+    let html = scene.cache.text.get(template);
+    html ? this.populateWindow(html) : this.close();
   }
 
   // Creates the dialog window

@@ -1,7 +1,8 @@
+import BaseScene from './BaseScene';
 import Character from 'objects/Character';
 import Projectile from 'objects/Projectile';
 
-export default class LoaderScene extends Phaser.Scene {
+export default class LoaderScene extends BaseScene {
 
   constructor() {
     super({key: 'LoaderScene'});
@@ -58,7 +59,7 @@ export default class LoaderScene extends Phaser.Scene {
       }
     });
 
-    const assets =  this.cache.json.get('assets');
+    const assets = this.cache.json.get('assets');
 
     //Load Images
     for(let image of assets.image) {
@@ -83,9 +84,13 @@ export default class LoaderScene extends Phaser.Scene {
     }
 
     //Load JSON files
-    this.load.json('config', '../config.json');
-    for(let json of assets.json){
+    for(let json of assets.json) {
       this.load.json(json.key, json.data);
+    }
+
+    //Load HTML files as text
+    for(let html of assets.html) {
+      this.load.text(html.key, html.data);
     }
 
     // Hack to fix progress loaders
@@ -123,7 +128,7 @@ export default class LoaderScene extends Phaser.Scene {
     //Build animations
     Character.buildAnimations(this);
     Projectile.buildAnimations(this);
-    this.scene.start('TitleScene');
+    this.changeToScene('TitleScene');
   }
 
   update() {

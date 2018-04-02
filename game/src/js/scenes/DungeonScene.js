@@ -1,6 +1,7 @@
 import BaseScene from './BaseScene';
 import Controller from '../util/Controller';
 import Character from 'objects/Character';
+import DOMModal from 'objects/ui/DOMModal';
 
 export default class DungeonScene extends BaseScene {
 
@@ -24,13 +25,21 @@ export default class DungeonScene extends BaseScene {
 
     this.controller = new Controller(this);
     this.input.keyboard.on('keydown_ESC', function () {
-      if(this.sys.isActive()) this.sys.pause();
-      else this.sys.resume();
-    }, this);
-
-    this.input.keyboard.on('keydown_Q', function () {
-      const sampleDialog = 'Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...';
-      this.sys.game.scene.keys.DialogScene.setDialogText(sampleDialog);
+      if(this.currentModal) return;
+      this.currentModal = new DOMModal(this, 'quitGame', {
+        width: 'auto',
+        acceptButtonSelector: '.exit',
+        cancelButtonSelector: '#stay',
+        onAccept: (modal) => {
+          modal.close();
+          this.currentModal = null;
+          this.changeToScene('TitleScene');
+        },
+        onCancel: (modal) => {
+          modal.close();
+          this.currentModal = null;
+        }
+      });
     }, this);
 
     this.input.keyboard.on('keydown_PLUS', function () {

@@ -26,14 +26,28 @@ export default class GameScene extends BaseScene {
 
 
     this.controller = new Controller(this);
-    this.input.keyboard.on('keydown_ESC', function () {
-      if(this.sys.isActive()) this.sys.pause();
-      else this.sys.resume();
+    this.input.keyboard.on('keydown_ESC', () => {
+      if(this.currentModal) return;
+      this.currentModal = new DOMModal(this, 'quitGame', {
+        width: 'auto',
+        acceptButtonSelector: '.exit',
+        cancelButtonSelector: '#stay',
+        onAccept: (modal) => {
+          modal.close();
+          this.currentModal = null;
+          this.socket.emit('leaveGame');
+          this.socket.disconnect();
+          this.changeToScene('TitleScene');
+        },
+        onCancel: (modal) => {
+          modal.close();
+          this.currentModal = null;
+        }
+      });
     }, this);
 
     this.input.keyboard.on('keydown_Q', function () {
-      const sampleDialog = 'Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...';
-      this.sys.game.scene.keys.DialogScene.setDialogText(sampleDialog);
+      //TODO: Toggle leaderboard
     }, this);
 
     this.input.keyboard.on('keydown_PLUS', function () {
@@ -90,18 +104,21 @@ export default class GameScene extends BaseScene {
     projectile.destroy();
     if(character.hit(projectile)) { //If the hit causes the player to die
       this.socket.emit('die', character.x, character.y, projectile.props.owner.id);
-      new DOMModal('killed', {
+      if(this.currentModal) this.currentModal.close();
+      this.currentModal = new DOMModal(this, 'killed', {
         acceptButtonSelector: '#respawn',
         cancelButtonSelector: '.exit',
         onAccept: (modal) => {
           modal.close();
+          this.currentModal = null;
           this.socket.emit('respawn');
         },
         onCancel: (modal) => {
           modal.close();
+          this.currentModal = null;
           this.socket.emit('leaveGame');
           this.socket.disconnect();
-          this.scene.start('TitleScene');
+          this.changeToScene('TitleScene');
         },
         data: character.stats
       });
@@ -123,7 +140,6 @@ export default class GameScene extends BaseScene {
 
   existingPlayers(existingPlayers) {
     console.log('existingPlayers');
-    console.log(existingPlayers);
     existingPlayers.forEach(value => {
       this.playerJoined(value.id, value.character, value.handle, value.x, value.y);
     });
@@ -136,17 +152,11 @@ export default class GameScene extends BaseScene {
   }
 
   playerJoined(id, character, handle, x, y) {
-    character = character == 'priest' ? 'priest_hero' : character; //Temp fix for compatibility with old clients
     console.log('playerJoined');
-    if(this.clientId !== id) {
-      let remotePlayer = new Character(this, x, y, character);
-      this.players.set(id, remotePlayer);
-      remotePlayer.id = id;
-      //remotePlayer.setHandle(handle);
-    }
-    else {
-      console.log('this should never happen!!!!!');
-    }
+    let remotePlayer = new Character(this, x, y, character);
+    this.players.set(id, remotePlayer);
+    remotePlayer.id = id;
+    //remotePlayer.setHandle(handle);
   }
 
   playerLeft(id) {

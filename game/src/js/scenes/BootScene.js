@@ -1,4 +1,6 @@
-export default class BootScene extends Phaser.Scene {
+import BaseScene from './BaseScene';
+
+export default class BootScene extends BaseScene {
 
   constructor() {
     super({key: 'BootScene'});
@@ -10,7 +12,7 @@ export default class BootScene extends Phaser.Scene {
   }
 
   create() {
-    this.scene.start('LoaderScene');
+    this.changeToScene('LoaderScene');
   }
 
 }
