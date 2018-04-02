@@ -112,6 +112,10 @@
     {
       "key": "settings",
       "data": "html/settings.html"
+    },
+    {
+      "key": "quitGame",
+      "data": "html/quitGame.html"
     }
   ],
   "cache": [

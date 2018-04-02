@@ -27,7 +27,23 @@ export default class GameScene extends BaseScene {
 
     this.controller = new Controller(this);
     this.input.keyboard.on('keydown_ESC', () => {
-      //TODO: Quit game
+      if(this.currentModal) return;
+      this.currentModal = new DOMModal(this, 'quitGame', {
+        width: 'auto',
+        acceptButtonSelector: '.exit',
+        cancelButtonSelector: '#stay',
+        onAccept: (modal) => {
+          modal.close();
+          this.currentModal = null;
+          this.socket.emit('leaveGame');
+          this.socket.disconnect();
+          this.changeToScene('TitleScene');
+        },
+        onCancel: (modal) => {
+          modal.close();
+          this.currentModal = null;
+        }
+      });
     }, this);
 
     this.input.keyboard.on('keydown_Q', function () {
@@ -88,15 +104,18 @@ export default class GameScene extends BaseScene {
     projectile.destroy();
     if(character.hit(projectile)) { //If the hit causes the player to die
       this.socket.emit('die', character.x, character.y, projectile.props.owner.id);
-      new DOMModal(this, 'killed', {
+      if(this.currentModal) this.currentModal.close();
+      this.currentModal = new DOMModal(this, 'killed', {
         acceptButtonSelector: '#respawn',
         cancelButtonSelector: '.exit',
         onAccept: (modal) => {
           modal.close();
+          this.currentModal = null;
           this.socket.emit('respawn');
         },
         onCancel: (modal) => {
           modal.close();
+          this.currentModal = null;
           this.socket.emit('leaveGame');
           this.socket.disconnect();
           this.changeToScene('TitleScene');
@@ -121,7 +140,6 @@ export default class GameScene extends BaseScene {
 
   existingPlayers(existingPlayers) {
     console.log('existingPlayers');
-    console.log(existingPlayers);
     existingPlayers.forEach(value => {
       this.playerJoined(value.id, value.character, value.handle, value.x, value.y);
     });

@@ -1,6 +1,7 @@
 import BaseScene from './BaseScene';
 import Controller from '../util/Controller';
 import Character from 'objects/Character';
+import DOMModal from 'objects/ui/DOMModal';
 
 export default class DungeonScene extends BaseScene {
 
@@ -24,7 +25,19 @@ export default class DungeonScene extends BaseScene {
 
     this.controller = new Controller(this);
     this.input.keyboard.on('keydown_ESC', function () {
-      //TODO: Quit game
+      if(this.currentModal) return;
+      this.currentModal = new DOMModal(this, 'quitGame', {
+        width: 'auto',
+        acceptButtonSelector: '.exit',
+        cancelButtonSelector: '#stay',
+        onAccept: (modal) => {
+          modal.close();
+          this.changeToScene('TitleScene');
+        },
+        onCancel: (modal) => {
+          modal.close();
+        }
+      });
     }, this);
 
     this.input.keyboard.on('keydown_PLUS', function () {
