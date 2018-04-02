@@ -9,14 +9,13 @@ export default class TitleScene extends BaseScene {
   constructor() {
     super({key: 'TitleScene'});
   }
-
-  init() {
-    this.online = navigator.onLine;
-    window.addEventListener('online',  this.onlineIndicator.bind(this));
-    window.addEventListener('offline', this.onlineIndicator.bind(this));
-  }
   
   preload() {
+    let serverConfig = this.cache.json.get('config');
+    this.server.connect(serverConfig.protocol, serverConfig.host, serverConfig.ioport);
+    this.server.requestEvents();
+    this.server.on('serverConnected', this.serverConnected, this);
+    this.server.on('serverDisconnected', this.serverDisconnected, this);
   }
 
   create() {
@@ -28,7 +27,9 @@ export default class TitleScene extends BaseScene {
     logo.setStroke('#ae7f00', 16);
     
     //multi player button
-    this.multiPlayerButton = new Button(this, 450, 250, 'PLAY MULTI PLAYER', !this.online);
+    this.multiPlayerButton = new Button(this, 450, 250, 'PLAY MULTI PLAYER', {
+      disabled: !this.server.isConnected()
+    });
     this.multiPlayerButton.buttonDown(() => {
       this.changeToScene('CharacterSelectionScene', {type: 'multi_player'});
     });
@@ -87,9 +88,11 @@ export default class TitleScene extends BaseScene {
   update() {
   }
 
-  onlineIndicator() {
-    this.online = navigator.onLine;
-    this.multiPlayerButton.setDisabled(!this.online);
+  serverConnected() {
+    this.multiPlayerButton.setDisabled(false);
   }
 
+  serverDisconnected() {
+    this.multiPlayerButton.setDisabled(true);
+  }
 }
