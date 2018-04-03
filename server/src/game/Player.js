@@ -8,7 +8,7 @@ export default class Player {
     
     this.reset();
 
-    socket.emit('setId', socket.id);
+    socket.emit('setId', this.id);
 
     socket.on('joinGame', this.joinGame.bind(this));
     socket.on('leaveGame', this.leaveGame.bind(this));
