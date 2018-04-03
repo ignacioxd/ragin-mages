@@ -51,7 +51,7 @@ const paths = {
   },
   config: {
     entry:'../config/config.json',
-    dest:'config.json'
+    dest:'./build/assets/json'
   }
 };
 
@@ -92,12 +92,12 @@ gulp.task('config-dev', function() {
     .pipe(jsonModify({ key: 'protocol', value: testProtocol }))
     .pipe(jsonModify({ key: 'host', value: testHost }))
     .pipe(jsonModify({ key: 'port', value: testPort }))
-    .pipe(gulp.dest(paths.build));
+    .pipe(gulp.dest(paths.config.dest));
 });
 
 gulp.task('config-dist', function() {
   gulp.src(paths.config.entry)
-    .pipe(gulp.dest(paths.build));
+    .pipe(gulp.dest(paths.config.dest));
 });
 
 gulp.task('copy-assets', function() {

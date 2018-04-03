@@ -85,7 +85,7 @@
   "json": [
     {
       "key": "config",
-      "data": "../config.json"
+      "data": "json/config.json"
     },
     {
       "key": "characters",
@@ -124,6 +124,7 @@
     "js/socket.io.js",
     "js/game.js",
     "css/main.css",
+    "assets/assets.json",
     "https://fonts.googleapis.com/css?family=Jim+Nightshade%7CFjalla+One%7CNoto+Sans",
     "https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js"
   ]
