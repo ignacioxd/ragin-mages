@@ -43,73 +43,57 @@ self.addEventListener('message', e => {
       )
     )
   }
-  if(e.data.cache) {
+  if(e.data.action === 'loadAssets') {
     caches.open(RM_CACHE).then(function(cache) {
-      cache.addAll(e.data.cache);
-    });
-  }
-  if(e.data.image) {
-    let imageUrls = [];
-    e.data.image.forEach(function(image) {
-      imageUrls.push('assets/' + image.texture);
-    })
-
-    caches.open(RM_CACHE).then(function(cache) {
-      cache.addAll(imageUrls);
-    });
-  }
-  if(e.data.spritesheet) {
-    let spritesheetUrls = [];
-    e.data.spritesheet.forEach(function(spritesheet) {
-      spritesheetUrls.push('assets/' + spritesheet.texture);
-    })
-
-    caches.open(RM_CACHE).then(function(cache) {
-      cache.addAll(spritesheetUrls);
-    });
-  }
-  if(e.data.atlas) {
-    let atlasUrls = [];
-    e.data.atlas.forEach(function(atlas) {
-      atlasUrls.push('assets/' + atlas.texture);
-    })
-
-    caches.open(RM_CACHE).then(function(cache) {
-      cache.addAll(atlasUrls);
-    });
-  }
-  if(e.data.tileMap) {
-    let tileMapJsons = [];
-    e.data.tileMap.forEach(function(tileMap) {
-      tileMapJsons.push('assets/' + tileMap.data);
-    })
-
-    caches.open(RM_CACHE).then(function(cache) {
-      cache.addAll(tileMapJsons);
-    });
-  }
-  if(e.data.json) {
-    let jsonUrls = [];
-    e.data.json.forEach(function(json) {
-      jsonUrls.push('assets/' + json.data);
-    })
-
-    caches.open(RM_CACHE).then(function(cache) {
-      cache.addAll(jsonUrls);
-    });
-  }
-  if(e.data.html) {
-    let htmlUrls = [];
-    e.data.html.forEach(function(html) {
-      htmlUrls.push('assets/' + html.data);
-    })
-
-    caches.open(RM_CACHE).then(function(cache) {
-      cache.addAll(htmlUrls);
+      if(e.data.assets.cache) {
+        cache.addAll(e.data.assets.cache);
+      }
+      if(e.data.assets.image) {
+        let imageUrls = [];
+        e.data.assets.image.forEach(function(image) {
+          imageUrls.push('assets/' + image.texture);
+        })
+        cache.addAll(imageUrls);
+      }
+      if(e.data.assets.spritesheet) {
+        let spritesheetUrls = [];
+        e.data.assets.spritesheet.forEach(function(spritesheet) {
+          spritesheetUrls.push('assets/' + spritesheet.texture);
+        })
+        cache.addAll(spritesheetUrls);
+      }
+      if(e.data.assets.atlas) {
+        let atlasUrls = [];
+        e.data.assets.atlas.forEach(function(atlas) {
+          atlasUrls.push('assets/' + atlas.texture);
+        })
+        cache.addAll(atlasUrls);
+      }
+      if(e.data.assets.tileMap) {
+        let tileMapJsons = [];
+        e.data.assets.tileMap.forEach(function(tileMap) {
+          tileMapJsons.push('assets/' + tileMap.data);
+        })
+        cache.addAll(tileMapJsons);
+      }
+      if(e.data.assets.json) {
+        let jsonUrls = [];
+        e.data.assets.json.forEach(function(json) {
+          jsonUrls.push('assets/' + json.data);
+        })
+        cache.addAll(jsonUrls);
+      }
+      if(e.data.assets.html) {
+        let htmlUrls = [];
+        e.data.assets.html.forEach(function(html) {
+          htmlUrls.push('assets/' + html.data);
+        })
+        cache.addAll(htmlUrls);
+      }
     })
   }
 });
-
+  
 // function fetchAsset(req) {
 //   return caches.open(RM_CACHE).then(cache =>
 //     cache.match(req.url).then(res =>

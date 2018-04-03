@@ -77,10 +77,9 @@ export default class ServiceWorker {
   }
 
   fetchAssets(assets) {
-    console.log('fetchAssets:', assets);
     navigator.serviceWorker.getRegistrations().then(function(registrations) { 
       for(let registration of registrations) {
-        registration.active.postMessage(assets);
+        registration.active.postMessage({ action: 'loadAssets', assets: assets});
       }
     })
   }
