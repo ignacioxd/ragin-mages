@@ -6,8 +6,9 @@
   "description": "Phaser game server",
   "main": "src/index.js",
   "scripts": {
-    "start": "node build/index.js",
-    "build": "gulp build"
+    "start": "node node_modules/cross-env/dist/bin/cross-env.js PORT=3030 node build/index.js",
+    "build": "gulp build",
+    "clean": "gulp clean"
   },
   "repository": {
     "type": "git",
@@ -21,6 +22,7 @@
   "devDependencies": {
     "@babel/core": "^7.0.0-beta.40",
     "@babel/preset-env": "^7.0.0-beta.40",
+    "cross-env": "^5.1.4",
     "del": "^3.0.0",
     "gulp": "^3.9.1",
     "gulp-babel": "^8.0.0-beta.1",

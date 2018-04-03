@@ -60,7 +60,7 @@ export default class GameScene extends BaseScene {
       if(this.localCharacter && event.buttons === 1) {
         let worldX = event.x + event.camera.scrollX * event.camera.zoom;
         let worldY = event.y + event.camera.scrollY * event.camera.zoom;
-        this.localCharacter.fire(worldX, worldY, this.server.clientId);
+        this.localCharacter.fire(worldX, worldY, this.server.getClientId());
         this.server.send('fire', this.localCharacter.x, this.localCharacter.y, worldX, worldY);
       }
     }, this);
@@ -185,7 +185,8 @@ export default class GameScene extends BaseScene {
   }
 
   playerDied(id, x, y, killedById) {
-    if(killedById == this.server.clientId) {
+    console.log(this.server.getClientId());
+    if(killedById == this.server.getClientId()) {
       this.localCharacter.stats.kills++; 
     }
     console.log('playerDied');

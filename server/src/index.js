@@ -2,6 +2,7 @@
 import express from 'express';
 import http from 'http';
 import io from 'socket.io';
+import config from './config.json';
 
 import PlayerManager from './game/PlayerManager';
 
@@ -17,8 +18,9 @@ app.use((req, res, next) => {
   next();
 });
 
-server.listen(3030, function() {
-  console.log('Server listening on *:3030 (e.g., http://localhost:3030)');
+const port = process.env.PORT || config.port;
+server.listen(port, function() {
+  console.log(`Server listening on *:${port} (e.g., http://localhost:${port})`);
 });
 
 socketio.listen(server);

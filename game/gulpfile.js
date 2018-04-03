@@ -16,11 +16,11 @@ let jsonModify = require('gulp-json-modify');
 /******* NOTE: When testing using SocketIO to your local server set the variables below to the SocketIO server
         That you wish to communicate with
         This setting will be used when you do "yarn start" for socket communication
-        If you do a yarn build it will use the production server raginmages.net
+        If you do a yarn build it will use the production server specified in the config file
 */
 let testProtocol= 'http';
 let testHost = 'localhost';
-let testIOPort = 3030;
+let testPort = 3030;
 
 /************End test server configuation settings ******************/
 
@@ -83,18 +83,15 @@ gulp.task('clean', function() {
 gulp.task('copy-static', ['copy-html', 'copy-assets', 'copy-phaser', 'copy-socket']);
 
 gulp.task('copy-html', function() {
-  gulp.src([paths.base + '/index.html', paths.base + '/manifest.json'])
+  gulp.src([paths.base + '/*'])
     .pipe(gulp.dest(paths.build));
-  
-  gulp.src(paths.base + '/templates/**/*')
-    .pipe(gulp.dest(paths.build+'/templates'));
 });
 
 gulp.task('config-dev', function() {
   gulp.src(paths.config.entry)
     .pipe(jsonModify({ key: 'protocol', value: testProtocol }))
     .pipe(jsonModify({ key: 'host', value: testHost }))
-    .pipe(jsonModify({ key: 'ioport', value: testIOPort }))
+    .pipe(jsonModify({ key: 'port', value: testPort }))
     .pipe(gulp.dest(paths.build));
 });
 

@@ -12,6 +12,10 @@ export default class Server extends EventEmitter {
     return Server.socket ? Server.socket.connected : false;
   }
 
+  getClientId() {
+    return Server.clientId;
+  }
+
   requestEvents() {
     if(!Server.socket) {
       throw new Error('Socket connection not attempted. Try opening a connection first.');
