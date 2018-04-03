@@ -10,12 +10,13 @@ const paths = {
   script: {
     src: './src',
     dest: './build'
-  }
+  },
+  config: '../config/config.json'
 };
 
 gulp.task('default', ['build']);
 
-gulp.task('build', [ 'lint', 'scripts']);
+gulp.task('build', [ 'lint', 'scripts', 'config']);
 
 gulp.task('serve', ['build'], function() {
   gulp.watch(paths.script.src + '/**/*.js', ['lint', 'scripts']);
@@ -37,5 +38,10 @@ gulp.task('scripts', function() {
     .pipe(sourcemaps.init())
     .pipe(babel())
     .pipe(sourcemaps.write('.'))
+    .pipe(gulp.dest(paths.build));
+});
+
+gulp.task('config', function() {
+  gulp.src(paths.config)
     .pipe(gulp.dest(paths.build));
 });
