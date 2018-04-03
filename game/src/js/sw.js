@@ -32,9 +32,9 @@ self.addEventListener('fetch', e => {
 });
 
 self.addEventListener('message', e => {
-  if(e.data.action === 'skipWaiting') {
-    self.skipWaiting();
-  }
+  // if(e.data.action === 'skipWaiting') {
+  //   self.skipWaiting();
+  // }
   if(e.data.action === 'deleteCache') {
     caches.keys().then(cacheNames =>
       Promise.all(cacheNames

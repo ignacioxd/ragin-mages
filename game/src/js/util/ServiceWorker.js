@@ -7,53 +7,58 @@ export default class ServiceWorker {
   register() {
     ServiceWorker.requireSWSupport();
 
-    return new Promise(function(resolve,reject) {
+    return new Promise((resolve,reject) => {
       navigator.serviceWorker.register('/sw.js', { scope: '/' })
         .then(reg => {
-          resolve();
           if(!navigator.serviceWorker.controller) {
+            this.trackInstalling(reg.installing, resolve, reject);
             return;
-          }
+          }          
+          
+          // if(reg.waiting) {
+          //   this.updateReady(reg.waiting);
+          //   return;
+          // }
 
-          if(reg.waiting) {
-            this.updateReady(reg.waiting);
-            return;
-          }
 
+          // if(reg.installing) {
+          //   this.trackInstalling(reg.installing, resolve, reject);
+          //   return;
+          // }
 
-          if(reg.installing) {
-            this.trackInstalling(reg.installing);
-            return;
-          }
-
-          reg.addEventListener('updatefound', () => {
-            this.trackInstalling(reg.installing);
-          });
+          // reg.addEventListener('updatefound', () => {
+          //   this.trackInstalling(reg.installing, resolve, reject);
+          // });
         }).catch(function(err) {
           // registration failed
           reject(err);
         })
-    });
+    })
   }
 
-  updateReady(worker) {
-    const shouldUpdate = confirm('Game update available! Reload?');
-    if(shouldUpdate) {
-      worker.postMessage({ action: 'skipWaiting' });
-      return;
-    }
-  }
+  // updateReady(worker) {
+  //   const shouldUpdate = confirm('Game update available! Reload?');
+  //   if(shouldUpdate) {
+  //     worker.postMessage({ action: 'skipWaiting' });
+  //     return;
+  //   }
+  // }
 
-  trackInstalling(worker) {
+  trackInstalling(worker, resolve, reject) {
     worker.addEventListener('statechange', () => {
-      if(worker.state === 'installed') {
-        this.updateReady(worker);
-      }
+      // if(worker.state === 'installed') {
+      //   this.updateReady(worker);
+      // }
 
       if(worker.state === 'activated') {
-        if(this.refreshing) return;
-        window.location.reload();
-        this.refreshing = true;
+        resolve();
+        // if(this.refreshing) return;
+        // window.location.reload();
+        // this.refreshing = true;
+      }
+
+      if(worker.state === 'redundant') {
+        reject();
       }
     });
   }
