@@ -76,7 +76,7 @@ export default class ServiceWorker {
     return navigator.serviceWorker.controller != null;
   }
 
-  fetchAssets(assets) {
+  cacheAssets(assets) {
     navigator.serviceWorker.getRegistrations().then(function(registrations) { 
       for(let registration of registrations) {
         registration.active.postMessage({ action: 'loadAssets', assets: assets});

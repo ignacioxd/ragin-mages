@@ -77,7 +77,7 @@ export default class TitleScene extends BaseScene {
       checkbox.onPointerDown(function(obj) {
         if(obj.isChecked()) {
           serviceWorker.register().then(function() {
-            serviceWorker.fetchAssets(assets);
+            serviceWorker.cacheAssets(assets);
           })
         }
         else {
