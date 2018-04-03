@@ -5,6 +5,7 @@ export default class PlayerManager {
     this.io = socketio;
     
     this.players = new Map();
+    this.leaderBoard = [];
 
     this.io.on('connection', this.playerConnected.bind(this));
   }
@@ -24,6 +25,8 @@ export default class PlayerManager {
     let player = new Player(this, socket);
     this.players.set(socket, player);
 
+    this.leaderBoard.push(player);
+    
     console.log('Player connected', player.id);
     console.log(this.players.size, 'players connected');
 

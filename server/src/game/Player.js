@@ -8,7 +8,7 @@ export default class Player {
     
     this.reset();
 
-    socket.emit('setId', socket.id);
+    socket.emit('setId', this.id);
 
     socket.on('joinGame', this.joinGame.bind(this));
     socket.on('leaveGame', this.leaveGame.bind(this));
@@ -27,6 +27,7 @@ export default class Player {
       motionVector: {x: 0, y: 0},
       lastUpdate: 0
     };
+    this.resetStats();
   }
 
   joinGame(character, handle) {
@@ -96,7 +97,13 @@ export default class Player {
     //Notify everyone of this new player
     this.socket.to('game').emit('playerJoined', this.id, this.character, this.handle, this.position.x, this.position.y);
     this.socket.emit('spawn', this.position.x, this.position.y);
+    this.resetStats();
   }
 
-
+  resetStats(){
+    this.stats= {
+      kills: 0,
+      currentRank: 0,
+      highestRank: null};    
+  }
 }
