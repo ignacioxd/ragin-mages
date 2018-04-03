@@ -2,7 +2,6 @@ import BaseScene from './BaseScene';
 import Controller from '../util/Controller';
 import Character from 'objects/Character';
 import DOMModal from 'objects/ui/DOMModal';
-import FireMonster from 'objects/FireMonster';
 
 export default class DungeonScene extends BaseScene {
 
@@ -77,11 +76,22 @@ export default class DungeonScene extends BaseScene {
     --this.delay;
     ++this.virtualTime;
     if (this.delay <= 0) {
-      var newMonster = new FireMonster(this, 250 * (Math.random() - 0.5), 250 * (Math.random() - 0.5));
+      // Always creates a fire monster for now.  Will add other types later, but it's hard enough getting it working
+      // with just one for now.
+      const opts = {
+    projectileType: 'fire',
+    colliderSize: 70,
+    colliderOffsetX: 95,
+    colliderOffsetY: 60
+  }
+      var newMonster = new Character(this, 250 * (Math.random() - 0.5), 250 * (Math.random() - 0.5), 'fire_monster', opts);
       newMonster.setAI(this.localCharacter);
       this.enemyList.push(newMonster);
       this.characters.add(newMonster);
       
+      // Not sure how to do this.  May be incorrect.
+      this.physics.add.overlap(newMonster.projectiles, newMonster, null, this);
+
       // Set new delay for next monster.  Starts at 1 every 200 updates but increases over time.
       this.delay = 200 - Math.sqrt(this.virtualTime/15);
     }
