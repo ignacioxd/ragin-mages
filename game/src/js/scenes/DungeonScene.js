@@ -2,6 +2,7 @@ import BaseScene from './BaseScene';
 import Controller from '../util/Controller';
 import Character from 'objects/Character';
 import DOMModal from 'objects/ui/DOMModal';
+import FireMonster from 'objects/FireMonster';
 
 export default class DungeonScene extends BaseScene {
 
@@ -67,7 +68,7 @@ export default class DungeonScene extends BaseScene {
 
   create() {
     this.spawn(0,0);
-    this.delay = 10;
+    this.delay = 50;
     this.enemyList = [];
     this.virtualTime = 0;
   }
@@ -76,28 +77,17 @@ export default class DungeonScene extends BaseScene {
     --this.delay;
     ++this.virtualTime;
     if (this.delay <= 0) {
-      var newMonster;
-      const randomNumber = Math.random();
-      if (randomNumber < 0.25) {
-          newMonster = new FireMonster(this, 250 * (Math.random() - 0.5), 250 * (Math.random() - 0.5));
-      } else if (randomNumber < 0.5) {
-          newMonster = new IceMonster(this, 250 * (Math.random() - 0.5), 250 * (Math.random() - 0.5));
-      } else if (randomNumber < 0.75) {
-          newMonster = new SpiderMonster(this, 250 * (Math.random() - 0.5), 250 * (Math.random() - 0.5));
-      } else {
-          newMonster = new GolemMonster(this, 250 * (Math.random() - 0.5), 250 * (Math.random() - 0.5));
-      }
-      
-      newMonster.setAIOn(this.localCharacter);
-      this.enemyList.add(newMonster);
+      var newMonster = new FireMonster(this, 250 * (Math.random() - 0.5), 250 * (Math.random() - 0.5));
+      newMonster.setAI(this.localCharacter);
+      this.enemyList.push(newMonster);
       this.characters.add(newMonster);
       
-      // Set new delay for next monster.  Starts at 1 every 100 updates but increases over time.
-      this.delay = 100 - Math.sqrt(this.virtualTime/15);
+      // Set new delay for next monster.  Starts at 1 every 200 updates but increases over time.
+      this.delay = 200 - Math.sqrt(this.virtualTime/15);
     }
     
     for (let i = 0; i < this.enemyList.length; ++i) {
-      this.enemyList[i].AIUpdate(); 
+      this.enemyList[i].updateAI(); 
     }
     
     if(this.localCharacter) {
