@@ -2,6 +2,7 @@ import BaseScene from './BaseScene';
 import Controller from '../util/Controller';
 import Character from 'objects/Character';
 import DOMModal from 'objects/ui/DOMModal';
+import FireMonster from 'objects/FireMonster';
 
 export default class DungeonScene extends BaseScene {
 
@@ -67,10 +68,28 @@ export default class DungeonScene extends BaseScene {
 
   create() {
     this.spawn(0,0);
-
+    this.delay = 50;
+    this.enemyList = [];
+    this.virtualTime = 0;
   }
 
   update() {
+    --this.delay;
+    ++this.virtualTime;
+    if (this.delay <= 0) {
+      var newMonster = new FireMonster(this, 250 * (Math.random() - 0.5), 250 * (Math.random() - 0.5));
+      newMonster.setAI(this.localCharacter);
+      this.enemyList.push(newMonster);
+      this.characters.add(newMonster);
+      
+      // Set new delay for next monster.  Starts at 1 every 200 updates but increases over time.
+      this.delay = 200 - Math.sqrt(this.virtualTime/15);
+    }
+    
+    for (let i = 0; i < this.enemyList.length; ++i) {
+      this.enemyList[i].updateAI(); 
+    }
+    
     if(this.localCharacter) {
       const vector = this.controller.getWASDVector();
       this.localCharacter.setMotion(vector);

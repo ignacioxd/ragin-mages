@@ -90,7 +90,7 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
       this.setVelocity(vector.x * this.props.baseSpeed, vector.y * this.props.baseSpeed);
     }
     let animation = 'stance';
-    if(vector.length() != 0) {
+    if(vector.length != 0) {
       animation = 'walk';
       this.props.orientation = vector.y > 0 ? 'S' : (vector.y < 0 ? 'N' : '');
       this.props.orientation += vector.x > 0  ? 'E' : (vector.x < 0  ? 'W' : '');
@@ -198,6 +198,56 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
     }
     else if(animation.key.includes('death')) {
       character.destroy();
+    }
+  }
+  
+  // sets the character to use an AI, stalking and aiming at the player.
+  // doesn't deal with multiple opponents yet.
+  setAI(player) {
+    this.AIOn = true;
+    this.targetPlayer = player;
+
+  }
+
+  // turns off the current AI.
+  turnAIOff() {
+    this.AIOn = false;
+    this.targetPlayer = null;
+  }
+
+  // performs one tick worth of time of what the AI is going to do.
+  updateAI() {
+    if (this.isDead || !this.AIOn) {
+      return;
+    }
+    const targetXPosition = this.targetPlayer.x;
+    const targetYPosition = this.targetPlayer.y;
+    const xDifference = this.x - targetXPosition;
+    const yDifference = this.y - targetYPosition;
+    const distance = Math.sqrt(xDifference * xDifference + yDifference * yDifference);
+    if (distance > 300) {
+      return;
+    }
+    var xChange = 0;
+    var yChange = 0;
+    if (xDifference > 0) {
+      xChange = -10;
+    } else if (xDifference < 0) {
+      xChange = 10;
+    }
+    if (yDifference > 0) {
+      yChange = -10;
+    } else if (yDifference < 0) {
+      yChange = 10;
+    }
+    const vector = [xChange, yChange];
+    this.setMotion(vector);
+
+    // This is the firing part.  It has returned already if distance > 300 so it doesn't fire when far away.
+    // The +35 * random part is to make it not have perfect aim.  It should aim somewhat realistically.
+    const shouldFire = Math.random();
+    if (shouldFire > 0.85) {
+      this.fire(targetXPosition + 35 * (Math.random() - 0.5), targetYPosition + 35 * (Math.random() - 0.5));
     }
   }
 }
