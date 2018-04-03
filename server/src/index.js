@@ -17,8 +17,9 @@ app.use((req, res, next) => {
   next();
 });
 
-server.listen(3030, function() {
-  console.log('Server listening on *:3030 (e.g., http://localhost:3030)');
+const port = process.env.PORT || 3030;
+server.listen(port, function() {
+  console.log(`Server listening on *:${port} (e.g., http://localhost:${port})`);
 });
 
 socketio.listen(server);

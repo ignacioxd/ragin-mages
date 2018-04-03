@@ -12,7 +12,7 @@ export default class TitleScene extends BaseScene {
   
   preload() {
     let serverConfig = this.cache.json.get('config');
-    this.server.connect(serverConfig.protocol, serverConfig.host, serverConfig.ioport);
+    this.server.connect(serverConfig.protocol, serverConfig.host, serverConfig.port);
     this.server.requestEvents();
     this.server.on('serverConnected', this.serverConnected, this);
     this.server.on('serverDisconnected', this.serverDisconnected, this);
