@@ -67,11 +67,11 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
     this.setAnimation('stance', this.props.orientation);
 
     if(handle) {
-      this.handleText = scene.add.text(0, y - 80, handle, {
+      this.handleText = scene.add.text(x, y, handle, {
         fontSize: 14,
         fill: '#ffffff',
       });
-      this.handleText.setOrigin(0.5, 1);
+      this.handleText.setOrigin(0.5, 5.8);
       this.handleText.setStroke('#000000', 2);
       scene.physics.world.enable(this.handleText);
     }
@@ -164,6 +164,14 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
     this.setVelocity(x, y);
     if(this.handleText && this.handleText.body) {
       this.handleText.body.setVelocity(x, y);
+    }
+  }
+  
+
+  destroy() {
+    super.destroy();
+    if(this.handleText) {
+      this.handleText.destroy();
     }
   }
 

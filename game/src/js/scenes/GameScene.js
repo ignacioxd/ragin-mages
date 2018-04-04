@@ -131,7 +131,6 @@ export default class GameScene extends BaseScene {
 
 
   existingPlayers(existingPlayers) {
-    console.log('existingPlayers');
     existingPlayers.forEach(value => {
       this.playerJoined(value.id, value.character, value.handle, value.x, value.y);
     });
@@ -144,7 +143,6 @@ export default class GameScene extends BaseScene {
   }
 
   playerJoined(id, character, handle, x, y) {
-    console.log('playerJoined');
     let remotePlayer = new Character(this, x, y, character, handle);
     this.players.set(id, remotePlayer);
     remotePlayer.id = id;
@@ -152,7 +150,6 @@ export default class GameScene extends BaseScene {
   }
 
   playerLeft(id) {
-    console.log('playerLeft');
     let player = this.players.get(id);
     if(!player) return;
     player.die();
@@ -160,7 +157,6 @@ export default class GameScene extends BaseScene {
   }
 
   playerMoved(id, x, y, vecX, vecY) {
-    console.log('playerMoved');
     let player = this.players.get(id);
     if(!player) return;
     this.tweens.killTweensOf(player);
@@ -177,10 +173,16 @@ export default class GameScene extends BaseScene {
   }
 
   playerFired(id, fromX, fromY, toX, toY) {
-    console.log('playerFired');
     let player = this.players.get(id);
     if(!player) return;
-    player.setPosition(fromX, fromY);
+    this.tweens.killTweensOf(player);
+    this.tweens.add({
+      targets: [player, player.handleText],
+      x: fromX,
+      y: fromY,
+      duration: 50,
+      ease: 'Linear'
+    });
     let projectile = player.fire(toX, toY);
     this.projectiles.add(projectile);
   }
@@ -190,7 +192,6 @@ export default class GameScene extends BaseScene {
     if(killedById == this.server.getClientId()) {
       this.localCharacter.stats.kills++; 
     }
-    console.log('playerDied');
     let player = this.players.get(id);
     if(!player) return;
     this.tweens.killTweensOf(player);
