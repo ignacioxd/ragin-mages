@@ -56,7 +56,10 @@ export default class DungeonScene extends BaseScene {
       if(this.localCharacter && event.buttons === 1) {
         let worldX = event.x + event.camera.scrollX * event.camera.zoom;
         let worldY = event.y + event.camera.scrollY * event.camera.zoom;
-        this.player_projectiles.add(this.localCharacter.fire(worldX, worldY, this.clientId));
+        let projectile = (this.localCharacter.fire(worldX, worldY, this.clientId));
+        if (projectile) {
+	  this.player_projectiles.add(projectile);
+	}
       }
     }, this);
 
@@ -67,30 +70,32 @@ export default class DungeonScene extends BaseScene {
 
   }
 
- // TODO
   playerHit(projectile, character) {
     console.log("Player hit");
-    this.character_projectiles.remove(projectile);
+    this.player_projectiles.remove(projectile);
     projectile.destroy();
-    /*projectile.destroy();
+    this.player_character.remove(character);
     character.die();
-    new DOMModal('killed', {
+    // TODO: display stats.
+    new DOMModal(this, 'killed', {
       acceptButtonSelector: '#respawn',
       cancelButtonSelector: '.exit',
       onAccept: (modal) => {
         modal.close();
+        this.spawn(0, 0);
       },
       onCancel: (modal) => {
         modal.close();
         this.scene.start('TitleScene');
       }
-    });*/
+    });
   }
- // TODO
+
   enemyHit(projectile, character) {
     console.log("Enemy hit");
     this.enemy_projectiles.remove(projectile);
     projectile.destroy();
+    this.enemy_characters.remove(character);
     character.die();
     /*projectile.destroy();
     character.die();
