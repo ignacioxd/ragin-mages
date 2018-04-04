@@ -72,11 +72,14 @@ export default class TitleScene extends BaseScene {
     });
 
     if(ServiceWorker.isSupported()) {
+      const assets = this.cache.json.get('assets');
       let serviceWorker = new ServiceWorker();
       let checkbox = new Checkbox(this, 470, 550, 'ENABLE OFFLINE MODE', serviceWorker.isRegistered());
       checkbox.onPointerDown(function(obj) {
         if(obj.isChecked()) {
-          serviceWorker.register();
+          serviceWorker.register().then(function() {
+            serviceWorker.cacheAssets(assets);
+          })
         }
         else {
           serviceWorker.unregister();
