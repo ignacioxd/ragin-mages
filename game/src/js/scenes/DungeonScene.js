@@ -18,10 +18,12 @@ export default class DungeonScene extends BaseScene {
   preload() {
 
     //Create collision groups and event handling
-    this.projectiles = this.add.group();
-    this.characters = this.add.group();
-    this.physics.add.overlap(this.projectiles, this.characters, null, this);
-
+    this.player_character = this.add.group();
+    this.enemy_characters = this.add.group();
+    this.player_projectiles = this.add.group();
+    this.enemy_projectiles = this.add.group();
+    this.physics.add.overlap(this.player_projectiles, this.enemy_characters, this.enemyHit, null, this);
+    this.physics.add.overlap(this.enemy_projectiles, this.player_character, this.playerHit, null, this);
 
     this.controller = new Controller(this);
     this.input.keyboard.on('keydown_ESC', function () {
@@ -54,7 +56,7 @@ export default class DungeonScene extends BaseScene {
       if(this.localCharacter && event.buttons === 1) {
         let worldX = event.x + event.camera.scrollX * event.camera.zoom;
         let worldY = event.y + event.camera.scrollY * event.camera.zoom;
-        this.localCharacter.fire(worldX, worldY, this.clientId);
+        this.player_projectiles.add(this.localCharacter.fire(worldX, worldY, this.clientId));
       }
     }, this);
 
@@ -65,9 +67,49 @@ export default class DungeonScene extends BaseScene {
 
   }
 
+ // TODO
+  playerHit(projectile, character) {
+    console.log("Player hit");
+    this.character_projectiles.remove(projectile);
+    projectile.destroy();
+    /*projectile.destroy();
+    character.die();
+    new DOMModal('killed', {
+      acceptButtonSelector: '#respawn',
+      cancelButtonSelector: '.exit',
+      onAccept: (modal) => {
+        modal.close();
+      },
+      onCancel: (modal) => {
+        modal.close();
+        this.scene.start('TitleScene');
+      }
+    });*/
+  }
+ // TODO
+  enemyHit(projectile, character) {
+    console.log("Enemy hit");
+    this.enemy_projectiles.remove(projectile);
+    projectile.destroy();
+    character.die();
+    /*projectile.destroy();
+    character.die();
+    new DOMModal('killed', {
+      acceptButtonSelector: '#respawn',
+      cancelButtonSelector: '.exit',
+      onAccept: (modal) => {
+        modal.close();
+      },
+      onCancel: (modal) => {
+        modal.close();
+        this.scene.start('TitleScene');
+      }
+    });*/
+  }
+
   create() {
     this.spawn(0,0);
-    this.delay = 50;
+    this.delay = 100;
     this.enemyList = [];
     this.virtualTime = 0;
   }
@@ -76,24 +118,49 @@ export default class DungeonScene extends BaseScene {
     --this.delay;
     ++this.virtualTime;
     if (this.delay <= 0) {
-      // Always creates a fire monster for now.  Will add other types later, but it's hard enough getting it working
-      // with just one for now.
-      const opts = {
-    projectileType: 'fire',
-    colliderSize: 70,
-    colliderOffsetX: 95,
-    colliderOffsetY: 60
-  }
-      var newMonster = new Character(this, 250 * (Math.random() - 0.5), 250 * (Math.random() - 0.5), 'fire_monster', opts);
+      const monsterDeterminer = Math.random();
+    let opts;
+    let monsterName;
+    if (monsterDeterminer < 0.25) {
+      opts = {
+        projectileType: 'fire',
+        colliderSize: 70,
+        colliderOffsetX: 95,
+        colliderOffsetY: 60
+      }
+      monsterName = 'fire_monster';
+    } else if (monsterDeterminer < 0.5) {
+      opts = {
+        projectileType: 'ice',
+        colliderSize: 70,
+        colliderOffsetX: 88,
+        colliderOffsetY: 60
+      }
+      monsterName = 'ice_monster';
+    } else if (monsterDeterminer < 0.75) {
+      opts = {
+        projectileType: 'rock',
+        colliderSize: 70,
+        colliderOffsetX: 85,
+        colliderOffsetY: 70
+      }
+      monsterName = 'golem_monster';
+    } else {
+      opts = {
+        projectileType: 'ven',
+        colliderSize: 70,
+        colliderOffsetX: 84,
+        colliderOffsetY: 115
+      }
+      monsterName = 'spider_monster';
+    }
+      var newMonster = new Character(this, 450 * (Math.random() - 0.5), 450 * (Math.random() - 0.5), monsterName, opts);
       newMonster.setAI(this.localCharacter);
       this.enemyList.push(newMonster);
-      this.characters.add(newMonster);
-      
-      // Not sure how to do this.  May be incorrect.
-      this.physics.add.overlap(newMonster.projectiles, newMonster, null, this);
+      this.enemy_characters.add(newMonster);
 
-      // Set new delay for next monster.  Starts at 1 every 200 updates but increases over time.
-      this.delay = 200 - Math.sqrt(this.virtualTime/15);
+      // Set new delay for next monster.  Starts at 1 every 250 updates but increases over time.
+      this.delay = 250 - Math.sqrt(this.virtualTime/2);
     }
     
     for (let i = 0; i < this.enemyList.length; ++i) {
@@ -108,7 +175,7 @@ export default class DungeonScene extends BaseScene {
 
   spawn(x, y) {
     this.localCharacter = new Character(this, x, y, this.characterType);
-    this.characters.add(this.localCharacter); //this is us.
+    this.player_character.add(this.localCharacter); //this is us.
     this.cameras.main.startFollow(this.localCharacter);
   }
 }
