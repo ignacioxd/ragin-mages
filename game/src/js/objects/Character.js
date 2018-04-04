@@ -1,7 +1,7 @@
 import Projectile from 'objects/Projectile';
 
 export default class Character extends Phaser.Physics.Arcade.Sprite {
-  constructor(scene, x, y, key, options = {}) {
+  constructor(scene, x, y, key, handle, options = {}) {
     super(scene, x, y, key);
     
     //pull specific character config information from characters.json
@@ -65,6 +65,16 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
     this.isDead = false;
     this.setScale(this.props.scale);
     this.setAnimation('stance', this.props.orientation);
+
+    if(handle) {
+      this.handleText = scene.add.text(0, y - 80, handle, {
+        fontSize: 14,
+        fill: '#ffffff',
+      });
+      this.handleText.setOrigin(0.5, 1);
+      this.handleText.setStroke('#000000', 2);
+      scene.physics.world.enable(this.handleText);
+    }
     scene.add.existing(this);
   }
 
@@ -87,7 +97,7 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
     if(this.isDead || this.isFiring) return;
     this.props.motionVector = vector;
     if(move) {
-      this.setVelocity(vector.x * this.props.baseSpeed, vector.y * this.props.baseSpeed);
+      this.setGroupVelocity(vector.x * this.props.baseSpeed, vector.y * this.props.baseSpeed);
     }
     let animation = 'stance';
     if(vector.length() != 0) {
@@ -110,7 +120,7 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
     fireOrientation += projectile.props.motionVector.x > 0  ? 'E' : (projectile.props.motionVector.x < 0  ? 'W' : '');
     this.setAnimation('fight', fireOrientation);
     this.isFiring = true;
-    this.setVelocity(0, 0);
+    this.setGroupVelocity(0, 0);
     return projectile;
   }
 
@@ -134,7 +144,7 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
     this.stats.accuracy = this.stats.shots > 0 ? Math.round(this.stats.kills/this.stats.shots * 100 * 100) / 100 : 0;
     this.stats.timeAlive = Math.round((Date.now() - this.stats.timeBorn) / 1000 * 10)/10;
     this.setAnimation('death', this.props.orientation, true);
-    this.setVelocity(0, 0);
+    this.setGroupVelocity(0, 0);
   }
 
   shouldBroadcastMotion() {
@@ -148,6 +158,13 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
       return true;
     }
     return false;
+  }
+
+  setGroupVelocity(x, y) {
+    this.setVelocity(x, y);
+    if(this.handleText && this.handleText.body) {
+      this.handleText.body.setVelocity(x, y);
+    }
   }
 
   static buildAnimations(scene) {

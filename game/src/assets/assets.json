@@ -116,6 +116,10 @@
     {
       "key": "quitGame",
       "data": "html/quitGame.html"
+    },
+    {
+      "key": "nameSelection",
+      "data": "html/nameSelection.html"
     }
   ],
   "cache": [

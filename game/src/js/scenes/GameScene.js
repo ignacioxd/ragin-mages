@@ -14,6 +14,7 @@ export default class GameScene extends BaseScene {
 
   init(data) {
     this.characterType = data.character;
+    this.playerHandle = data.playerHandle;
   }
 
   preload() {
@@ -82,7 +83,7 @@ export default class GameScene extends BaseScene {
     this.server.on('playerDied', this.playerDied.bind(this));
     this.server.on('playerDisconnected', this.playerDisconnected.bind(this));
     
-    this.server.send('joinGame', this.characterType, '');
+    this.server.send('joinGame', this.characterType, this.playerHandle);
   }
 
   update() {
@@ -137,14 +138,14 @@ export default class GameScene extends BaseScene {
   }
 
   spawn(x, y) {
-    this.localCharacter = new Character(this, x, y, this.characterType);
+    this.localCharacter = new Character(this, x, y, this.characterType, this.playerHandle);
     this.characters.add(this.localCharacter); //this is us.
     this.cameras.main.startFollow(this.localCharacter);
   }
 
   playerJoined(id, character, handle, x, y) {
     console.log('playerJoined');
-    let remotePlayer = new Character(this, x, y, character);
+    let remotePlayer = new Character(this, x, y, character, handle);
     this.players.set(id, remotePlayer);
     remotePlayer.id = id;
     //remotePlayer.setHandle(handle);
@@ -164,7 +165,7 @@ export default class GameScene extends BaseScene {
     if(!player) return;
     this.tweens.killTweensOf(player);
     this.tweens.add({
-      targets: player,
+      targets: [player, player.handleText],
       x: x,
       y: y,
       duration: 50,
