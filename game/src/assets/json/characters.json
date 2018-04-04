@@ -7,18 +7,18 @@
     "projectile": {
       "type": "light",
       "baseRange": 1000,
-      "fireOffset": {"x": 0, "y": -150}
+      "fireoffset": {"x": 0, "y": -150}
     },
     "collider": {
       "size": 70,
       "offset": {"x": 87, "y": 80}
     },
-    "NameText": {
-	  "Offset": {"x": 0, "y": -40}
-	},
-    "HealthBar": {
-	  "Offset": {"x": 0, "y": 50}
-	}
+    "nameText": {
+        "offset": {"x": 0, "y": -40}
+    },
+    "healthBar": {
+        "offset": {"x": 0, "y": 50}
+    }
   },
   "priest_hero": {
     "name": "Avenging Priest",
@@ -29,18 +29,18 @@
     "projectile": {
       "type": "orb",
       "baseRange": 1000,
-      "fireOffset": {"x": 0, "y": -150}
+      "fireoffset": {"x": 0, "y": -150}
     },
     "collider": {
       "size": 70,
       "offset": {"x": 92, "y": 80}
     },
-    "NameText": {
-	  "Offset": {"x": 0, "y": -40}
-	},
-    "HealthBar": {
-	  "Offset": {"x": 0, "y": 50}
-	}
+    "nameText": {
+        "offset": {"x": 0, "y": -40}
+    },
+    "healthBar": {
+        "offset": {"x": 0, "y": 50}
+    }
   },
   "mage_hero":{
     "name": "Magical Mage",
@@ -51,18 +51,18 @@
     "projectile": {
       "type": "orb_p",
       "baseRange": 1000,
-      "fireOffset": {"x": 0, "y": -150}
+      "fireoffset": {"x": 0, "y": -150}
     },
     "collider": {
       "size": 70,
       "offset": {"x": 92, "y": 90}
     },
-    "NameText": {
-	  "Offset": {"x": 0, "y": -40}
-	},
-    "HealthBar": {
-	  "Offset": {"x": 0, "y": 50}
-	}
+    "nameText": {
+        "offset": {"x": 0, "y": -40}
+    },
+    "healthBar": {
+        "offset": {"x": 0, "y": 50}
+    }
   },
   "fire_monster":{
     "name": "Fire Monster",
@@ -73,18 +73,18 @@
     "projectile": {
       "type": "fire",
       "baseRange": 1000,
-      "fireOffset": {"x": 0, "y": -150}
+      "fireoffset": {"x": 0, "y": -150}
     },
     "collider": {
       "size": 70,
       "offset": {"x": 95, "y": 60}
     },
-    "NameText": {
-	  "Offset": {"x": 0, "y": -40}
-	},
-    "HealthBar": {
-	  "Offset": {"x": 0, "y": 50}
-	}
+    "nameText": {
+        "offset": {"x": 0, "y": -40}
+    },
+    "healthBar": {
+        "offset": {"x": 0, "y": 50}
+    }
   },
   "ice_monster":{
     "name": "Ice Monster",
@@ -95,18 +95,18 @@
     "projectile": {
       "type": "ice",
       "baseRange": 1000,
-      "fireOffset": {"x": 0, "y": -150}
+      "fireoffset": {"x": 0, "y": -150}
     },
     "collider": {
       "size": 70,
       "offset": {"x": 88, "y": 60}
     },
-    "NameText": {
-	  "Offset": {"x": 0, "y": -40}
-	},
-    "HealthBar": {
-	  "Offset": {"x": 0, "y": 50}
-	}
+    "nameText": {
+        "offset": {"x": 0, "y": -40}
+    },
+    "healthBar": {
+        "offset": {"x": 0, "y": 50}
+    }
   },
   "golem_monster":{
     "name": "Rock Golem",
@@ -117,18 +117,18 @@
     "projectile": {
       "type": "rock",
       "baseRange": 1000,
-      "fireOffset": {"x": 0, "y": -150}
+      "fireoffset": {"x": 0, "y": -150}
     },
     "collider": {
       "size": 70,
       "offset": {"x": 85, "y": 70}
     },
-    "NameText": {
-	  "Offset": {"x": 0, "y": -40}
-	},
-    "HealthBar": {
-	  "Offset": {"x": 0, "y": 50}
-	}
+    "nameText": {
+        "offset": {"x": 0, "y": -40}
+    },
+    "healthBar": {
+        "offset": {"x": 0, "y": 50}
+    }
   },
   "spider_monster":{
     "name": "Menacing Spider",
@@ -139,17 +139,17 @@
     "projectile": {
       "type": "ven",
       "baseRange": 1000,
-      "fireOffset": {"x": 0, "y": -150}
+      "fireoffset": {"x": 0, "y": -150}
     },
     "collider": {
       "size": 70,
       "offset": {"x": 84, "y": 115}
     },
-    "NameText": {
-	  "Offset": {"x": 0, "y": -40}
-	},
-    "HealthBar": {
-	  "Offset": {"x": 0, "y": 50}
-	}
+    "nameText": {
+        "offset": {"x": 0, "y": -40}
+    },
+    "healthBar": {
+        "offset": {"x": 0, "y": 50}
+    }
   }
 }
