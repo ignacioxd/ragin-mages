@@ -58,8 +58,8 @@ export default class DungeonScene extends BaseScene {
         let worldY = event.y + event.camera.scrollY * event.camera.zoom;
         let projectile = (this.localCharacter.fire(worldX, worldY, this.clientId));
         if (projectile) {
-	  this.player_projectiles.add(projectile);
-	}
+          this.player_projectiles.add(projectile);
+        }
       }
     }, this);
 
@@ -71,7 +71,6 @@ export default class DungeonScene extends BaseScene {
   }
 
   playerHit(projectile, character) {
-    console.log("Player hit");
     this.player_projectiles.remove(projectile);
     projectile.destroy();
     this.player_character.remove(character);
@@ -86,30 +85,16 @@ export default class DungeonScene extends BaseScene {
       },
       onCancel: (modal) => {
         modal.close();
-        this.scene.start('TitleScene');
+        this.changeToScene('TitleScene');
       }
     });
   }
 
   enemyHit(projectile, character) {
-    console.log("Enemy hit");
     this.enemy_projectiles.remove(projectile);
     projectile.destroy();
     this.enemy_characters.remove(character);
     character.die();
-    /*projectile.destroy();
-    character.die();
-    new DOMModal('killed', {
-      acceptButtonSelector: '#respawn',
-      cancelButtonSelector: '.exit',
-      onAccept: (modal) => {
-        modal.close();
-      },
-      onCancel: (modal) => {
-        modal.close();
-        this.scene.start('TitleScene');
-      }
-    });*/
   }
 
   create() {
@@ -124,42 +109,42 @@ export default class DungeonScene extends BaseScene {
     ++this.virtualTime;
     if (this.delay <= 0) {
       const monsterDeterminer = Math.random();
-    let opts;
-    let monsterName;
-    if (monsterDeterminer < 0.25) {
-      opts = {
-        projectileType: 'fire',
-        colliderSize: 70,
-        colliderOffsetX: 95,
-        colliderOffsetY: 60
+      let opts;
+      let monsterName;
+      if (monsterDeterminer < 0.25) {
+        opts = {
+          projectileType: 'fire',
+          colliderSize: 70,
+          colliderOffsetX: 95,
+          colliderOffsetY: 60
+        }
+        monsterName = 'fire_monster';
+      } else if (monsterDeterminer < 0.5) {
+        opts = {
+          projectileType: 'ice',
+          colliderSize: 70,
+          colliderOffsetX: 88,
+          colliderOffsetY: 60
+        }
+        monsterName = 'ice_monster';
+      } else if (monsterDeterminer < 0.75) {
+        opts = {
+          projectileType: 'rock',
+          colliderSize: 70,
+          colliderOffsetX: 85,
+          colliderOffsetY: 70
+        }
+        monsterName = 'golem_monster';
+      } else {
+        opts = {
+          projectileType: 'ven',
+          colliderSize: 70,
+          colliderOffsetX: 84,
+          colliderOffsetY: 115
+        }
+        monsterName = 'spider_monster';
       }
-      monsterName = 'fire_monster';
-    } else if (monsterDeterminer < 0.5) {
-      opts = {
-        projectileType: 'ice',
-        colliderSize: 70,
-        colliderOffsetX: 88,
-        colliderOffsetY: 60
-      }
-      monsterName = 'ice_monster';
-    } else if (monsterDeterminer < 0.75) {
-      opts = {
-        projectileType: 'rock',
-        colliderSize: 70,
-        colliderOffsetX: 85,
-        colliderOffsetY: 70
-      }
-      monsterName = 'golem_monster';
-    } else {
-      opts = {
-        projectileType: 'ven',
-        colliderSize: 70,
-        colliderOffsetX: 84,
-        colliderOffsetY: 115
-      }
-      monsterName = 'spider_monster';
-    }
-      var newMonster = new Character(this, 450 * (Math.random() - 0.5), 450 * (Math.random() - 0.5), monsterName, opts);
+      var newMonster = new Character(this, 450 * (Math.random() - 0.5), 450 * (Math.random() - 0.5), monsterName, null, opts);
       newMonster.setAI(this.localCharacter);
       this.enemyList.push(newMonster);
       this.enemy_characters.add(newMonster);

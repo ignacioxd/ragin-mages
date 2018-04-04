@@ -1,7 +1,7 @@
 import Projectile from 'objects/Projectile';
 
 export default class Character extends Phaser.Physics.Arcade.Sprite {
-  constructor(scene, x, y, key, handle, options = {}) {
+  constructor(scene, x, y, key, handle = null, options = {}) {
     super(scene, x, y, key);
     
     //pull specific character config information from characters.json
@@ -258,8 +258,8 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
       yChange = 1;
     }
     if (xChange != 0 || yChange != 0) {
-    let vector = new Phaser.Math.Vector2(xChange, yChange);
-    this.setMotion(vector);
+      let vector = new Phaser.Math.Vector2(xChange, yChange);
+      this.setMotion(vector);
     }
 
     // This is the firing part.  It has returned already if distance > 300 so it doesn't fire when far away.

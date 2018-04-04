@@ -87,7 +87,8 @@ export default class CharacterSelectionScene extends BaseScene {
     chkButton.key=btnData.key;
     chkButton.scene=scene;
     chkButton.buttonDown(() => {
-      this.changeToScene(this.gameType == 'multi_player' ? 'GameScene' : 'DungeonScene', {character: btnData.key, playerHandle: this.playerHandle.text});  
+      let handle = this.playerHandle ? this.playerHandle.text : null;
+      this.changeToScene(this.gameType == 'multi_player' ? 'GameScene' : 'DungeonScene', {character: btnData.key, playerHandle: handle});  
     });
 
     chkButton.on('pointerover', () => {
