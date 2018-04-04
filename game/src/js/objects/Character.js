@@ -249,8 +249,10 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
     // The +35 * random part is to make it not have perfect aim.  It should aim somewhat realistically.
     const shouldFire = Math.random();
     if (shouldFire > 0.9) {
-      const projectile = this.fire(targetXPosition + 35 * (Math.random() - 0.5), targetYPosition + 35 * (Math.random() - 0.5));
-      this.scene.enemy_projectiles.add(projectile);
+      let projectile = this.fire(targetXPosition + 35 * (Math.random() - 0.5), targetYPosition + 35 * (Math.random() - 0.5));
+      if (projectile) {
+        this.scene.enemy_projectiles.add(projectile);
+      }
     }
   }
 }
