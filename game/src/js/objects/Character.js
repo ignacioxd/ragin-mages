@@ -217,4 +217,59 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
       character.destroy();
     }
   }
+  
+  // sets the character to use an AI, stalking and aiming at the player.
+  // doesn't deal with multiple opponents yet.
+  setAI(player) {
+    this.AIOn = true;
+    this.targetPlayer = player;
+
+  }
+
+  // turns off the current AI.
+  turnAIOff() {
+    this.AIOn = false;
+    this.targetPlayer = null;
+  }
+
+  // performs one tick worth of time of what the AI is going to do.
+  updateAI() {
+    if (this.isDead || !this.AIOn || Math.random() < 0.8) {
+      return;
+    }
+    const targetXPosition = this.targetPlayer.x;
+    const targetYPosition = this.targetPlayer.y;
+    const xDifference = this.x - targetXPosition;
+    const yDifference = this.y - targetYPosition;
+    const distance = Math.sqrt(xDifference * xDifference + yDifference * yDifference);
+    if (distance > 350) {
+      return;
+    }
+    var xChange = 0;
+    var yChange = 0;
+    if (xDifference > 0) {
+      xChange = -1;
+    } else if (xDifference < 0) {
+      xChange = 1;
+    }
+    if (yDifference > 0) {
+      yChange = -1;
+    } else if (yDifference < 0) {
+      yChange = 1;
+    }
+    if (xChange != 0 || yChange != 0) {
+    let vector = new Phaser.Math.Vector2(xChange, yChange);
+    this.setMotion(vector);
+    }
+
+    // This is the firing part.  It has returned already if distance > 300 so it doesn't fire when far away.
+    // The +35 * random part is to make it not have perfect aim.  It should aim somewhat realistically.
+    const shouldFire = Math.random();
+    if (shouldFire > 0.9) {
+      let projectile = this.fire(targetXPosition + 35 * (Math.random() - 0.5), targetYPosition + 35 * (Math.random() - 0.5));
+      if (projectile) {
+        this.scene.enemy_projectiles.add(projectile);
+      }
+    }
+  }
 }
