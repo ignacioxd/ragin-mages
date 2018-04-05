@@ -266,7 +266,7 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
       yChange = 1;
     }
     if (xChange != 0 || yChange != 0) {
-      let vector = new Phaser.Math.Vector2(xChange, yChange);
+      let vector = new Phaser.Math.Vector2(xChange, yChange).normalize();
       this.setMotion(vector);
     }
 
