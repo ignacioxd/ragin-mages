@@ -85,6 +85,8 @@ export default class Player {
     this.position.x = posX;
     this.position.y = posY;
     this.socket.to('game').emit('playerDied', this.id, posX, posY, killedBy);
+    // console.log(this.playerManager);
+    this.playerManager.AddToKillCount(killedBy);
   }
 
   respawn() {
@@ -101,9 +103,14 @@ export default class Player {
   }
 
   resetStats(){
-    this.stats= {
-      kills: 0,
-      currentRank: 0,
-      highestRank: null};    
+    // this.stats= {
+    //   kills: 0,
+    //   currentRank: 0,
+    //   highestRank: null};    
+  
+    this.kills = 0;
+    this.currentRank = 0;
+    this.highestRank = null;
   }
+
 }

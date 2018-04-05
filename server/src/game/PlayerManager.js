@@ -36,4 +36,13 @@ export default class PlayerManager {
       console.log(this.players.size, 'players connected');
     });
   }
+
+  AddToKillCount(id){
+    let index=this.leaderBoard.findIndex((value) =>  value.id==id);
+    if (index>-1) {
+      console.log('add kill found',this.leaderBoard)
+      this.players[index].kills ++;
+    }
+    console.log('after killcount',this.leaderBoard);
+  }
 }
