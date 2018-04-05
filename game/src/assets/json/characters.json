@@ -9,7 +9,7 @@
     "projectile": {
       "type": "light",
       "baseRange": 1000,
-      "fireoffset": {"x": 0, "y": -150}
+      "fireOffset": {"x": 0, "y": -150}
     },
     "collider": {
       "size": 70,
@@ -32,7 +32,7 @@
     "projectile": {
       "type": "orb",
       "baseRange": 1000,
-      "fireoffset": {"x": 0, "y": -150}
+      "fireOffset": {"x": 0, "y": -150}
     },
     "collider": {
       "size": 70,
@@ -55,7 +55,7 @@
     "projectile": {
       "type": "orb_p",
       "baseRange": 1000,
-      "fireoffset": {"x": 0, "y": -150}
+      "fireOffset": {"x": 0, "y": -150}
     },
     "collider": {
       "size": 70,
@@ -78,7 +78,7 @@
     "projectile": {
       "type": "fire",
       "baseRange": 1000,
-      "fireoffset": {"x": 0, "y": -150}
+      "fireOffset": {"x": 0, "y": -150}
     },
     "collider": {
       "size": 70,
@@ -101,7 +101,7 @@
     "projectile": {
       "type": "ice",
       "baseRange": 1000,
-      "fireoffset": {"x": 0, "y": -150}
+      "fireOffset": {"x": 0, "y": -150}
     },
     "collider": {
       "size": 70,
@@ -124,7 +124,7 @@
     "projectile": {
       "type": "rock",
       "baseRange": 1000,
-      "fireoffset": {"x": 0, "y": -150}
+      "fireOffset": {"x": 0, "y": -150}
     },
     "collider": {
       "size": 70,
