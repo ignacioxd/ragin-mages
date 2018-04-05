@@ -68,10 +68,8 @@ export default class CharacterSelectionScene extends BaseScene {
           acceptButtonSelector: '#accept',
           onCancel: (modal) => {
             modal.close();
-            console.log("onCancel");
           },
           onAccept: (modal) => {
-            console.log("onAccept");
             modal.modal.querySelectorAll('input').forEach(element => {
               this.playerHandle.setText(element.value);
             });

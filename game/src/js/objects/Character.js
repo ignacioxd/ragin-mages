@@ -36,6 +36,7 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
   */
     this.stats = {
       kills: 0,
+      hitsInflicted: 0,
       shots: 0,
       accuracy: 0,
       timeBorn: Date.now(),

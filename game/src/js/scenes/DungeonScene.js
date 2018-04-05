@@ -96,10 +96,12 @@ export default class DungeonScene extends BaseScene {
   enemyHit(projectile, character) {
     this.enemy_projectiles.remove(projectile);
     projectile.destroy();
+    this.localCharacter.stats.hitsInflicted++;
 
-    this.localCharacter.stats.kills++; 
-    character.die();
-    this.enemy_characters.remove(character);
+    if(character.hit(projectile) && this.localCharacter) {
+      this.localCharacter.stats.kills++;
+      this.enemy_characters.remove(character);
+    }
   }
 
   create() {
@@ -114,42 +116,15 @@ export default class DungeonScene extends BaseScene {
     ++this.virtualTime;
     if (this.delay <= 0) {
       const monsterDeterminer = Math.random();
-      let opts;
-      let monsterName;
+      let monsterName = 'spider_monster';
       if (monsterDeterminer < 0.25) {
-        opts = {
-          projectileType: 'fire',
-          colliderSize: 70,
-          colliderOffsetX: 95,
-          colliderOffsetY: 60
-        }
         monsterName = 'fire_monster';
       } else if (monsterDeterminer < 0.5) {
-        opts = {
-          projectileType: 'ice',
-          colliderSize: 70,
-          colliderOffsetX: 88,
-          colliderOffsetY: 60
-        }
         monsterName = 'ice_monster';
       } else if (monsterDeterminer < 0.75) {
-        opts = {
-          projectileType: 'rock',
-          colliderSize: 70,
-          colliderOffsetX: 85,
-          colliderOffsetY: 70
-        }
         monsterName = 'golem_monster';
-      } else {
-        opts = {
-          projectileType: 'ven',
-          colliderSize: 70,
-          colliderOffsetX: 84,
-          colliderOffsetY: 115
-        }
-        monsterName = 'spider_monster';
       }
-      var newMonster = new Character(this, 450 * (Math.random() - 0.5), 450 * (Math.random() - 0.5), monsterName, null, opts);
+      var newMonster = new Character(this, 450 * (Math.random() - 0.5), 450 * (Math.random() - 0.5), monsterName);
       newMonster.setAI(this.localCharacter);
       this.enemyList.push(newMonster);
       this.enemy_characters.add(newMonster);
