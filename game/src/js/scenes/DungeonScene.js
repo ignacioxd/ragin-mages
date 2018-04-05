@@ -87,7 +87,8 @@ export default class DungeonScene extends BaseScene {
         onCancel: (modal) => {
           modal.close();
           this.changeToScene('TitleScene');
-        }
+        },
+        data: character.stats
       });
     }
   }
@@ -95,8 +96,10 @@ export default class DungeonScene extends BaseScene {
   enemyHit(projectile, character) {
     this.enemy_projectiles.remove(projectile);
     projectile.destroy();
-    this.enemy_characters.remove(character);
+
+    this.localCharacter.stats.kills++; 
     character.die();
+    this.enemy_characters.remove(character);
   }
 
   create() {
