@@ -35,7 +35,6 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
     console.log(this.stats.accurracy2()) //outputs numeric value
   */
     this.stats = {
-      health: 1,
       kills: 0,
       shots: 0,
       accuracy: 0,
@@ -72,7 +71,7 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
         fill: '#ffffff',
       });
       this.handleText.setOrigin(this.props.nameText.offset.x, this.props.nameText.offset.y);
-      this.handleText.setStroke('#000000', 2);
+      this.handleText.setStroke('#000000', 5);
       scene.physics.world.enable(this.handleText);
     }
     scene.add.existing(this);
@@ -130,9 +129,9 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
    */
   hit(projectile) {
     this.stats.hitsReceived++;
-    this.stats.health -= projectile.props.damage;
+    this.props.health -= projectile.props.damage;
 
-    if(this.stats.health <= 0) {
+    if(this.props.health <= 0) {
       this.die();
       return true;
     }
