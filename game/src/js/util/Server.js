@@ -30,6 +30,7 @@ export default class Server extends EventEmitter {
     Server.socket.on('playerLeft', this.playerLeft.bind(this));
     Server.socket.on('playerMoved', this.playerMoved.bind(this));
     Server.socket.on('playerFired', this.playerFired.bind(this));
+    Server.socket.on('playerHit', this.playerHit.bind(this));
     Server.socket.on('playerDied', this.playerDied.bind(this));
     Server.socket.on('playerDisconnected', this.playerDisconnected.bind(this));
   }
@@ -85,6 +86,11 @@ export default class Server extends EventEmitter {
   playerFired(id, fromX, fromY, toX, toY) {
     console.log('playerFired');
     this.emit('playerFired', id, fromX, fromY, toX, toY);
+  }
+
+  playerHit(id, x, y, damage, hitById) {
+    console.log('playerHit');
+    this.emit('playerHit', id, x, y, damage, hitById);
   }
 
   playerDied(id, x, y, killedById) {

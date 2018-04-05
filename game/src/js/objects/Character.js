@@ -128,9 +128,9 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
    * Inflict damage to player caused by projectile. Returns true if this hit causes the player to die or false otherwise.
    * @param {Projectile} projectile 
    */
-  hit(projectile) {
+  hit(damage) {
     this.stats.hitsReceived++;
-    this.props.health -= projectile.props.damage;
+    this.props.health -= damage;
 
     if(this.props.health <= 0) {
       this.die();
