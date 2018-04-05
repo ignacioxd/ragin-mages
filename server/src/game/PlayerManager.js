@@ -40,9 +40,45 @@ export default class PlayerManager {
   AddToKillCount(id){
     let index=this.leaderBoard.findIndex((value) =>  value.id==id);
     if (index>-1) {
-      console.log('add kill found',this.leaderBoard)
-      this.players[index].kills ++;
+      console.log('add kill found',id)
+      this.leaderBoard[index].kills ++;
     }
-    console.log('after killcount',this.leaderBoard);
+    this.UpdateRankings();
+    // console.log('after killcount',this.leaderBoard);
+  }
+
+  UpdateRankings(){
+    console.log('updating rankings');
+    this.leaderBoard.sort(function(char1,char2)  {
+      if (char1.kills < char2.kills)
+        return 1;
+      if (char1.kills > char2.kills)
+        return -1;
+      return 0;
+    });
+
+    this.leaderBoard.forEach( function (character,index) {
+      if (character.kills>0) {
+        character.currentRank=index+1;
+        if (character.currentRank<character.highestRank || character.highestRank==null) {
+          character.UpdateHighestRank(character.currentRank);
+          // character.highestRank=character.currentRank;
+          // //currently send message just to player that they have a new highest ranking
+          // character.socket.to('game').emit('highestRanking', character.highestRank);
+          // character.socket.emit('highestRanking', character.highestRank);
+          // console.log('sent',character.character,'rank',character.highestRank);
+        }
+      }
+    })
+  }
+
+  RemovePlayerFromLeaderBoard(id) {
+    const delIndex=this.leaderBoard.findIndex((value) =>  value.id==id);
+    // console.log('delete item',delIndex,this.leaderBoard[delIndex]);
+    if (delIndex>-1) {
+      console.log('removed', delIndex);
+      this.leaderBoard.splice(delIndex,1);
+    }
+    // console.log('after removal',this.leaderBoard);
   }
 }

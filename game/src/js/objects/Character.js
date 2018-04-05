@@ -167,6 +167,10 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
     }
   }
   
+  setHighestRanking(rank){
+    console.log('new ranking',rank);
+    this.stats.highestRanking=rank;    
+  }
 
   destroy() {
     super.destroy();

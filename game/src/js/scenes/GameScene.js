@@ -83,6 +83,7 @@ export default class GameScene extends BaseScene {
     this.server.on('playerHit', this.playerHit.bind(this));
     this.server.on('playerDied', this.playerDied.bind(this));
     this.server.on('playerDisconnected', this.playerDisconnected.bind(this));
+    this.server.on('highestRanking', this.playerHighestRanking.bind(this));
     
     this.server.send('joinGame', this.characterType, this.playerHandle);
   }
@@ -125,8 +126,6 @@ export default class GameScene extends BaseScene {
       this.server.send('hit', character.x, character.y, projectile.props.damage, projectile.props.owner.id);
     }
   }
-
-
 
   //WebSocket Messages
   serverConnected() {
@@ -231,5 +230,11 @@ export default class GameScene extends BaseScene {
     this.characters.remove(player);
     this.players.delete(id);
     player.die();
+  }
+
+  playerHighestRanking(rank){
+    console.log('ranking',rank);
+    if (!this.localCharacter) return;
+    this.localCharacter.stats.highestRanking=rank;
   }
 }
