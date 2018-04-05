@@ -71,23 +71,25 @@ export default class DungeonScene extends BaseScene {
   }
 
   playerHit(projectile, character) {
+    console.log(projectile);
     this.player_projectiles.remove(projectile);
     projectile.destroy();
-    this.player_character.remove(character);
-    character.die();
-    // TODO: display stats.
-    new DOMModal(this, 'killed', {
-      acceptButtonSelector: '#respawn',
-      cancelButtonSelector: '.exit',
-      onAccept: (modal) => {
-        modal.close();
-        this.spawn(0, 0);
-      },
-      onCancel: (modal) => {
-        modal.close();
-        this.changeToScene('TitleScene');
-      }
-    });
+    if(character.hit(projectile)) {
+      this.player_character.remove(character);
+      // TODO: display stats.
+      new DOMModal(this, 'killed', {
+        acceptButtonSelector: '#respawn',
+        cancelButtonSelector: '.exit',
+        onAccept: (modal) => {
+          modal.close();
+          this.spawn(0, 0);
+        },
+        onCancel: (modal) => {
+          modal.close();
+          this.changeToScene('TitleScene');
+        }
+      });
+    }
   }
 
   enemyHit(projectile, character) {
