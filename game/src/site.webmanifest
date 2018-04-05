@@ -1,0 +1,14 @@
+{
+    "name": "Ragin' Mages",
+    "short_name": "Ragin' Mages",
+    "icons": [
+        {
+            "src": "./android-chrome-72x72.png",
+            "sizes": "72x72",
+            "type": "image/png"
+        }
+    ],
+    "theme_color": "#ae7f00",
+    "background_color": "#000000",
+    "display": "standalone"
+}

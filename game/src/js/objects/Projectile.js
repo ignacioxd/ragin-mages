@@ -5,22 +5,32 @@ export default class Projectile extends Phaser.Physics.Arcade.Sprite {
     this.props = {
       ...{
         type: key,
-        scale: .4,
-        speed: 250,
         motionVector: new Phaser.Math.Vector2(targetX, targetY).subtract({x: x, y: y}).normalize(),
-        range: 1000
+        owner: null
       },
-      ...options};
+      ...scene.cache.json.get('projectiles')[key],
+      ...options
+    };
 
     this.anims.play(`proj_${key}-E`, true);
+
+    //Trail emitter
+    this.particles = scene.add.particles('trail');
+    this.emmiter = this.particles.createEmitter({
+      speed: 25,
+      scale: { start: this.props.scale / 4, end: 0 },
+      blendMode: 'ADD'
+    })
+    this.emmiter.startFollow(this);
 
     // Dynamically modify this sprite based on the type of projectile
     this.setSizeToFrame(scene.anims.anims.entries[`proj_${key}-E`].frames[0]);
 
     // Enable physics first to allow other transformations to apply to the physics layer
     scene.physics.world.enable(this);
-    // Set the size of the collider based on the type of projectile
-    this.setColliderSize(key);
+    
+    this.body.setCircle(this.props.collider.size);
+    this.setOffset(this.props.collider.offset.x, this.props.collider.offset.y);
 
     this.setRotation(this.props.motionVector.angle());
     this.setVelocity(this.props.motionVector.x * this.props.speed, this.props.motionVector.y * this.props.speed);
@@ -35,48 +45,19 @@ export default class Projectile extends Phaser.Physics.Arcade.Sprite {
       ease: 'Linear',
       delay: 0,
       duration: this.props.range,
-      onComplete: this._rangeReached,
+      onComplete: this.rangeReached,
       onCompleteParams: [ this ]
     });
     
   }
 
-  _rangeReached(tween, targets, projectile) {
+  destroy() {
+    super.destroy();
+    this.particles.destroy();
+  }
+
+  rangeReached(tween, targets, projectile) {
     projectile.destroy();
-  }  
-
-  setColliderSize(projectileType){
-    switch(projectileType){
-
-    case 'orb' :
-      this.body.setCircle(20);
-      break;
-      
-    case 'orb_p' :
-      this.body.setCircle(15);
-      break;
-      
-    case 'ven' :
-      this.body.setCircle(10);
-      break;
-      
-    case 'fire' :
-      this.body.setCircle(30);
-      break;
-      
-    case 'light' :
-      this.body.setCircle(20);
-      break;
-      
-    case 'ice' :
-      this.body.setCircle(20);
-      break;
-      
-    case 'rock' :
-      this.body.setCircle(20);
-      break;
-   
-    }
   }
   
   static buildAnimations(scene) {

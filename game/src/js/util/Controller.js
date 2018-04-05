@@ -19,18 +19,18 @@ export default class Controller {
     let x = 0;
     let y = 0;
 
-    if (this.cursors.up.isDown || this.keyW.isDown) {
+    if(this.cursors.up.isDown || this.keyW.isDown) {
       y = -1;
 
     }
-    if (this.cursors.down.isDown || this.keyS.isDown){
+    if(this.cursors.down.isDown || this.keyS.isDown){
       y += 1;
     }
 
-    if (this.cursors.left.isDown || this.keyA.isDown) {
+    if(this.cursors.left.isDown || this.keyA.isDown) {
       x = -1;
     }
-    if (this.cursors.right.isDown || this.keyD.isDown) {
+    if(this.cursors.right.isDown || this.keyD.isDown) {
       x += 1;
     }
 
