@@ -71,7 +71,7 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
         fill: '#ffffff',
       });
       this.handleText.setOrigin(0.5, 5.8);
-      this.handleText.setStroke('#000000', 2);
+      this.handleText.setStroke('#000000', 5);
       scene.physics.world.enable(this.handleText);
     }
     scene.add.existing(this);
