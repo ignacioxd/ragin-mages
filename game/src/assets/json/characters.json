@@ -15,7 +15,7 @@
       "offset": {"x": 87, "y": 80}
     },
     "nameText": {
-        "offset": {"x": 0.5, "y": 5.8}
+        "offset": {"x": 0.5, "y": 5.5}
     },
     "healthBar": {
         "offset": {"x": 0.5, "y": -5.8}
@@ -37,7 +37,7 @@
       "offset": {"x": 92, "y": 80}
     },
     "nameText": {
-        "offset": {"x": 0.5, "y": 5.8}
+        "offset": {"x": 0.5, "y": 5.5}
     },
     "healthBar": {
         "offset": {"x": 0.5, "y": -5.8}
@@ -59,7 +59,7 @@
       "offset": {"x": 92, "y": 90}
     },
     "nameText": {
-        "offset": {"x": 0.5, "y": 5.8}
+        "offset": {"x": 0.5, "y": 5.0}
     },
     "healthBar": {
         "offset": {"x": 0.5, "y": -5.8}
@@ -81,7 +81,7 @@
       "offset": {"x": 95, "y": 60}
     },
     "nameText": {
-        "offset": {"x": 0.5, "y": 5.8}
+        "offset": {"x": 0.5, "y": 5.6}
     },
     "healthBar": {
         "offset": {"x": 0.5, "y": -5.8}
@@ -125,7 +125,7 @@
       "offset": {"x": 85, "y": 70}
     },
     "nameText": {
-        "offset": {"x": 0.5, "y": 5.8}
+        "offset": {"x": 0.5, "y": 5.6}
     },
     "healthBar": {
         "offset": {"x": 0.5, "y": -5.8}
@@ -147,7 +147,7 @@
       "offset": {"x": 84, "y": 115}
     },
     "nameText": {
-        "offset": {"x": 0.5, "y": 5.8}
+        "offset": {"x": 0.5, "y": 3.5}
     },
     "healthBar": {
         "offset": {"x": 0.5, "y": -5.8}
