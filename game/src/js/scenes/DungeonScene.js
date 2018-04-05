@@ -74,7 +74,7 @@ export default class DungeonScene extends BaseScene {
     console.log(projectile);
     this.player_projectiles.remove(projectile);
     projectile.destroy();
-    if(character.hit(projectile)) {
+    if(character.hit(projectile.props.damage)) {
       this.player_character.remove(character);
       // TODO: display stats.
       new DOMModal(this, 'killed', {
@@ -98,7 +98,7 @@ export default class DungeonScene extends BaseScene {
     projectile.destroy();
     this.localCharacter.stats.hitsInflicted++;
 
-    if(character.hit(projectile) && this.localCharacter) {
+    if(character.hit(projectile.props.damage) && this.localCharacter) {
       this.localCharacter.stats.kills++;
       this.enemy_characters.remove(character);
     }

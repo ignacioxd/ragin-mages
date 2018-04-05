@@ -22,7 +22,7 @@ export default class GameScene extends BaseScene {
     //Create collision groups and event handling
     this.projectiles = this.add.group();
     this.characters = this.add.group();
-    this.physics.add.overlap(this.projectiles, this.characters, this.playerHit, null, this);
+    this.physics.add.overlap(this.projectiles, this.characters, this.localCollision, null, this);
 
 
     this.controller = new Controller(this);
@@ -80,6 +80,7 @@ export default class GameScene extends BaseScene {
     this.server.on('playerLeft', this.playerLeft.bind(this));
     this.server.on('playerMoved', this.playerMoved.bind(this));
     this.server.on('playerFired', this.playerFired.bind(this));
+    this.server.on('playerHit', this.playerHit.bind(this));
     this.server.on('playerDied', this.playerDied.bind(this));
     this.server.on('playerDisconnected', this.playerDisconnected.bind(this));
     
@@ -97,9 +98,9 @@ export default class GameScene extends BaseScene {
     }
   }
   
-  playerHit(projectile, character) {
+  localCollision(projectile, character) {
     projectile.destroy();
-    if(character.hit(projectile)) { //If the hit causes the player to die
+    if(character.hit(projectile.props.damage)) { //If the hit causes the player to die
       this.server.send('die', character.x, character.y, projectile.props.owner.id);
       if(this.currentModal) this.currentModal.close();
       this.currentModal = new DOMModal(this, 'killed', {
@@ -119,6 +120,9 @@ export default class GameScene extends BaseScene {
         data: character.stats
       });
       this.localCharacter = null;
+    }
+    else {
+      this.server.send('hit', character.x, character.y, projectile.props.damage, projectile.props.owner.id);
     }
   }
 
@@ -186,16 +190,35 @@ export default class GameScene extends BaseScene {
     let projectile = player.fire(toX, toY);
     this.projectiles.add(projectile);
   }
+  
+
+  playerHit(id, x, y, damage, hitById) {
+    if(hitById == this.server.getClientId()) {
+      this.localCharacter.stats.hitsInflicted++; 
+    }
+    let player = this.players.get(id);
+    if(!player) return;
+    this.tweens.killTweensOf(player);
+    this.tweens.add({
+      targets: [player, player.handleText],
+      x: x,
+      y: y,
+      duration: 50,
+      ease: 'Linear'
+    });
+    if(player.hit(damage)) {
+      this.playerDied(id, x, y, hitById);
+    }
+    this.players.delete(id);
+  }
 
   playerDied(id, x, y, killedById) {
-    console.log(this.server.getClientId());
     if(killedById == this.server.getClientId()) {
       this.localCharacter.stats.kills++; 
     }
     let player = this.players.get(id);
     if(!player) return;
     this.tweens.killTweensOf(player);
-    player.setPosition(x, y);
     player.die();
     this.players.delete(id);
   }

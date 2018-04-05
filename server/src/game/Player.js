@@ -82,6 +82,12 @@ export default class Player {
     this.socket.to('game').emit('playerFired', this.id, posX, posY, toX, toY);
   }
 
+  hit(posX, posY, damage, hitBy) {
+    this.position.x = posX;
+    this.position.y = posY;
+    this.socket.to('game').emit('playerHit', this.id, posX, posY, damage, hitBy);
+  }
+
   die(posX, posY, killedBy) {
     this.position.x = posX;
     this.position.y = posY;

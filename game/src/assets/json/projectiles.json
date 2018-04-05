@@ -4,7 +4,7 @@
     "scale": 0.4,
     "speed": 250,
     "range": 1000,
-    "damage": 1,
+    "damage": 50,
     "collider": {
       "size": 20,
       "offset": {"x": 0, "y": 0}
@@ -15,7 +15,7 @@
     "scale": 0.4,
     "speed": 250,
     "range": 1000,
-    "damage": 1,
+    "damage": 50,
     "collider": {
       "size": 15,
       "offset": {"x": 0, "y": 0}
@@ -26,7 +26,7 @@
     "scale": 0.4,
     "speed": 250,
     "range": 1000,
-    "damage": 1,
+    "damage": 50,
     "collider": {
       "size": 10,
       "offset": {"x": 0, "y": 0}
@@ -37,7 +37,7 @@
     "scale": 0.4,
     "speed": 250,
     "range": 1000,
-    "damage": 1,
+    "damage": 50,
     "collider": {
       "size": 30,
       "offset": {"x": 0, "y": 0}
@@ -48,7 +48,7 @@
     "scale": 0.4,
     "speed": 250,
     "range": 1000,
-    "damage": 1,
+    "damage": 50,
     "collider": {
       "size": 20,
       "offset": {"x": 0, "y": 0}
@@ -59,7 +59,7 @@
     "scale": 0.4,
     "speed": 250,
     "range": 1000,
-    "damage": 1,
+    "damage": 50,
     "collider": {
       "size": 20,
       "offset": {"x": 0, "y": 0}
@@ -70,7 +70,7 @@
     "scale": 0.4,
     "speed": 250,
     "range": 1000,
-    "damage": 1,
+    "damage": 50,
     "collider": {
       "size": 20,
       "offset": {"x": 0, "y": 0}
