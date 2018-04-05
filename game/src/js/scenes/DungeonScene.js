@@ -82,7 +82,7 @@ export default class DungeonScene extends BaseScene {
       cancelButtonSelector: '.exit',
       onAccept: (modal) => {
         modal.close();
-        this.spawn(0, 0);
+        this.create();
       },
       onCancel: (modal) => {
         modal.close();
@@ -164,8 +164,8 @@ export default class DungeonScene extends BaseScene {
       this.enemyList.push(newMonster);
       this.enemy_characters.add(newMonster);
 
-      // Set new delay for next monster.  Starts at 1 every 250 updates but increases over time.
-      this.delay = 250 - Math.sqrt(this.virtualTime/2);
+      // Set new delay for next monster.  Starts at 1 every 200 updates but increases over time.
+      this.delay = 200 - Math.sqrt(this.virtualTime);
     }
     
     for (let i = 0; i < this.enemyList.length; ++i) {
