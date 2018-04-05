@@ -40,9 +40,10 @@ export default class Player {
     //Create a list of existing connected players
     let existingPlayers = [];
     this.playerManager.getAllPlayersInGame().forEach(value => {
+      console.log(value.handle);
       existingPlayers.push({
         id: value.id,
-        handle: 'value.handle',
+        handle: value.handle,
         character: value.character,
         x: value.position.x,
         y: value.position.y,

@@ -1,7 +1,7 @@
 import Projectile from 'objects/Projectile';
 
 export default class Character extends Phaser.Physics.Arcade.Sprite {
-  constructor(scene, x, y, key, options = {}) {
+  constructor(scene, x, y, key, handle = null, options = {}) {
     super(scene, x, y, key);
     
     //pull specific character config information from characters.json
@@ -35,8 +35,8 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
     console.log(this.stats.accurracy2()) //outputs numeric value
   */
     this.stats = {
-      health: 1,
       kills: 0,
+      hitsInflicted: 0,
       shots: 0,
       accuracy: 0,
       timeBorn: Date.now(),
@@ -65,6 +65,16 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
     this.isDead = false;
     this.setScale(this.props.scale);
     this.setAnimation('stance', this.props.orientation);
+
+    if(handle) {
+      this.handleText = scene.add.text(x, y, handle, {
+        fontSize: 14,
+        fill: '#ffffff',
+      });
+      this.handleText.setOrigin(0.5, 5.8);
+      this.handleText.setStroke('#000000', 5);
+      scene.physics.world.enable(this.handleText);
+    }
     scene.add.existing(this);
   }
 
@@ -87,7 +97,7 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
     if(this.isDead || this.isFiring) return;
     this.props.motionVector = vector;
     if(move) {
-      this.setVelocity(vector.x * this.props.baseSpeed, vector.y * this.props.baseSpeed);
+      this.setGroupVelocity(vector.x * this.props.baseSpeed, vector.y * this.props.baseSpeed);
     }
     let animation = 'stance';
     if(vector.length() != 0) {
@@ -110,7 +120,7 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
     fireOrientation += projectile.props.motionVector.x > 0  ? 'E' : (projectile.props.motionVector.x < 0  ? 'W' : '');
     this.setAnimation('fight', fireOrientation);
     this.isFiring = true;
-    this.setVelocity(0, 0);
+    this.setGroupVelocity(0, 0);
     return projectile;
   }
 
@@ -120,9 +130,9 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
    */
   hit(projectile) {
     this.stats.hitsReceived++;
-    this.stats.health -= projectile.props.damage;
+    this.props.health -= projectile.props.damage;
 
-    if(this.stats.health <= 0) {
+    if(this.props.health <= 0) {
       this.die();
       return true;
     }
@@ -131,10 +141,10 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
 
   die() {
     this.isDead = true;
-    this.stats.accuracy = this.stats.shots > 0 ? Math.round(this.stats.kills/this.stats.shots * 100 * 100) / 100 : 0;
+    this.stats.accuracy = this.stats.shots > 0 ? Math.round(this.stats.hitsInflicted / this.stats.shots * 100 * 100) / 100 : 0;
     this.stats.timeAlive = Math.round((Date.now() - this.stats.timeBorn) / 1000 * 10)/10;
     this.setAnimation('death', this.props.orientation, true);
-    this.setVelocity(0, 0);
+    this.setGroupVelocity(0, 0);
   }
 
   shouldBroadcastMotion() {
@@ -148,6 +158,21 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
       return true;
     }
     return false;
+  }
+
+  setGroupVelocity(x, y) {
+    this.setVelocity(x, y);
+    if(this.handleText && this.handleText.body) {
+      this.handleText.body.setVelocity(x, y);
+    }
+  }
+  
+
+  destroy() {
+    super.destroy();
+    if(this.handleText) {
+      this.handleText.destroy();
+    }
   }
 
   static buildAnimations(scene) {
@@ -198,6 +223,61 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
     }
     else if(animation.key.includes('death')) {
       character.destroy();
+    }
+  }
+  
+  // sets the character to use an AI, stalking and aiming at the player.
+  // doesn't deal with multiple opponents yet.
+  setAI(player) {
+    this.AIOn = true;
+    this.targetPlayer = player;
+
+  }
+
+  // turns off the current AI.
+  turnAIOff() {
+    this.AIOn = false;
+    this.targetPlayer = null;
+  }
+
+  // performs one tick worth of time of what the AI is going to do.
+  updateAI() {
+    if (this.isDead || !this.AIOn || Math.random() < 0.8) {
+      return;
+    }
+    const targetXPosition = this.targetPlayer.x;
+    const targetYPosition = this.targetPlayer.y;
+    const xDifference = this.x - targetXPosition;
+    const yDifference = this.y - targetYPosition;
+    const distance = Math.sqrt(xDifference * xDifference + yDifference * yDifference);
+    if (distance > 350) {
+      return;
+    }
+    var xChange = 0;
+    var yChange = 0;
+    if (xDifference > 0) {
+      xChange = -1;
+    } else if (xDifference < 0) {
+      xChange = 1;
+    }
+    if (yDifference > 0) {
+      yChange = -1;
+    } else if (yDifference < 0) {
+      yChange = 1;
+    }
+    if (xChange != 0 || yChange != 0) {
+      let vector = new Phaser.Math.Vector2(xChange, yChange);
+      this.setMotion(vector);
+    }
+
+    // This is the firing part.  It has returned already if distance > 300 so it doesn't fire when far away.
+    // The +35 * random part is to make it not have perfect aim.  It should aim somewhat realistically.
+    const shouldFire = Math.random();
+    if (shouldFire > 0.9) {
+      let projectile = this.fire(targetXPosition + 35 * (Math.random() - 0.5), targetYPosition + 35 * (Math.random() - 0.5));
+      if (projectile) {
+        this.scene.enemy_projectiles.add(projectile);
+      }
     }
   }
 }

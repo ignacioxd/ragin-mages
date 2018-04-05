@@ -18,10 +18,12 @@ export default class DungeonScene extends BaseScene {
   preload() {
 
     //Create collision groups and event handling
-    this.projectiles = this.add.group();
-    this.characters = this.add.group();
-    this.physics.add.overlap(this.projectiles, this.characters, null, this);
-
+    this.player_character = this.add.group();
+    this.enemy_characters = this.add.group();
+    this.player_projectiles = this.add.group();
+    this.enemy_projectiles = this.add.group();
+    this.physics.add.overlap(this.player_projectiles, this.enemy_characters, this.enemyHit, null, this);
+    this.physics.add.overlap(this.enemy_projectiles, this.player_character, this.playerHit, null, this);
 
     this.controller = new Controller(this);
     this.input.keyboard.on('keydown_ESC', function () {
@@ -54,7 +56,10 @@ export default class DungeonScene extends BaseScene {
       if(this.localCharacter && event.buttons === 1) {
         let worldX = event.x + event.camera.scrollX * event.camera.zoom;
         let worldY = event.y + event.camera.scrollY * event.camera.zoom;
-        this.localCharacter.fire(worldX, worldY, this.clientId);
+        let projectile = (this.localCharacter.fire(worldX, worldY, this.clientId));
+        if (projectile) {
+          this.player_projectiles.add(projectile);
+        }
       }
     }, this);
 
@@ -65,12 +70,73 @@ export default class DungeonScene extends BaseScene {
 
   }
 
+  playerHit(projectile, character) {
+    console.log(projectile);
+    this.player_projectiles.remove(projectile);
+    projectile.destroy();
+    if(character.hit(projectile)) {
+      this.player_character.remove(character);
+      // TODO: display stats.
+      new DOMModal(this, 'killed', {
+        acceptButtonSelector: '#respawn',
+        cancelButtonSelector: '.exit',
+        onAccept: (modal) => {
+          modal.close();
+          this.spawn(0, 0);
+        },
+        onCancel: (modal) => {
+          modal.close();
+          this.changeToScene('TitleScene');
+        },
+        data: character.stats
+      });
+    }
+  }
+
+  enemyHit(projectile, character) {
+    this.enemy_projectiles.remove(projectile);
+    projectile.destroy();
+    this.localCharacter.stats.hitsInflicted++;
+
+    if(character.hit(projectile) && this.localCharacter) {
+      this.localCharacter.stats.kills++;
+      this.enemy_characters.remove(character);
+    }
+  }
+
   create() {
     this.spawn(0,0);
-
+    this.delay = 100;
+    this.enemyList = [];
+    this.virtualTime = 0;
   }
 
   update() {
+    --this.delay;
+    ++this.virtualTime;
+    if (this.delay <= 0) {
+      const monsterDeterminer = Math.random();
+      let monsterName = 'spider_monster';
+      if (monsterDeterminer < 0.25) {
+        monsterName = 'fire_monster';
+      } else if (monsterDeterminer < 0.5) {
+        monsterName = 'ice_monster';
+      } else if (monsterDeterminer < 0.75) {
+        monsterName = 'golem_monster';
+      }
+      var newMonster = new Character(this, 450 * (Math.random() - 0.5), 450 * (Math.random() - 0.5), monsterName);
+      newMonster.setAI(this.localCharacter);
+      this.enemyList.push(newMonster);
+      this.enemy_characters.add(newMonster);
+
+      // Set new delay for next monster.  Starts at 1 every 250 updates but increases over time.
+      this.delay = 250 - Math.sqrt(this.virtualTime/2);
+    }
+    
+    for (let i = 0; i < this.enemyList.length; ++i) {
+      this.enemyList[i].updateAI(); 
+    }
+    
     if(this.localCharacter) {
       const vector = this.controller.getWASDVector();
       this.localCharacter.setMotion(vector);
@@ -79,7 +145,7 @@ export default class DungeonScene extends BaseScene {
 
   spawn(x, y) {
     this.localCharacter = new Character(this, x, y, this.characterType);
-    this.characters.add(this.localCharacter); //this is us.
+    this.player_character.add(this.localCharacter); //this is us.
     this.cameras.main.startFollow(this.localCharacter);
   }
 }

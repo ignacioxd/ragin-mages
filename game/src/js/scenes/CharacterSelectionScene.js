@@ -1,5 +1,6 @@
 import BaseScene from './BaseScene';
 import Button from 'objects/ui/Button';
+import DOMModal from 'objects/ui/DOMModal';
 import Controller from '../util/Controller';
 import Character from 'objects/Character';
 
@@ -35,7 +36,7 @@ export default class CharacterSelectionScene extends BaseScene {
 
     this.characterBackdrop = this.add.graphics();
     this.characterBackdrop.x = 755;
-    this.characterBackdrop.y = 275;
+    this.characterBackdrop.y = 270;
     this.characterBackdrop.fillStyle(0xffffff, 0.5);
     this.characterBackdrop.fillRect(0, 0, 300, 300);
 
@@ -48,6 +49,35 @@ export default class CharacterSelectionScene extends BaseScene {
       this.addCharacterButton(characterList[key], this, btnX, btnY);
       btnY +=btnSpacing;
     }
+
+    if(this.gameType == 'multi_player') {
+      this.playerHandle = this.add.text(905, this.characterBackdrop.y + 300 + 10, 'No name', {
+        fontSize: 28,
+        fontFamily: "'Fjalla One', sans-serif",
+        fill: '#ae7f00',
+      });
+      this.playerHandle.setOrigin(0.5, 0);
+
+      let nameInputButton = new Button(this, 905, this.characterBackdrop.y + 300 + 55, 'Select Name', {width: 150});
+      nameInputButton.setOrigin(0.5, 0);
+      nameInputButton.buttonDown(() => {
+        
+        new DOMModal(this, 'nameSelection', {
+          width: 'auto',
+          cancelButtonSelector: '#cancel',
+          acceptButtonSelector: '#accept',
+          onCancel: (modal) => {
+            modal.close();
+          },
+          onAccept: (modal) => {
+            modal.modal.querySelectorAll('input').forEach(element => {
+              this.playerHandle.setText(element.value);
+            });
+            modal.close();
+          }
+        });
+      });
+    }
   }
 
   addCharacterButton(btnData, scene, x, y){
@@ -55,7 +85,8 @@ export default class CharacterSelectionScene extends BaseScene {
     chkButton.key=btnData.key;
     chkButton.scene=scene;
     chkButton.buttonDown(() => {
-      this.changeToScene(this.gameType == 'multi_player' ? 'GameScene' : 'DungeonScene', {character: btnData.key});  
+      let handle = this.playerHandle ? this.playerHandle.text : null;
+      this.changeToScene(this.gameType == 'multi_player' ? 'GameScene' : 'DungeonScene', {character: btnData.key, playerHandle: handle});  
     });
 
     chkButton.on('pointerover', () => {
@@ -75,7 +106,7 @@ export default class CharacterSelectionScene extends BaseScene {
 
   showCharacter(key) {
     if(this.chosenCharacter) this.chosenCharacter.destroy();
-    this.chosenCharacter = new Character(this, this.characterBackdrop.x + 150, this.characterBackdrop.y + 300 * 0.8, key, {
+    this.chosenCharacter = new Character(this, this.characterBackdrop.x + 150, this.characterBackdrop.y + 300 * 0.8, key, null, {
       scale: 1,
       orientation: 'S',
     });
