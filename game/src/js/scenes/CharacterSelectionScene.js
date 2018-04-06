@@ -61,19 +61,21 @@ export default class CharacterSelectionScene extends BaseScene {
       let nameInputButton = new Button(this, 905, this.characterBackdrop.y + 300 + 55, 'Select Name', {width: 150});
       nameInputButton.setOrigin(0.5, 0);
       nameInputButton.buttonDown(() => {
-        
+        this.input.keyboard.stopListeners();
         new DOMModal(this, 'nameSelection', {
           width: 'auto',
           cancelButtonSelector: '#cancel',
           acceptButtonSelector: '#accept',
           onCancel: (modal) => {
             modal.close();
+            this.input.keyboard.startListeners();
           },
           onAccept: (modal) => {
             modal.modal.querySelectorAll('input').forEach(element => {
               this.playerHandle.setText(element.value);
             });
             modal.close();
+            this.input.keyboard.startListeners();
           }
         });
       });
