@@ -33,6 +33,7 @@ export default class Server extends EventEmitter {
     Server.socket.on('playerHit', this.playerHit.bind(this));
     Server.socket.on('playerDied', this.playerDied.bind(this));
     Server.socket.on('playerDisconnected', this.playerDisconnected.bind(this));
+    Server.socket.on('leaderBoard', this.leaderBoard.bind(this));
   }
 
   connect(protocol, host, port) {
@@ -101,6 +102,11 @@ export default class Server extends EventEmitter {
   playerDisconnected(id) {
     console.log('playerDisconnected');
     this.emit('playerDisconnected', id);
+  }
+
+  leaderBoard(leaderBoard) {
+    console.log('leadeboard');
+    this.emit('leaderBoard',leaderBoard);
   }
 
   send(message, ...data) {
