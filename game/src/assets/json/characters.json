@@ -16,10 +16,10 @@
       "offset": {"x": 87, "y": 80}
     },
     "nameText": {
-        "offset": {"x": 0.5, "y": 5.5}
+        "origin": {"x": 0.5, "y": 5.5}
     },
     "healthBar": {
-        "offset": {"x": 0.5, "y": -5.8}
+        "offset": {"x": 0, "y": 0}
     }
   },
   "priest_hero": {
@@ -39,10 +39,10 @@
       "offset": {"x": 92, "y": 80}
     },
     "nameText": {
-        "offset": {"x": 0.5, "y": 5.5}
+        "origin": {"x": 0.5, "y": 5.5}
     },
     "healthBar": {
-        "offset": {"x": 0.5, "y": -5.8}
+        "offset": {"x": 0, "y": 0}
     }
   },
   "mage_hero":{
@@ -62,10 +62,10 @@
       "offset": {"x": 92, "y": 90}
     },
     "nameText": {
-        "offset": {"x": 0.5, "y": 5.0}
+        "origin": {"x": 0.5, "y": 4.9}
     },
     "healthBar": {
-        "offset": {"x": 0.5, "y": -5.8}
+        "offset": {"x": 0, "y": 12}
     }
   },
   "fire_monster":{
@@ -85,10 +85,10 @@
       "offset": {"x": 95, "y": 60}
     },
     "nameText": {
-        "offset": {"x": 0.5, "y": 5.6}
+        "origin": {"x": 0.5, "y": 5.5}
     },
     "healthBar": {
-        "offset": {"x": 0.5, "y": -5.8}
+        "offset": {"x": 0, "y": 0}
     }
   },
   "ice_monster":{
@@ -108,10 +108,10 @@
       "offset": {"x": 88, "y": 60}
     },
     "nameText": {
-        "offset": {"x": 0.5, "y": 5.8}
+        "origin": {"x": 0.5, "y": 5.5}
     },
     "healthBar": {
-        "offset": {"x": 0.5, "y": -5.8}
+        "offset": {"x": 0.5, "y": 0}
     }
   },
   "golem_monster":{
@@ -131,10 +131,10 @@
       "offset": {"x": 85, "y": 70}
     },
     "nameText": {
-        "offset": {"x": 0.5, "y": 5.6}
+        "origin": {"x": 0.5, "y": 5.5}
     },
     "healthBar": {
-        "offset": {"x": 0.5, "y": -5.8}
+        "offset": {"x": 0, "y": 0}
     }
   },
   "spider_monster":{
@@ -154,10 +154,10 @@
       "offset": {"x": 84, "y": 115}
     },
     "nameText": {
-        "offset": {"x": 0.5, "y": 3.5}
+        "origin": {"x": 0.5, "y": 3.9}
     },
     "healthBar": {
-        "offset": {"x": 0.5, "y": -5.8}
+        "offset": {"x": 0, "y": 30}
     }
   }
 }
