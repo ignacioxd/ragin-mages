@@ -84,7 +84,6 @@ export default class GameScene extends BaseScene {
     this.server.on('playerHit', this.playerHit.bind(this));
     this.server.on('playerDied', this.playerDied.bind(this));
     this.server.on('playerDisconnected', this.playerDisconnected.bind(this));
-    this.server.on('highestRanking', this.playerHighestRanking.bind(this));
     this.server.on('leaderBoard',this.updateLeaderBoard.bind(this));
     this.server.send('joinGame', this.characterType, this.playerHandle);
   }
@@ -231,12 +230,6 @@ export default class GameScene extends BaseScene {
     this.characters.remove(player);
     this.players.delete(id);
     player.die();
-  }
-
-  playerHighestRanking(rank){
-    console.log('ranking',rank);
-    if (!this.localCharacter) return;
-    this.localCharacter.stats.highestRanking=rank;
   }
 
   updateLeaderBoard(leaderBoard){

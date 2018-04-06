@@ -33,7 +33,6 @@ export default class Server extends EventEmitter {
     Server.socket.on('playerHit', this.playerHit.bind(this));
     Server.socket.on('playerDied', this.playerDied.bind(this));
     Server.socket.on('playerDisconnected', this.playerDisconnected.bind(this));
-    Server.socket.on('highestRanking', this.highestRanking.bind(this));
     Server.socket.on('leaderBoard', this.leaderBoard.bind(this));
   }
 
@@ -105,11 +104,6 @@ export default class Server extends EventEmitter {
     this.emit('playerDisconnected', id);
   }
 
-  highestRanking(newRanking) {
-    console.log('highestRanking',newRanking);
-    this.emit('highestRanking',newRanking);
-  }
-  
   leaderBoard(leaderBoard) {
     console.log('leadeboard');
     this.emit('leaderBoard',leaderBoard);
