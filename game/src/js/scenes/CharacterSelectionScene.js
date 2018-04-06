@@ -51,7 +51,9 @@ export default class CharacterSelectionScene extends BaseScene {
     }
 
     if(this.gameType == 'multi_player') {
-      const defaultName = localStorage.getItem('name') || 'No name';
+      const playerName = 'Player ';
+      const playerRandom = Math.floor(Math.random() * 9999);
+      const defaultName = localStorage.getItem('name') || playerName + playerRandom;
       this.playerHandle = this.add.text(905, this.characterBackdrop.y + 300 + 10, defaultName, {
         fontSize: 28,
         fontFamily: "'Fjalla One', sans-serif",
@@ -79,7 +81,7 @@ export default class CharacterSelectionScene extends BaseScene {
             this.input.keyboard.startListeners();
           },
           data: {
-            handle: localStorage.getItem('name') || 'No name'
+            handle: localStorage.getItem('name') || playerName + playerRandom
           }
         });
       });
