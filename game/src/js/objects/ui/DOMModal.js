@@ -66,7 +66,12 @@ export default class DOMModal {
         return value;
       }
       this.modal.querySelectorAll('*[data-value]').forEach(element => {
-        element.innerHTML = objResolve(this.props.data, element.getAttribute('data-value'));
+        if(element.nodeName == 'INPUT') {
+          element.value = objResolve(this.props.data, element.getAttribute('data-value'));
+        }
+        else {
+          element.innerHTML = objResolve(this.props.data, element.getAttribute('data-value'));
+        }
   
       });
     }
