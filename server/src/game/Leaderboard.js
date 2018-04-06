@@ -63,7 +63,8 @@ export default class Leaderboard {
     });
     for(let i = 0; i < this.leaderboardArray.length; i++) {
       this.leaderboardArray[i].currentRank = i + 1;
-      this.leaderboardArray[i].highestRank = this.leaderboardArray[i].highestRank < this.leaderboardArray[i].currentRank ? this.leaderboardArray[i].currentRank : this.leaderboardArray[i].highestRank;
+      //Lower value is higher ranking  ¯\(°_o)/¯
+      this.leaderboardArray[i].highestRank = this.leaderboardArray[i].highestRank > this.leaderboardArray[i].currentRank ? this.leaderboardArray[i].currentRank : this.leaderboardArray[i].highestRank;
     }
   }
 
