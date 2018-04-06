@@ -26,6 +26,7 @@ export default class DungeonScene extends BaseScene {
     this.physics.add.overlap(this.enemy_projectiles, this.player_character, this.playerHit, null, this);
 
     this.controller = new Controller(this);
+    this.scene.manager.keys.GamepadScene.setVisible(true)
     this.input.keyboard.on('keydown_ESC', function () {
       if(this.currentModal) return;
       this.currentModal = new DOMModal(this, 'quitGame', {
@@ -63,7 +64,7 @@ export default class DungeonScene extends BaseScene {
       }
     }, this);
 
-    
+
     this.map1 = this.add.tilemap('dungeon_map');
     this.tileset1 = this.map1.addTilesetImage('stone-tiles', 'stone-tiles');
     this.layer1 = this.map1.createStaticLayer('Dungeon Map', this.tileset1, -500, -340);
@@ -131,11 +132,11 @@ export default class DungeonScene extends BaseScene {
       // Set new delay for next monster.  Starts at 1 every 250 updates but increases over time.
       this.delay = 250 - Math.sqrt(this.virtualTime/2);
     }
-    
+
     for (let i = 0; i < this.enemyList.length; ++i) {
-      this.enemyList[i].updateAI(); 
+      this.enemyList[i].updateAI();
     }
-    
+
     if(this.localCharacter) {
       const vector = this.controller.getWASDVector();
       this.localCharacter.setMotion(vector);

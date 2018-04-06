@@ -9,7 +9,7 @@ export default class TitleScene extends BaseScene {
   constructor() {
     super({key: 'TitleScene'});
   }
-  
+
   preload() {
     let serverConfig = this.cache.json.get('config');
     this.server.connect(serverConfig.protocol, serverConfig.host, serverConfig.port);
@@ -21,11 +21,12 @@ export default class TitleScene extends BaseScene {
   create() {
     let background = this.add.image(800, 330, 'title_background');
     this.cameras.main.startFollow(background);
-    
+    this.scene.manager.keys.GamepadScene.setVisible(false)
+
     let logoStyle = {fontSize: 85, fontFamily: "'Jim Nightshade', cursive", color: '#000000'};
     let logo = this.add.text(450, 50, 'Ragin\' Mages', logoStyle);
     logo.setStroke('#ae7f00', 16);
-    
+
     //multi player button
     this.multiPlayerButton = new Button(this, 450, 250, 'PLAY MULTI PLAYER', {
       disabled: !this.server.isConnected()
@@ -33,7 +34,7 @@ export default class TitleScene extends BaseScene {
     this.multiPlayerButton.buttonDown(() => {
       this.changeToScene('CharacterSelectionScene', {type: 'multi_player'});
     });
-    
+
     //single player button
     let singlePlayerButton = new Button(this, 450, 300, 'PLAY SINGLE PLAYER');
     singlePlayerButton.buttonDown(() => {
@@ -50,7 +51,7 @@ export default class TitleScene extends BaseScene {
         }
       });
     });
-  
+
     let creditsButton = new Button(this, 450, 400, 'CREDITS');
     creditsButton.buttonDown(() => {
       new DOMModal(this, 'credits', {

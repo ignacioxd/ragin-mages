@@ -18,11 +18,12 @@ export default class GameScene extends BaseScene {
   }
 
   preload() {
-    
+
     //Create collision groups and event handling
     this.projectiles = this.add.group();
     this.characters = this.add.group();
     this.physics.add.overlap(this.projectiles, this.characters, this.localCollision, null, this);
+    this.scene.manager.keys.GamepadScene.setVisible(true)
 
 
     this.controller = new Controller(this);
@@ -83,7 +84,7 @@ export default class GameScene extends BaseScene {
     this.server.on('playerHit', this.playerHit.bind(this));
     this.server.on('playerDied', this.playerDied.bind(this));
     this.server.on('playerDisconnected', this.playerDisconnected.bind(this));
-    
+
     this.server.send('joinGame', this.characterType, this.playerHandle);
   }
 
@@ -97,7 +98,7 @@ export default class GameScene extends BaseScene {
       }
     }
   }
-  
+
   localCollision(projectile, character) {
     projectile.destroy();
     if(character.hit(projectile.props.damage)) { //If the hit causes the player to die
@@ -190,11 +191,11 @@ export default class GameScene extends BaseScene {
     let projectile = player.fire(toX, toY);
     this.projectiles.add(projectile);
   }
-  
+
 
   playerHit(id, x, y, damage, hitById) {
     if(hitById == this.server.getClientId()) {
-      this.localCharacter.stats.hitsInflicted++; 
+      this.localCharacter.stats.hitsInflicted++;
     }
     let player = this.players.get(id);
     if(!player) return;
@@ -213,7 +214,7 @@ export default class GameScene extends BaseScene {
 
   playerDied(id, x, y, killedById) {
     if(killedById == this.server.getClientId()) {
-      this.localCharacter.stats.kills++; 
+      this.localCharacter.stats.kills++;
     }
     let player = this.players.get(id);
     if(!player) return;
