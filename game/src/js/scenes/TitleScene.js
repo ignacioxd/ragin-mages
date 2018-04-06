@@ -41,15 +41,41 @@ export default class TitleScene extends BaseScene {
     });
 
     //controls, credits, offline mode buttons
-    let settingsButton = new Button(this, 450, 350, 'SETTINGS');
-    settingsButton.buttonDown(() => {
-      new DOMModal(this, 'settings', {
-        cancelButtonSelector: '.exit',
-        onCancel: (modal) => {
-          modal.close();
-        }
+    if(ServiceWorker.isSupported()) {
+      const assets = this.cache.json.get('assets');
+      let offlineMode = localStorage.getItem('offlineStatus');
+      offlineMode = (offlineMode == 'true')
+      console.log('heeeeelp' + offlineMode)
+      if (offlineMode == null) {
+        offlineMode = false;
+      }
+      let serviceWorker = new ServiceWorker();
+      let settingsButton = new Button(this, 450, 350, 'SETTINGS', serviceWorker.isRegistered());
+      settingsButton.buttonDown(() => {
+        new DOMModal(this, 'settings', {
+          cancelButtonSelector: '.exit',
+          acceptButtonSelector: '#settingsCheck',
+          onCancel: (modal) => {
+            localStorage.setItem('offlineStatus' , offlineMode)
+            console.log('this be closed')
+            modal.close();
+        },
+          onAccept: (modal) => {
+            offlineMode = modal.modal.querySelector('#settingsCheck').checked;        
+            if (offlineMode == true) {
+              serviceWorker.register().then(function() {
+              serviceWorker.cacheAssets(assets);
+            })
+            }
+            else {
+              serviceWorker.unregister();
+            }
+
+          },
+          data: {swCheck: offlineMode}
       });
     });
+  }
   
     let creditsButton = new Button(this, 450, 400, 'CREDITS');
     creditsButton.buttonDown(() => {
@@ -57,7 +83,7 @@ export default class TitleScene extends BaseScene {
         cancelButtonSelector: '.exit',
         onCancel: (modal) => {
           modal.close();
-        }
+        },
       });
     });
 
@@ -71,21 +97,21 @@ export default class TitleScene extends BaseScene {
       });
     });
 
-    if(ServiceWorker.isSupported()) {
-      const assets = this.cache.json.get('assets');
-      let serviceWorker = new ServiceWorker();
-      let checkbox = new Checkbox(this, 470, 550, 'ENABLE OFFLINE MODE', serviceWorker.isRegistered());
-      checkbox.onPointerDown(function(obj) {
-        if(obj.isChecked()) {
-          serviceWorker.register().then(function() {
-            serviceWorker.cacheAssets(assets);
-          })
-        }
-        else {
-          serviceWorker.unregister();
-        }
-      });
-    }
+    // if(ServiceWorker.isSupported()) {
+    //   const assets = this.cache.json.get('assets');
+    //   let serviceWorker = new ServiceWorker();
+    //   let checkbox = new Checkbox(this, 470, 550, 'ENABLE OFFLINE MODE', serviceWorker.isRegistered());
+    //   checkbox.onPointerDown(function(obj) {
+    //     if(obj.isChecked()) {
+    //       serviceWorker.register().then(function() {
+    //         serviceWorker.cacheAssets(assets);
+    //       })
+    //     }
+    //     else {
+    //       serviceWorker.unregister();
+    //     }
+    //   });
+    // }
   }
 
   update() {
