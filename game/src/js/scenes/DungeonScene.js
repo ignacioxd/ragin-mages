@@ -26,7 +26,7 @@ export default class DungeonScene extends BaseScene {
     this.physics.add.overlap(this.enemy_projectiles, this.player_character, this.playerHit, null, this);
 
     this.controller = new Controller(this);
-    this.scene.manager.keys.GamepadScene.setVisible(true)
+    this.scene.manager.keys.GamepadScene.start();
     this.input.keyboard.on('keydown_ESC', function () {
       if(this.currentModal) return;
       this.currentModal = new DOMModal(this, 'quitGame', {

@@ -2,7 +2,7 @@ import BaseScene from '../scenes/BaseScene';
 
 export default class GamepadScene extends BaseScene {
   constructor() {
-    super({ key: 'GamepadScene', active: true });
+    super({ key: 'GamepadScene' });
   }
 
   preload() {
@@ -23,8 +23,6 @@ export default class GamepadScene extends BaseScene {
     this.joystick = this.add
       .image(this.START_X, this.START_Y, 'joystick')
       .setAlpha(0.5);
-    this.joystickBase.visible = false;
-    this.joystick.visible = false;
     this.joystick.setInteractive();
     this.input.setDraggable(this.joystick);
 
@@ -81,10 +79,14 @@ export default class GamepadScene extends BaseScene {
     }
   }
 
-  setVisible(visible) {
-    if (/Mobi|Android/i.test(navigator.userAgent) && this.joystick && this.joystickBase) {
-      this.joystickBase.visible = visible;
-      this.joystick.visible = visible;
+  start() {
+    if (/Mobi|Android/i.test(navigator.userAgent)) {
+      console.log(this)
+      this.scene.start();
     }
+  }
+
+  stop() {
+    this.scene.stop();
   }
 }

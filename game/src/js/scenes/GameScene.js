@@ -24,7 +24,7 @@ export default class GameScene extends BaseScene {
     this.projectiles = this.add.group();
     this.characters = this.add.group();
     this.physics.add.overlap(this.projectiles, this.characters, this.localCollision, null, this);
-    this.scene.manager.keys.GamepadScene.setVisible(true)
+    this.scene.manager.keys.GamepadScene.start();
 
 
     this.controller = new Controller(this);
