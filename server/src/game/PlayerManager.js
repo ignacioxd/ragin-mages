@@ -1,11 +1,12 @@
 import Player  from './Player';
+import Leaderboard  from './Leaderboard';
 
 export default class PlayerManager {
   constructor(socketio) {
     this.io = socketio;
     
     this.players = new Map();
-    this.leaderBoard = [];
+    this.leaderboard = new Leaderboard(this);
 
     this.io.on('connection', this.playerConnected.bind(this));
   }
@@ -25,86 +26,36 @@ export default class PlayerManager {
     let player = new Player(this, socket);
     this.players.set(socket, player);
 
-    this.leaderBoard.push(player);
-    
-    console.log('Player connected', player.id);
     console.log(this.players.size, 'players connected');
 
     socket.on('disconnect', () => {
       this.players.delete(socket);
       socket.broadcast.emit('playerDisconnected', player.id);
       console.log(this.players.size, 'players connected');
-      this.removePlayerFromLeaderBoard(player.id);
-    });
-  }
-
-  AddToKillCount(id){
-    let index=this.leaderBoard.findIndex((value) =>  value.id==id);
-    if (index>-1) {
-      this.leaderBoard[index].kills ++;
-    }
-    this.updateLeaderBoard();
-  }
-
-  updateLeaderBoard(){
-    console.log('updating leaderBoard');
-    this.leaderBoard.sort(function(char1,char2)  {
-      if (char1.kills < char2.kills)
-        return 1;
-      if (char1.kills > char2.kills)
-        return -1;
-      return 0;
-    });
-
-    if (this.setPlayerRankings()) {
-      this.sendLeaderBoard();
-    }
-  }
-  
-  setPlayerRankings() {
-    let bChanged=false;
-    var curRank = 0;
-    var curKills = 0;
-    this.leaderBoard.forEach(function (character) {
-      if (character.kills > 0) {
-        if (character.kills != curKills) {
-          curRank++;
-          curKills = character.kills;
-        }
-        bChanged = bChanged || character.currentRank != curRank;
-        character.currentRank = curRank;
-        if (character.currentRank < character.highestRank || character.highestRank == null) {
-          bChanged = true;
-          character.highestRank = character.currentRank;
-        }
+      if(this.leaderboard.remove(player)) {
+        this.broadcastLeaderboard();
       }
     });
-    return bChanged;
   }
 
-  sendLeaderBoard() {
-    let leaders = [];
-    this.leaderBoard.filter(character => character.kills > 0)
-      .forEach(value => {
-        console.log(value.handle);
-        leaders.push({
-          id: value.id,
-          handle: value.handle,
-          character: value.character,
-          kills: value.kills,
-          currentRank: value.currentRank,
-          highestRank: value.highestRank
-        });
-      });
-    console.log('leaderboard', this.leaderBoard.length, 'leaders', leaders.length);
-    this.io.to('game').emit('leaderBoard', leaders);
-  }
-
-  removePlayerFromLeaderBoard(id) {
-    const delIndex=this.leaderBoard.findIndex((value) =>  value.id==id);
-    if (delIndex>-1) {
-      console.log('removed', delIndex);
-      this.leaderBoard.splice(delIndex,1);
+  reportKill(deadPlayer, killedById) {
+    let shouldBroadcastLeaderboard = this.leaderboard.remove(deadPlayer);
+    for(let [socket, player] of this.players) {
+      if(player.id == killedById) {
+        player.kills++;
+        if(this.leaderboard.update(player)) {
+          shouldBroadcastLeaderboard = true;
+        }
+        break;
+      }
     }
+    if(shouldBroadcastLeaderboard) {
+      this.broadcastLeaderboard();
+    }
+  }
+
+  broadcastLeaderboard() {
+    console.log('broadcasting leaderboard');
+    this.io.to('game').emit('updateLeaderboard', this.leaderboard.getArray());
   }
 }
