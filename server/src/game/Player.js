@@ -28,6 +28,7 @@ export default class Player {
       motionVector: {x: 0, y: 0},
       lastUpdate: 0
     };
+    this.resetStats();
   }
 
   joinGame(character, handle) {
@@ -48,7 +49,6 @@ export default class Player {
         motionVector: value.position.motionVector
       });
     });
-
     
     this.socket.join('game'); //Join the game room. This needs to happen after we get the list of players to avoid duplication
     
@@ -64,6 +64,7 @@ export default class Player {
     //Store attributes locally
     this.reset();
     this.socket.to('game').emit('playerLeft', this.id);
+    this.playerManager.removePlayerFromLeaderBoard(this.id);
   }
     
   move(posX, posY, vecX, vecY) {
@@ -89,6 +90,8 @@ export default class Player {
     this.position.x = posX;
     this.position.y = posY;
     this.socket.to('game').emit('playerDied', this.id, posX, posY, killedBy);
+    // console.log(this.playerManager);
+    this.playerManager.AddToKillCount(killedBy);
   }
 
   respawn() {
@@ -101,7 +104,13 @@ export default class Player {
     //Notify everyone of this new player
     this.socket.to('game').emit('playerJoined', this.id, this.character, this.handle, this.position.x, this.position.y);
     this.socket.emit('spawn', this.position.x, this.position.y);
+    this.resetStats();
   }
-
+ 
+  resetStats(){
+    this.kills = 0;
+    this.currentRank = 0;
+    this.highestRank = null;
+  }
 
 }

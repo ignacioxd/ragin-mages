@@ -10,6 +10,7 @@ export default class GameScene extends BaseScene {
 
     this.players = new Map();
     this.localCharacter = null;
+    this.leaderBoard=[];
   }
 
   init(data) {
@@ -83,7 +84,7 @@ export default class GameScene extends BaseScene {
     this.server.on('playerHit', this.playerHit.bind(this));
     this.server.on('playerDied', this.playerDied.bind(this));
     this.server.on('playerDisconnected', this.playerDisconnected.bind(this));
-    
+    this.server.on('leaderBoard',this.updateLeaderBoard.bind(this));
     this.server.send('joinGame', this.characterType, this.playerHandle);
   }
 
@@ -125,8 +126,6 @@ export default class GameScene extends BaseScene {
       this.server.send('hit', character.x, character.y, projectile.props.damage, projectile.props.owner.id);
     }
   }
-
-
 
   //WebSocket Messages
   serverConnected() {
@@ -230,5 +229,14 @@ export default class GameScene extends BaseScene {
     this.characters.remove(player);
     this.players.delete(id);
     player.die();
+  }
+
+  updateLeaderBoard(leaderBoard){
+    this.leaderBoard=leaderBoard;
+    if (!this.localCharacter) return;
+    let index=this.leaderBoard.findIndex(value =>  value.id==this.server.getClientId());
+    if (index>-1) {
+      this.localCharacter.stats.highestRanking = leaderBoard[index].highestRank;
+    }
   }
 }
