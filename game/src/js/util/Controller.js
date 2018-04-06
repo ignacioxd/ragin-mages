@@ -1,13 +1,23 @@
 export default class Controller {
   constructor(scene) {
     this.cursors = scene.input.keyboard.createCursorKeys();
+    this.addWASDKeys(scene);
+    
+  }
+
+  addWASDKeys(scene) {
     this.keyW = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
     this.keyA = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
     this.keyS = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
     this.keyD = scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
-    
   }
 
+  removeWASDKeys(scene) {
+    scene.input.keyboard.removeKey(Phaser.Input.Keyboard.KeyCodes.W);
+    scene.input.keyboard.removeKey(Phaser.Input.Keyboard.KeyCodes.A);
+    scene.input.keyboard.removeKey(Phaser.Input.Keyboard.KeyCodes.S);
+    scene.input.keyboard.removeKey(Phaser.Input.Keyboard.KeyCodes.D);
+  }
   getWASDCoordinate() {
     let direction = this.cursors.down.isDown || this.keyS.isDown ? 'S' : (this.cursors.up.isDown || this.keyW.isDown ? 'N' : '');
     direction += this.cursors.left.isDown || this.keyA.isDown ? 'W' : (this.cursors.right.isDown || this.keyD.isDown ? 'E' : '');
