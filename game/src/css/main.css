@@ -65,6 +65,10 @@ body {
   box-shadow: 1px 1px 4px 2px rgba(0,0,0,0.5) inset, 0 0 10px 3px rgba(239,237,232,1);
 }
 
+.modal :focus {
+  outline: 3px solid rgba(73,60,32,0.5);
+}
+
 .modal .button {
   padding: 10px;
   border: 1px solid rgba(73,60,32,1);

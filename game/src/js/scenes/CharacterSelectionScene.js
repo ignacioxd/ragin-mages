@@ -62,19 +62,21 @@ export default class CharacterSelectionScene extends BaseScene {
       let nameInputButton = new Button(this, 905, this.characterBackdrop.y + 300 + 55, 'Select Name', {width: 150});
       nameInputButton.setOrigin(0.5, 0);
       nameInputButton.buttonDown(() => {
-
+        this.input.keyboard.stopListeners();
         new DOMModal(this, 'nameSelection', {
           width: 'auto',
           cancelButtonSelector: '#cancel',
           acceptButtonSelector: '#accept',
           onCancel: (modal) => {
             modal.close();
+            this.input.keyboard.startListeners();
           },
           onAccept: (modal) => {
             const name = modal.modal.querySelector('input').value;
             localStorage.setItem('name', name);
             this.playerHandle.setText(name);
             modal.close();
+            this.input.keyboard.startListeners();
           }
         });
       });
@@ -110,6 +112,7 @@ export default class CharacterSelectionScene extends BaseScene {
     this.chosenCharacter = new Character(this, this.characterBackdrop.x + 150, this.characterBackdrop.y + 300 * 0.8, key, null, {
       scale: 1,
       orientation: 'S',
+      hideHealth: true
     });
   }
 

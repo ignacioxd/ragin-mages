@@ -71,7 +71,6 @@ export default class DungeonScene extends BaseScene {
   }
 
   playerHit(projectile, character) {
-    console.log(projectile);
     this.player_projectiles.remove(projectile);
     projectile.destroy();
     if(character.hit(projectile.props.damage)) {

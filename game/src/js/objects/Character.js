@@ -11,6 +11,7 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
       ...scene.cache.json.get('characters')[key],
       ...options
     };
+    this.props.maxHealth = this.props.health;
     
     /*
     This was an attempt to have accuracy and timeAlive as calculated properties
@@ -75,7 +76,34 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
       this.handleText.setStroke('#000000', 5);
       scene.physics.world.enable(this.handleText);
     }
+    this.healthBar = scene.add.graphics({x: x, y: y});
+    scene.physics.world.enable(this.healthBar);
+    this.drawHealth();
+
     scene.add.existing(this);
+  }
+
+  drawHealth() {
+    if(this.props.hideHealth) return;
+    const offsetX = - (this.width * this.props.scale / 2);
+    const offsetY = - (this.height * this.props.scale * 4/5);
+    const healthPercent = this.props.health / this.props.maxHealth;
+    const padding = this.width * this.props.scale / 6;
+    const width = this.width * this.props.scale - 2 * padding;
+    const height = (this.height * this.props.scale) / 12;
+    this.healthBar.clear();
+    this.healthBar.lineStyle(1, 0xffffff, 1);
+    if(healthPercent > 0.66) {
+      this.healthBar.fillStyle(0x4ba303);
+    }
+    else if(healthPercent > 0.33) {
+      this.healthBar.fillStyle(0xf49242);
+    }
+    else {
+      this.healthBar.fillStyle(0xd31515);
+    }
+    this.healthBar.fillRect(offsetX + padding, offsetY, width * healthPercent, height);
+    this.healthBar.strokeRect(offsetX + padding, offsetY, width, height);
   }
 
   setAnimation(animation, orientation, force = false) {
@@ -125,12 +153,14 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
   }
 
   /**
-   * Inflict damage to player caused by projectile. Returns true if this hit causes the player to die or false otherwise.
-   * @param {Projectile} projectile 
+   * Inflict damage to player. Returns true if this hit causes the player to die or false otherwise.
+   * @param {Number} damage 
    */
   hit(damage) {
     this.stats.hitsReceived++;
     this.props.health -= damage;
+    this.props.health = this.props.health < 0 ? 0 : this.props.health;
+    this.drawHealth();
 
     if(this.props.health <= 0) {
       this.die();
@@ -165,6 +195,9 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
     if(this.handleText && this.handleText.body) {
       this.handleText.body.setVelocity(x, y);
     }
+    if(this.healthBar && this.healthBar.body) {
+      this.healthBar.body.setVelocity(x, y);
+    }
   }
   
 
@@ -172,6 +205,9 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
     super.destroy();
     if(this.handleText) {
       this.handleText.destroy();
+    }
+    if(this.healthBar) {
+      this.healthBar.destroy();
     }
   }
 
