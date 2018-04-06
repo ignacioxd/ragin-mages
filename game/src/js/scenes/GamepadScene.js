@@ -5,11 +5,6 @@ export default class GamepadScene extends BaseScene {
     super({ key: 'GamepadScene' });
   }
 
-  preload() {
-    this.load.image('joystick', '/assets/sprites/joystick.png');
-    this.load.image('joystick_base', '/assets/sprites/joystick_base.png');
-  }
-
   create() {
     const { height } = this.cameras.main;
     this.MIN_DIST = 5;
