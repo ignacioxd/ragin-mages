@@ -81,7 +81,6 @@ export default class GamepadScene extends BaseScene {
 
   start() {
     if (/Mobi|Android/i.test(navigator.userAgent)) {
-      console.log(this)
       this.scene.start();
     }
   }
