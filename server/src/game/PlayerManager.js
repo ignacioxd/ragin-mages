@@ -34,21 +34,20 @@ export default class PlayerManager {
       this.players.delete(socket);
       socket.broadcast.emit('playerDisconnected', player.id);
       console.log(this.players.size, 'players connected');
+      this.removePlayerFromLeaderBoard(player.id);
     });
   }
 
   AddToKillCount(id){
     let index=this.leaderBoard.findIndex((value) =>  value.id==id);
     if (index>-1) {
-      console.log('add kill found',id)
       this.leaderBoard[index].kills ++;
     }
-    this.UpdateRankings();
-    // console.log('after killcount',this.leaderBoard);
+    this.updateLeaderBoard();
   }
 
-  UpdateRankings(){
-    console.log('updating rankings');
+  updateLeaderBoard(){
+    console.log('updating leaderBoard');
     this.leaderBoard.sort(function(char1,char2)  {
       if (char1.kills < char2.kills)
         return 1;
@@ -57,28 +56,55 @@ export default class PlayerManager {
       return 0;
     });
 
-    this.leaderBoard.forEach( function (character,index) {
-      if (character.kills>0) {
-        character.currentRank=index+1;
-        if (character.currentRank<character.highestRank || character.highestRank==null) {
-          character.UpdateHighestRank(character.currentRank);
-          // character.highestRank=character.currentRank;
-          // //currently send message just to player that they have a new highest ranking
-          // character.socket.to('game').emit('highestRanking', character.highestRank);
-          // character.socket.emit('highestRanking', character.highestRank);
-          // console.log('sent',character.character,'rank',character.highestRank);
+    if (this.setPlayerRankings()) {
+      this.sendLeaderBoard();
+    }
+  }
+  
+  setPlayerRankings() {
+    let bChanged=false;
+    var curRank = 0;
+    var curKills = 0;
+    this.leaderBoard.forEach(function (character) {
+      if (character.kills > 0) {
+        if (character.kills != curKills) {
+          curRank++;
+          curKills = character.kills;
+        }
+        bChanged = bChanged || character.currentRank != curRank;
+        character.currentRank = curRank;
+        if (character.currentRank < character.highestRank || character.highestRank == null) {
+          bChanged = true;
+          character.highestRank = character.currentRank;
         }
       }
-    })
+    });
+    return bChanged;
   }
 
-  RemovePlayerFromLeaderBoard(id) {
+  sendLeaderBoard() {
+    let leaders = [];
+    this.leaderBoard.filter(character => character.kills > 0)
+      .forEach(value => {
+        console.log(value.handle);
+        leaders.push({
+          id: value.id,
+          handle: value.handle,
+          character: value.character,
+          kills: value.kills,
+          currentRank: value.currentRank,
+          highestRank: value.highestRank
+        });
+      });
+    console.log('leaderboard', this.leaderBoard.length, 'leaders', leaders.length);
+    this.io.to('game').emit('leaderBoard', leaders);
+  }
+
+  removePlayerFromLeaderBoard(id) {
     const delIndex=this.leaderBoard.findIndex((value) =>  value.id==id);
-    // console.log('delete item',delIndex,this.leaderBoard[delIndex]);
     if (delIndex>-1) {
       console.log('removed', delIndex);
       this.leaderBoard.splice(delIndex,1);
     }
-    // console.log('after removal',this.leaderBoard);
   }
 }

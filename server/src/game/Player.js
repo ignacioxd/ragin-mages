@@ -50,7 +50,6 @@ export default class Player {
         motionVector: value.position.motionVector
       });
     });
-
     
     this.socket.join('game'); //Join the game room. This needs to happen after we get the list of players to avoid duplication
     
@@ -67,6 +66,7 @@ export default class Player {
     //Store attributes locally
     this.reset();
     this.socket.to('game').emit('playerLeft', this.id);
+    this.playerManager.removePlayerFromLeaderBoard(this.id);
   }
     
   move(posX, posY, vecX, vecY) {
@@ -108,13 +108,8 @@ export default class Player {
     this.socket.emit('spawn', this.position.x, this.position.y);
     this.resetStats();
   }
-
+ 
   resetStats(){
-    // this.stats= {
-    //   kills: 0,
-    //   currentRank: 0,
-    //   highestRank: null};    
-  
     this.kills = 0;
     this.currentRank = 0;
     this.highestRank = null;

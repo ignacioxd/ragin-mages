@@ -41,7 +41,7 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
       accuracy: 0,
       timeBorn: Date.now(),
       timeAlive: 0,
-      highestRanking: 'Coming Soon',
+      highestRanking: null,
       hitsReceived: 0
     };
 
