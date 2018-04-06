@@ -16,16 +16,16 @@ export default class CharacterSelectionScene extends BaseScene {
   preload() {
     this.controller = new Controller(this);
   }
-    
+
   create() {
     let background = this.add.image(800, 330, 'title_background');
     this.cameras.main.startFollow(background);
-    
+
     let logoStyle = {fontSize: 85, fontFamily: "'Jim Nightshade', cursive", color: '#000000'};
     let logo = this.add.text(450, 50, 'Ragin\' Mages', logoStyle);
     logo.setStroke('#ae7f00', 16);
     let playerMode= this.gameType == 'single_player' ? 'single player mode' : 'multiplayer on-line battle mode';
-    
+
     this.add.text(450, 200, `Select your character for ${playerMode}`, {
       fontSize: 30,
       fontFamily: "'Fjalla One', sans-serif",
@@ -51,7 +51,8 @@ export default class CharacterSelectionScene extends BaseScene {
     }
 
     if(this.gameType == 'multi_player') {
-      this.playerHandle = this.add.text(905, this.characterBackdrop.y + 300 + 10, 'No name', {
+      const defaultName = localStorage.getItem('name') || 'No name';
+      this.playerHandle = this.add.text(905, this.characterBackdrop.y + 300 + 10, defaultName, {
         fontSize: 28,
         fontFamily: "'Fjalla One', sans-serif",
         fill: '#ae7f00',
@@ -71,9 +72,9 @@ export default class CharacterSelectionScene extends BaseScene {
             this.input.keyboard.startListeners();
           },
           onAccept: (modal) => {
-            modal.modal.querySelectorAll('input').forEach(element => {
-              this.playerHandle.setText(element.value);
-            });
+            const name = modal.modal.querySelector('input').value;
+            localStorage.setItem('name', name);
+            this.playerHandle.setText(name);
             modal.close();
             this.input.keyboard.startListeners();
           }
@@ -88,13 +89,13 @@ export default class CharacterSelectionScene extends BaseScene {
     chkButton.scene=scene;
     chkButton.buttonDown(() => {
       let handle = this.playerHandle ? this.playerHandle.text : null;
-      this.changeToScene(this.gameType == 'multi_player' ? 'GameScene' : 'DungeonScene', {character: btnData.key, playerHandle: handle});  
+      this.changeToScene(this.gameType == 'multi_player' ? 'GameScene' : 'DungeonScene', {character: btnData.key, playerHandle: handle});
     });
 
     chkButton.on('pointerover', () => {
       this.showCharacter(btnData.key);
     });
-    
+
     let backToMenuButton = new Button(this, 450, 625, 'BACK', {
       width: 250,
       fontColorNormal: '#ffffff'
