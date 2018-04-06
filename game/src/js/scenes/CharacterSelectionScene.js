@@ -77,6 +77,9 @@ export default class CharacterSelectionScene extends BaseScene {
             this.playerHandle.setText(name);
             modal.close();
             this.input.keyboard.startListeners();
+          },
+          data: {
+            handle: localStorage.getItem('name') || 'No name'
           }
         });
       });
