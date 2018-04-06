@@ -72,7 +72,7 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
         fontSize: 14,
         fill: '#ffffff',
       });
-      this.handleText.setOrigin(0.5, 5.8);
+      this.handleText.setOrigin(this.props.nameText.offset.x, this.props.nameText.offset.y);
       this.handleText.setStroke('#000000', 5);
       scene.physics.world.enable(this.handleText);
     }
