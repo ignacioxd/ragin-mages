@@ -21,7 +21,6 @@ export default class TitleScene extends BaseScene {
   create() {
     let background = this.add.image(800, 330, 'title_background');
     this.cameras.main.startFollow(background);
-    this.scene.manager.keys.GamepadScene.setVisible(false)
 
     let logoStyle = {fontSize: 85, fontFamily: "'Jim Nightshade', cursive", color: '#000000'};
     let logo = this.add.text(450, 50, 'Ragin\' Mages', logoStyle);

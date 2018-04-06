@@ -82,8 +82,7 @@ export default class GamepadScene extends BaseScene {
   }
 
   setVisible(visible) {
-    const { height, width } = this.cameras.main;
-    if (Math.max(height, width) < 768) {
+    if (/Mobi|Android/i.test(navigator.userAgent) && this.joystick && this.joystickBase) {
       this.joystickBase.visible = visible;
       this.joystick.visible = visible;
     }
