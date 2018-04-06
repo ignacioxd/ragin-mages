@@ -15,6 +15,7 @@ export default class Player {
     socket.on('respawn', this.respawn.bind(this));
     socket.on('move', this.move.bind(this));
     socket.on('fire', this.fire.bind(this));
+    socket.on('hit', this.hit.bind(this));
     socket.on('die', this.die.bind(this));
   }
 
@@ -30,7 +31,6 @@ export default class Player {
   }
 
   joinGame(character, handle) {
-    console.log('joinGame', this.id);
     //Store attributes locally
     this.character = character;
     this.handle = handle;
@@ -39,7 +39,6 @@ export default class Player {
     //Create a list of existing connected players
     let existingPlayers = [];
     this.playerManager.getAllPlayersInGame().forEach(value => {
-      console.log(value.handle);
       existingPlayers.push({
         id: value.id,
         handle: value.handle,
@@ -61,7 +60,6 @@ export default class Player {
   }
 
   leaveGame() {
-    console.log('leaveGame', this.id);
     this.socket.leave('game');
     //Store attributes locally
     this.reset();

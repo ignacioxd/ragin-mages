@@ -109,6 +109,7 @@ export default class CharacterSelectionScene extends BaseScene {
     this.chosenCharacter = new Character(this, this.characterBackdrop.x + 150, this.characterBackdrop.y + 300 * 0.8, key, null, {
       scale: 1,
       orientation: 'S',
+      hideHealth: true
     });
   }
 

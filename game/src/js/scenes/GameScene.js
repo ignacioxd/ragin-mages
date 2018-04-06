@@ -165,7 +165,7 @@ export default class GameScene extends BaseScene {
     if(!player) return;
     this.tweens.killTweensOf(player);
     this.tweens.add({
-      targets: [player, player.handleText],
+      targets: [player, player.handleText, player.healthBar],
       x: x,
       y: y,
       duration: 50,
@@ -181,7 +181,7 @@ export default class GameScene extends BaseScene {
     if(!player) return;
     this.tweens.killTweensOf(player);
     this.tweens.add({
-      targets: [player, player.handleText],
+      targets: [player, player.handleText, player.healthBar],
       x: fromX,
       y: fromY,
       duration: 50,
@@ -200,7 +200,7 @@ export default class GameScene extends BaseScene {
     if(!player) return;
     this.tweens.killTweensOf(player);
     this.tweens.add({
-      targets: [player, player.handleText],
+      targets: [player, player.handleText, player.healthBar],
       x: x,
       y: y,
       duration: 50,
@@ -209,7 +209,6 @@ export default class GameScene extends BaseScene {
     if(player.hit(damage)) {
       this.playerDied(id, x, y, hitById);
     }
-    this.players.delete(id);
   }
 
   playerDied(id, x, y, killedById) {
