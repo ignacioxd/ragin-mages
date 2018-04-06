@@ -69,14 +69,12 @@ export default class DOMModal {
         return value;
       }
       
-      this.modal.querySelectorAll('*[data-checked]').forEach(element => {
+      this.modal.querySelectorAll('*[data-value]').forEach(element => {
         if(element.nodeName == 'INPUT' && element.type != 'checkbox') {
           element.value = objResolve(this.props.data, element.getAttribute('data-value'));
-          console.log('data-value' + element.getAttribute('data-value'));
         }
         else if (element.nodeName == 'INPUT' && element.type == 'checkbox') {
           element.checked = this.props.data.swCheck;
-          console.log('why is this true' + typeof this.props.data.swCheck)
         }
         else {
           element.innerHTML = objResolve(this.props.data, element.getAttribute('data-value'));
@@ -84,7 +82,6 @@ export default class DOMModal {
   
       });
     }
-    console.log('what is this over here here' + this.props.data.swCheck);
   } 
 
   // Hide/Show the dialog window

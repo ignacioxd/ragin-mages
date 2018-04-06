@@ -1,6 +1,5 @@
 import BaseScene from './BaseScene';
 import ServiceWorker from 'util/ServiceWorker';
-import Checkbox from 'objects/ui/Checkbox';
 import Button from 'objects/ui/Button';
 import DOMModal from 'objects/ui/DOMModal';
 
@@ -45,7 +44,6 @@ export default class TitleScene extends BaseScene {
       const assets = this.cache.json.get('assets');
       let offlineMode = localStorage.getItem('offlineStatus');
       offlineMode = (offlineMode == 'true')
-      console.log('heeeeelp' + offlineMode)
       if (offlineMode == null) {
         offlineMode = false;
       }
@@ -57,25 +55,23 @@ export default class TitleScene extends BaseScene {
           acceptButtonSelector: '#settingsCheck',
           onCancel: (modal) => {
             localStorage.setItem('offlineStatus' , offlineMode)
-            console.log('this be closed')
             modal.close();
-        },
+          },
           onAccept: (modal) => {
             offlineMode = modal.modal.querySelector('#settingsCheck').checked;        
             if (offlineMode == true) {
               serviceWorker.register().then(function() {
-              serviceWorker.cacheAssets(assets);
-            })
+                serviceWorker.cacheAssets(assets);
+              })
             }
             else {
               serviceWorker.unregister();
             }
-
           },
           data: {swCheck: offlineMode}
+        });
       });
-    });
-  }
+    }
   
     let creditsButton = new Button(this, 450, 400, 'CREDITS');
     creditsButton.buttonDown(() => {
@@ -83,7 +79,7 @@ export default class TitleScene extends BaseScene {
         cancelButtonSelector: '.exit',
         onCancel: (modal) => {
           modal.close();
-        },
+        }
       });
     });
 
@@ -97,21 +93,6 @@ export default class TitleScene extends BaseScene {
       });
     });
 
-    // if(ServiceWorker.isSupported()) {
-    //   const assets = this.cache.json.get('assets');
-    //   let serviceWorker = new ServiceWorker();
-    //   let checkbox = new Checkbox(this, 470, 550, 'ENABLE OFFLINE MODE', serviceWorker.isRegistered());
-    //   checkbox.onPointerDown(function(obj) {
-    //     if(obj.isChecked()) {
-    //       serviceWorker.register().then(function() {
-    //         serviceWorker.cacheAssets(assets);
-    //       })
-    //     }
-    //     else {
-    //       serviceWorker.unregister();
-    //     }
-    //   });
-    // }
   }
 
   update() {
