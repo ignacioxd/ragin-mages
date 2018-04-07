@@ -68,7 +68,6 @@ export default class DungeonScene extends BaseScene {
     this.map1 = this.add.tilemap('dungeon_map');
     this.tileset1 = this.map1.addTilesetImage('stone-tiles', 'stone-tiles');
     this.layer1 = this.map1.createStaticLayer('Dungeon Map', this.tileset1, -1000, -600);
-    this.collisionLayer = this.map1.createStaticLayer('Collision', this.tileset1, -1000, -600);
     this.layer1.setCollisionByExclusion([5,0], true);
   }
 
