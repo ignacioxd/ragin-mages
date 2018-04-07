@@ -43,7 +43,7 @@ export default class TitleScene extends BaseScene {
     if(ServiceWorker.isSupported()) {
       const assets = this.cache.json.get('assets');
       let serviceWorker = new ServiceWorker();
-      let settingsButton = new Button(this, 450, 350, 'SETTINGS', serviceWorker.isRegistered());
+      let settingsButton = new Button(this, 450, 350, 'SETTINGS');
 
       settingsButton.buttonDown(() => {
         new DOMModal(this, 'settings', {
