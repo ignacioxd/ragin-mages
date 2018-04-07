@@ -3,6 +3,11 @@ import BaseScene from '../scenes/BaseScene';
 export default class GamepadScene extends BaseScene {
   constructor() {
     super({ key: 'GamepadScene' });
+
+    this.pointer = null;
+    this.pointerDown = this.pointerDown.bind(this);
+    this.pointerMove = this.pointerMove.bind(this);
+    this.pointerUp = this.pointerUp.bind(this);
   }
 
   create() {
@@ -19,28 +24,46 @@ export default class GamepadScene extends BaseScene {
       .image(this.START_X, this.START_Y, 'joystick')
       .setAlpha(0.5);
     this.joystick.setInteractive();
-    this.input.setDraggable(this.joystick);
 
-    this.joystick.on('drag', (pointer, x, y) => {
-      const xDist = Math.abs(this.START_X - x);
-      const yDist = Math.abs(this.START_Y - y);
-      this.joystick.x =
-        xDist < this.MAX_DIST
-          ? x
-          : x > this.START_X ? this.START_X + this.MAX_DIST : this.START_X - this.MAX_DIST;
-      this.joystick.y =
-        yDist < this.MAX_DIST
-          ? y
-          : y > this.START_Y ? this.START_Y + this.MAX_DIST : this.START_Y - this.MAX_DIST;
+    this.joystick.on('pointerdown', this.pointerDown);
+    this.joystick.on('pointermove', this.pointerMove);
+    this.input.on('pointerup', this.pointerUp);
+  }
 
-      this.updateController(x, y);
-    });
+  pointerDown(pointer) {
+    if (this.pointer === null) {
+      this.pointer = pointer;
+    }
+  }
 
-    this.joystick.on('dragend', () => {
-      this.joystick.x = this.START_X;
-      this.joystick.y = this.START_Y;
-      this.updateController(this.START_X, this.START_Y);
-    });
+  pointerMove(pointer) {
+    const { x, y } = pointer.position;
+    const xDist = Math.abs(this.START_X - x);
+    const yDist = Math.abs(this.START_Y - y);
+    this.joystick.x =
+      xDist < this.MAX_DIST
+        ? x
+        : x > this.START_X ? this.START_X + this.MAX_DIST : this.START_X - this.MAX_DIST;
+    this.joystick.y =
+      yDist < this.MAX_DIST
+        ? y
+        : y > this.START_Y ? this.START_Y + this.MAX_DIST : this.START_Y - this.MAX_DIST;
+
+    this.updateController(x, y);
+  }
+
+  pointerUp(pointer) {
+    const x = pointer.upX - this.joystick.x;
+    const y = pointer.upY - this.joystick.y;
+    const dist = Math.sqrt(x * x + y * y);
+    if (dist > this.MAX_DIST + 10) {
+      return;
+    }
+
+    this.joystick.x = this.START_X;
+    this.joystick.y = this.START_Y;
+    this.updateController(this.START_X, this.START_Y);
+    this.pointer = null;
   }
 
   updateController(x, y) {
