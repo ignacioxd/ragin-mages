@@ -16,6 +16,8 @@ export default class TitleScene extends BaseScene {
     this.server.requestEvents();
     this.server.on('serverConnected', this.serverConnected, this);
     this.server.on('serverDisconnected', this.serverDisconnected, this);
+
+    this.scaleToFit();
   }
 
   create() {

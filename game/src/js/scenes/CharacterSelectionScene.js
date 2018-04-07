@@ -15,6 +15,7 @@ export default class CharacterSelectionScene extends BaseScene {
 
   preload() {
     this.controller = new Controller(this);
+    this.scaleToFit();
   }
 
   create() {
