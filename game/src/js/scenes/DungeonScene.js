@@ -110,7 +110,7 @@ export default class DungeonScene extends BaseScene {
     this.delay = 100;
     this.enemyList = [];
     this.virtualTime = 0;
-    this.physics.add.collider(this.localCharacter, this.layer1);
+
   }
 
   update() {
@@ -143,7 +143,8 @@ export default class DungeonScene extends BaseScene {
       const vector = this.controller.getWASDVector();
       this.localCharacter.setMotion(vector);
     }
-
+    this.physics.add.collider(this.localCharacter, this.layer1);
+    this.physics.add.collider(this.enemy_characters, this.layer1);
   }
 
   spawn(x, y) {
