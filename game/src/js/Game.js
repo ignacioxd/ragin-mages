@@ -3,6 +3,7 @@ import LoaderScene from 'scenes/LoaderScene';
 import TitleScene from 'scenes/TitleScene';
 import CharacterSelectionScene from 'scenes/CharacterSelectionScene';
 import GameScene from 'scenes/GameScene';
+import GamepadScene from 'scenes/GamepadScene';
 import DungeonScene from 'scenes/DungeonScene';
 
 class Game extends Phaser.Game {
@@ -19,7 +20,7 @@ class Game extends Phaser.Game {
           debug: true
         }
       },
-      scene: [BootScene, LoaderScene, TitleScene, CharacterSelectionScene, GameScene, DungeonScene]
+      scene: [BootScene, LoaderScene, TitleScene, CharacterSelectionScene, GameScene, DungeonScene, GamepadScene]
     });
 
     window.addEventListener('resize', this.resizeGame.bind(this));

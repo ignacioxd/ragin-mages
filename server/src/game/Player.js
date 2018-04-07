@@ -52,8 +52,9 @@ export default class Player {
     
     this.socket.join('game'); //Join the game room. This needs to happen after we get the list of players to avoid duplication
     
-    //Send player list to new player
+    //Send player list and leaderboard to new player
     this.socket.emit('existingPlayers', existingPlayers);
+    this.socket.emit('updateLeaderboard', this.playerManager.leaderboard.getArray());
     //Notify everyone of this new player
     this.socket.to('game').emit('playerJoined', this.id, this.character, this.handle, this.position.x, this.position.y);
     this.socket.emit('spawn', this.position.x, this.position.y);
@@ -64,7 +65,9 @@ export default class Player {
     //Store attributes locally
     this.reset();
     this.socket.to('game').emit('playerLeft', this.id);
-    this.playerManager.removePlayerFromLeaderBoard(this.id);
+    if(this.playerManager.leaderboard.remove(this)){
+      this.playerManager.broadcastLeaderboard();
+    }
   }
     
   move(posX, posY, vecX, vecY) {
@@ -91,7 +94,7 @@ export default class Player {
     this.position.y = posY;
     this.socket.to('game').emit('playerDied', this.id, posX, posY, killedBy);
     // console.log(this.playerManager);
-    this.playerManager.AddToKillCount(killedBy);
+    this.playerManager.reportKill(this, killedBy);
   }
 
   respawn() {

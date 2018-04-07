@@ -15,6 +15,7 @@ export default class CharacterSelectionScene extends BaseScene {
 
   preload() {
     this.controller = new Controller(this);
+    this.scaleToFit();
   }
 
   create() {
@@ -40,20 +41,18 @@ export default class CharacterSelectionScene extends BaseScene {
     this.characterBackdrop.fillStyle(0xffffff, 0.5);
     this.characterBackdrop.fillRect(0, 0, 300, 300);
 
-    let btnX=450;
-    let btnY=250;
-    let btnSpacing=50;
+    let btnX = 450;
+    let btnY = 250;
+    let btnSpacing = 50;
 
     let characterList = this.cache.json.get('characters');
     for (const key in characterList) {
       this.addCharacterButton(characterList[key], this, btnX, btnY);
-      btnY +=btnSpacing;
+      btnY += btnSpacing;
     }
 
     if(this.gameType == 'multi_player') {
-      const playerName = 'Player ';
-      const playerRandom = Math.floor(Math.random() * 9999);
-      const defaultName = localStorage.getItem('name') || playerName + playerRandom;
+      const defaultName = localStorage.getItem('name') || 'Player' + Math.floor(Math.random() * 9999);
       this.playerHandle = this.add.text(905, this.characterBackdrop.y + 300 + 10, defaultName, {
         fontSize: 28,
         fontFamily: "'Fjalla One', sans-serif",
@@ -81,7 +80,7 @@ export default class CharacterSelectionScene extends BaseScene {
             this.input.keyboard.startListeners();
           },
           data: {
-            handle: localStorage.getItem('name') || playerName + playerRandom
+            handle: this.playerHandle.text
           }
         });
       });
@@ -90,8 +89,8 @@ export default class CharacterSelectionScene extends BaseScene {
 
   addCharacterButton(btnData, scene, x, y){
     let chkButton = new Button(this, x, y, btnData.name, {width: 250});
-    chkButton.key=btnData.key;
-    chkButton.scene=scene;
+    chkButton.key = btnData.key;
+    chkButton.scene = scene;
     chkButton.buttonDown(() => {
       let handle = this.playerHandle ? this.playerHandle.text : null;
       this.changeToScene(this.gameType == 'multi_player' ? 'GameScene' : 'DungeonScene', {character: btnData.key, playerHandle: handle});

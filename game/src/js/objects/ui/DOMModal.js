@@ -21,7 +21,6 @@ export default class DOMModal {
 
   // Creates the dialog window
   createWindow() {
-
     this.modal = document.createElement('div');
     this.modal.className = 'modal';
     this.modal.style.width = this.props.width;
@@ -66,7 +65,10 @@ export default class DOMModal {
         return value;
       }
       this.modal.querySelectorAll('*[data-value]').forEach(element => {
-        if(element.nodeName == 'INPUT') {
+        if (element.nodeName == 'INPUT' && element.type == 'checkbox') {
+          element.checked = objResolve(this.props.data, element.getAttribute('data-value'))
+        }
+        else if(element.nodeName == 'INPUT') {
           element.value = objResolve(this.props.data, element.getAttribute('data-value'));
         }
         else {

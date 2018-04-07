@@ -15,6 +15,14 @@
     {
       "key": "stone-tiles",
       "texture": "maps/stone-tiles.jpg"
+    },
+    {
+      "key": "joystick_base",
+      "texture": "sprites/joystick_base.png"
+    },
+    {
+      "key": "joystick",
+      "texture": "sprites/joystick.png"
     }
   ],
   "spritesheet": [
