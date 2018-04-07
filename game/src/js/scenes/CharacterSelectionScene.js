@@ -60,7 +60,7 @@ export default class CharacterSelectionScene extends BaseScene {
       });
       this.playerHandle.setOrigin(0.5, 0);
 
-      let nameInputButton = new Button(this, 905, this.characterBackdrop.y + 300 + 55, 'Select Name', {width: 150});
+      let nameInputButton = new Button(this, 905, this.characterBackdrop.y + 300 + 55, 'Change Name', {width: 165});
       nameInputButton.setOrigin(0.5, 0);
       nameInputButton.buttonDown(() => {
         this.input.keyboard.stopListeners();
