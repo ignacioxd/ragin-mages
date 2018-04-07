@@ -18,11 +18,12 @@ export default class GameScene extends BaseScene {
   }
 
   preload() {
-    
+
     //Create collision groups and event handling
     this.projectiles = this.add.group();
     this.characters = this.add.group();
     this.physics.add.overlap(this.projectiles, this.characters, this.localCollision, null, this);
+    this.scene.manager.keys.GamepadScene.start();
 
 
     this.controller = new Controller(this);
@@ -61,8 +62,9 @@ export default class GameScene extends BaseScene {
       if(this.localCharacter && event.buttons === 1) {
         let worldX = event.x + event.camera.scrollX * event.camera.zoom;
         let worldY = event.y + event.camera.scrollY * event.camera.zoom;
-        this.localCharacter.fire(worldX, worldY, this.server.getClientId());
-        this.server.send('fire', this.localCharacter.x, this.localCharacter.y, worldX, worldY);
+        if(this.localCharacter.fire(worldX, worldY, this.server.getClientId())) { //Only if we can fire we should notify
+          this.server.send('fire', this.localCharacter.x, this.localCharacter.y, worldX, worldY);
+        }
       }
     }, this);
 
@@ -83,7 +85,7 @@ export default class GameScene extends BaseScene {
     this.server.on('playerHit', this.playerHit.bind(this));
     this.server.on('playerDied', this.playerDied.bind(this));
     this.server.on('playerDisconnected', this.playerDisconnected.bind(this));
-    
+    this.server.on('updateLeaderboard',this.updateLeaderboard.bind(this));
     this.server.send('joinGame', this.characterType, this.playerHandle);
   }
 
@@ -97,7 +99,7 @@ export default class GameScene extends BaseScene {
       }
     }
   }
-  
+
   localCollision(projectile, character) {
     projectile.destroy();
     if(character.hit(projectile.props.damage)) { //If the hit causes the player to die
@@ -125,8 +127,6 @@ export default class GameScene extends BaseScene {
       this.server.send('hit', character.x, character.y, projectile.props.damage, projectile.props.owner.id);
     }
   }
-
-
 
   //WebSocket Messages
   serverConnected() {
@@ -188,13 +188,15 @@ export default class GameScene extends BaseScene {
       ease: 'Linear'
     });
     let projectile = player.fire(toX, toY);
-    this.projectiles.add(projectile);
+    if(projectile) {
+      this.projectiles.add(projectile);
+    }
   }
-  
+
 
   playerHit(id, x, y, damage, hitById) {
     if(hitById == this.server.getClientId()) {
-      this.localCharacter.stats.hitsInflicted++; 
+      this.localCharacter.stats.hitsInflicted++;
     }
     let player = this.players.get(id);
     if(!player) return;
@@ -213,7 +215,7 @@ export default class GameScene extends BaseScene {
 
   playerDied(id, x, y, killedById) {
     if(killedById == this.server.getClientId()) {
-      this.localCharacter.stats.kills++; 
+      this.localCharacter.stats.kills++;
     }
     let player = this.players.get(id);
     if(!player) return;
@@ -230,5 +232,13 @@ export default class GameScene extends BaseScene {
     this.characters.remove(player);
     this.players.delete(id);
     player.die();
+  }
+
+  updateLeaderboard(leaderboard) {
+    if(!this.localCharacter) return;
+    let index = leaderboard.findIndex(value => value.id == this.server.getClientId());
+    if(index > -1) {
+      this.localCharacter.stats.highestRanking = leaderboard[index].highestRank;
+    }
   }
 }
