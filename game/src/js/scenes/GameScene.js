@@ -94,7 +94,6 @@ export default class GameScene extends BaseScene {
       const vector = this.controller.getWASDVector();
       this.localCharacter.setMotion(vector);
       if(this.localCharacter.shouldBroadcastMotion()) {
-        console.log('motion changed locally');
         this.server.send('move', this.localCharacter.x, this.localCharacter.y, vector.x, vector.y);
       }
     }
@@ -195,7 +194,7 @@ export default class GameScene extends BaseScene {
 
 
   playerHit(id, x, y, damage, hitById) {
-    if(hitById == this.server.getClientId()) {
+    if(hitById == this.server.getClientId() && this.localCharacter) {
       this.localCharacter.stats.hitsInflicted++;
     }
     let player = this.players.get(id);
@@ -214,7 +213,7 @@ export default class GameScene extends BaseScene {
   }
 
   playerDied(id, x, y, killedById) {
-    if(killedById == this.server.getClientId()) {
+    if(killedById == this.server.getClientId() && this.localCharacter) {
       this.localCharacter.stats.kills++;
     }
     let player = this.players.get(id);
