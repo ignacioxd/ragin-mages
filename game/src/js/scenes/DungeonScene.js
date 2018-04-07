@@ -22,8 +22,8 @@ export default class DungeonScene extends BaseScene {
     this.enemy_characters = this.add.group();
     this.player_projectiles = this.add.group();
     this.enemy_projectiles = this.add.group();
-    this.physics.add.overlap(this.player_projectiles, this.enemy_characters, this.enemyHit, this.collisionLayer, null, this);
-    this.physics.add.overlap(this.enemy_projectiles, this.player_character, this.playerHit, this.collisionLayer, null, this);
+    this.physics.add.overlap(this.player_projectiles, this.enemy_characters, this.enemyHit, null, this);
+    this.physics.add.overlap(this.enemy_projectiles, this.player_character, this.playerHit, null, this);
 
     this.controller = new Controller(this);
     this.scene.manager.keys.GamepadScene.start();
