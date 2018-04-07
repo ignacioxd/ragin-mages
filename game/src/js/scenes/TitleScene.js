@@ -1,6 +1,5 @@
 import BaseScene from './BaseScene';
 import ServiceWorker from 'util/ServiceWorker';
-import Checkbox from 'objects/ui/Checkbox';
 import Button from 'objects/ui/Button';
 import DOMModal from 'objects/ui/DOMModal';
 
@@ -43,16 +42,32 @@ export default class TitleScene extends BaseScene {
     });
 
     //controls, credits, offline mode buttons
-    let settingsButton = new Button(this, 450, 350, 'SETTINGS');
-    settingsButton.buttonDown(() => {
-      new DOMModal(this, 'settings', {
-        cancelButtonSelector: '.exit',
-        onCancel: (modal) => {
-          modal.close();
-        }
-      });
-    });
+    if(ServiceWorker.isSupported()) {
+      const assets = this.cache.json.get('assets');
+      let serviceWorker = new ServiceWorker();
+      let settingsButton = new Button(this, 450, 350, 'SETTINGS');
 
+      settingsButton.buttonDown(() => {
+        new DOMModal(this, 'settings', {
+          cancelButtonSelector: '.exit',
+          acceptButtonSelector: '#settingsCheck',
+          onCancel: (modal) => {
+            modal.close();
+          },
+          onAccept: (modal) => {            
+            if (modal.modal.querySelector('#settingsCheck').checked) {
+              serviceWorker.register().then(() => {
+                serviceWorker.cacheAssets(assets);
+              });
+            }
+            else {
+              serviceWorker.unregister();
+            }
+          },
+          data: {offlineMode: serviceWorker.isRegistered()}
+        });
+      });
+    }
     let creditsButton = new Button(this, 450, 400, 'CREDITS');
     creditsButton.buttonDown(() => {
       new DOMModal(this, 'credits', {
@@ -73,21 +88,6 @@ export default class TitleScene extends BaseScene {
       });
     });
 
-    if(ServiceWorker.isSupported()) {
-      const assets = this.cache.json.get('assets');
-      let serviceWorker = new ServiceWorker();
-      let checkbox = new Checkbox(this, 470, 550, 'ENABLE OFFLINE MODE', serviceWorker.isRegistered());
-      checkbox.onPointerDown(function(obj) {
-        if(obj.isChecked()) {
-          serviceWorker.register().then(function() {
-            serviceWorker.cacheAssets(assets);
-          })
-        }
-        else {
-          serviceWorker.unregister();
-        }
-      });
-    }
   }
 
   update() {

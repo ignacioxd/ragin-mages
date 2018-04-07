@@ -21,7 +21,7 @@ export default class DOMModal {
 
   // Creates the dialog window
   createWindow() {
-
+    
     this.modal = document.createElement('div');
     this.modal.className = 'modal';
     this.modal.style.width = this.props.width;
@@ -44,6 +44,7 @@ export default class DOMModal {
   }
 
   populateWindow(html) {
+    
     this.modal.innerHTML = html;
     this.modal.querySelectorAll(this.props.acceptButtonSelector).forEach(element => {
       element.addEventListener('click', () => {
@@ -56,6 +57,7 @@ export default class DOMModal {
       });
     });
     // Process data into HTML
+    
     if(this.props.data) {
       const objResolve = function(rootObj, string) {
         let value = rootObj;
@@ -63,10 +65,15 @@ export default class DOMModal {
         while(parts.length != 0) {
           value = value[parts.shift()];
         }
+        
         return value;
       }
+      
       this.modal.querySelectorAll('*[data-value]').forEach(element => {
-        if(element.nodeName == 'INPUT') {
+        if (element.nodeName == 'INPUT' && element.type == 'checkbox') {
+          element.checked = objResolve(this.props.data, element.getAttribute('data-value'))
+        }
+        else if(element.nodeName == 'INPUT') {
           element.value = objResolve(this.props.data, element.getAttribute('data-value'));
         }
         else {
