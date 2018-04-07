@@ -16,7 +16,7 @@ export default class DungeonScene extends BaseScene {
   }
 
   preload() {
-
+    this.scaleToFit();
     //Create collision groups and event handling
     this.player_character = this.add.group();
     this.enemy_characters = this.add.group();
