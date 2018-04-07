@@ -54,7 +54,7 @@ export default class TitleScene extends BaseScene {
           },
           onAccept: (modal) => {            
               if (modal.modal.querySelector('#settingsCheck').checked) {
-                serviceWorker.register().then(function() {
+                serviceWorker.register().then(() => {
                 serviceWorker.cacheAssets(assets);
                 });
               }

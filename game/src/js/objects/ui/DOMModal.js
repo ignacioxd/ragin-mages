@@ -72,12 +72,10 @@ export default class DOMModal {
       this.modal.querySelectorAll('*[data-value]').forEach(element => {
         if (element.nodeName == 'INPUT' && element.type == 'checkbox') {
           element.checked = objResolve(this.props.data, element.getAttribute('data-value'))
-          console.log('will this work?')
         }
         else if(element.nodeName == 'INPUT') {
           element.value = objResolve(this.props.data, element.getAttribute('data-value'));
         }
-        
         else {
           element.innerHTML = objResolve(this.props.data, element.getAttribute('data-value'));
         }
