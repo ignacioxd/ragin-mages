@@ -4,8 +4,6 @@ export default class GamepadScene extends BaseScene {
   constructor() {
     super({ key: 'GamepadScene' });
 
-    this.pointer = null;
-    this.pointerDown = this.pointerDown.bind(this);
     this.pointerMove = this.pointerMove.bind(this);
     this.pointerUp = this.pointerUp.bind(this);
   }
@@ -20,26 +18,26 @@ export default class GamepadScene extends BaseScene {
     this.joystickBase = this.add
       .image(this.START_X, this.START_Y, 'joystick_base')
       .setAlpha(0.5);
+    this.joystickBase.setInteractive();
     this.joystick = this.add
       .image(this.START_X, this.START_Y, 'joystick')
       .setAlpha(0.5);
-    this.joystick.setInteractive();
+    this.touchpad = this.add
+      .image(this.START_X, this.START_Y, 'joystick')
+      .setAlpha(0.01);
+    this.touchpad.setInteractive();
 
-    this.joystick.on('pointerdown', this.pointerDown);
-    this.joystick.on('pointermove', this.pointerMove);
-    this.input.on('pointerup', this.pointerUp);
-  }
-
-  pointerDown(pointer) {
-    if (this.pointer === null) {
-      this.pointer = pointer;
-    }
+    this.joystickBase.on('pointerdown', this.pointerMove);
+    this.touchpad.on('pointermove', this.pointerMove);
+    this.touchpad.on('pointerup', this.pointerUp);
   }
 
   pointerMove(pointer) {
     const { x, y } = pointer.position;
     const xDist = Math.abs(this.START_X - x);
     const yDist = Math.abs(this.START_Y - y);
+    this.touchpad.x = x;
+    this.touchpad.y = y;
     this.joystick.x =
       xDist < this.MAX_DIST
         ? x
@@ -52,14 +50,7 @@ export default class GamepadScene extends BaseScene {
     this.updateController(x, y);
   }
 
-  pointerUp(pointer) {
-    const x = pointer.upX - this.joystick.x;
-    const y = pointer.upY - this.joystick.y;
-    const dist = Math.sqrt(x * x + y * y);
-    if (dist > this.MAX_DIST + 10) {
-      return;
-    }
-
+  pointerUp() {
     this.joystick.x = this.START_X;
     this.joystick.y = this.START_Y;
     this.updateController(this.START_X, this.START_Y);
