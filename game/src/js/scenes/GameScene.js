@@ -71,7 +71,7 @@ export default class GameScene extends BaseScene {
     this.tileset1 = this.map1.addTilesetImage('Map_tileset', 'map_tiles');
     this.layer1 = this.map1.createStaticLayer('Grass Layer', this.tileset1, -800, -600);
     this.layer1.setCollision([213, 78, 187],true);
-    this.physics.add.collider(this.characters, this.layer1, this.wallCollision,null);
+    this.physics.add.collider(this.characters, this.layer1, this.wallCollision,null,this);
   }
 
   create() {
@@ -104,6 +104,7 @@ export default class GameScene extends BaseScene {
   wallCollision(character){
     console.log('hit wall');
     character.setMotion(new Phaser.Math.Vector2(0, 0));
+    this.server.send('move', this.localCharacter.x, this.localCharacter.y, 0, 0);
   }
   localCollision(projectile, character) {
     projectile.destroy();

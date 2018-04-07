@@ -1,4 +1,5 @@
 import Projectile from 'objects/Projectile';
+const FLOATDIFF = 0.000000000001;
 
 export default class Character extends Phaser.Physics.Arcade.Sprite {
   constructor(scene, x, y, key, handle = null, options = {}) {
@@ -189,15 +190,44 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
     }
     return false;
   }
+  isVelocityPathClear(x,y){
+    let tile = this.scene.map1.getTileAtWorldXY(this.x, this.y);
+    if (tile){ 
+      let width = tile.getRight() - tile.getLeft();
+      let height = tile.getTop() - tile.getBottom();
+    
+    }
 
+  }
   setGroupVelocity(x, y) {
+    //get current tile dimensions
+    // let tile = this.scene.map1.getTileAtWorldXY(this.x + x, this.y + y);
+    // // var tile = this.scene.map1.getTileAtWorldXY(this.x + x, this.y + y);
+    // if (tile)
+    // { 
+    //   if (tile.collides) {
+    //     console.log('x',this.x,'vel x',x,'y',this.y,'vel y',y);
+    //     console.log('Tile Center Position: ' + tile.getCenterX() + ', ' + tile.getCenterY());
+    //     console.log('Tile Bounds: ' + tile.getLeft() + ', ' + tile.getTop() + ' -> ' + tile.getRight() + ', ' + tile.getBottom());
+    //   }
+    // }
+    // if (this.x-this.handleText.x!=0) {
+    //   console.log('handle',this.x-this.handleText.x)  
+    // }
+    // if (this.y-this.handleText.y!=0) {
+    //   console.log('handley',this.y-this.handleText.y)  
+    // }
+    // console.log(this.x-this.handleText.x,this.x - this.healthBar.x);
+    // console.log(this.y-this.handleText.y,this.y-  this.healthBar.y);   
     this.setVelocity(x, y);
+    // if (Math.abs(diffX) <FLOATDIFF && Math.abs(diffY) < FLOATDIFF) {
     if(this.handleText && this.handleText.body) {
       this.handleText.body.setVelocity(x, y);
     }
     if(this.healthBar && this.healthBar.body) {
       this.healthBar.body.setVelocity(x, y);
     }
+    // }
   }
   
   destroy() {
