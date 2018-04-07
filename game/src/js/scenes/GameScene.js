@@ -70,6 +70,8 @@ export default class GameScene extends BaseScene {
     this.map1 = this.add.tilemap('grass_area');
     this.tileset1 = this.map1.addTilesetImage('Map_tileset', 'map_tiles');
     this.layer1 = this.map1.createStaticLayer('Grass Layer', this.tileset1, -800, -600);
+    this.layer1.setCollision([213, 78, 187],true);
+    this.physics.add.collider(this.characters, this.layer1, this.wallCollision,null);
   }
 
   create() {
@@ -99,6 +101,10 @@ export default class GameScene extends BaseScene {
     }
   }
   
+  wallCollision(character){
+    console.log('hit wall');
+    character.setMotion(new Phaser.Math.Vector2(0, 0));
+  }
   localCollision(projectile, character) {
     projectile.destroy();
     if(character.hit(projectile.props.damage)) { //If the hit causes the player to die
