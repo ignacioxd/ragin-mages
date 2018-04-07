@@ -42,7 +42,7 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
       accuracy: 0,
       timeBorn: Date.now(),
       timeAlive: 0,
-      highestRanking: 'Coming Soon',
+      highestRanking: null,
       hitsReceived: 0
     };
 
@@ -72,11 +72,11 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
         fontSize: 14,
         fill: '#ffffff',
       });
-      this.handleText.setOrigin(this.props.nameText.offset.x, this.props.nameText.offset.y);
+      this.handleText.setOrigin(this.props.nameText.origin.x, this.props.nameText.origin.y);
       this.handleText.setStroke('#000000', 5);
       scene.physics.world.enable(this.handleText);
     }
-    this.healthBar = scene.add.graphics({x: x, y: y});
+    this.healthBar = scene.add.graphics({x: x + this.props.healthBar.offset.x, y: y + this.props.healthBar.offset.y});
     scene.physics.world.enable(this.healthBar);
     this.drawHealth();
 
@@ -200,7 +200,6 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
     }
   }
   
-
   destroy() {
     super.destroy();
     if(this.handleText) {

@@ -1,10 +1,12 @@
 import Player  from './Player';
+import Leaderboard  from './Leaderboard';
 
 export default class PlayerManager {
   constructor(socketio) {
     this.io = socketio;
     
     this.players = new Map();
+    this.leaderboard = new Leaderboard(this);
 
     this.io.on('connection', this.playerConnected.bind(this));
   }
@@ -24,13 +26,36 @@ export default class PlayerManager {
     let player = new Player(this, socket);
     this.players.set(socket, player);
 
-    console.log('Player connected', player.id);
     console.log(this.players.size, 'players connected');
 
     socket.on('disconnect', () => {
       this.players.delete(socket);
       socket.broadcast.emit('playerDisconnected', player.id);
       console.log(this.players.size, 'players connected');
+      if(this.leaderboard.remove(player)) {
+        this.broadcastLeaderboard();
+      }
     });
+  }
+
+  reportKill(deadPlayer, killedById) {
+    let shouldBroadcastLeaderboard = this.leaderboard.remove(deadPlayer);
+    for(let [socket, player] of this.players) {
+      if(player.id == killedById) {
+        player.kills++;
+        if(this.leaderboard.update(player)) {
+          shouldBroadcastLeaderboard = true;
+        }
+        break;
+      }
+    }
+    if(shouldBroadcastLeaderboard) {
+      this.broadcastLeaderboard();
+    }
+  }
+
+  broadcastLeaderboard() {
+    console.log('broadcasting leaderboard');
+    this.io.to('game').emit('updateLeaderboard', this.leaderboard.getArray());
   }
 }
