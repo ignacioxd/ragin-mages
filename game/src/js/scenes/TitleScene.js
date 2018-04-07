@@ -47,6 +47,7 @@ export default class TitleScene extends BaseScene {
     settingsButton.buttonDown(() => {
       new DOMModal(this, 'settings', {
         cancelButtonSelector: '.exit',
+        closeOnBackdropClick: true,
         onCancel: (modal) => {
           modal.close();
         }
@@ -57,6 +58,7 @@ export default class TitleScene extends BaseScene {
     creditsButton.buttonDown(() => {
       new DOMModal(this, 'credits', {
         cancelButtonSelector: '.exit',
+        closeOnBackdropClick: true,
         onCancel: (modal) => {
           modal.close();
         }
@@ -67,6 +69,7 @@ export default class TitleScene extends BaseScene {
     controlsButton.buttonDown(() => {
       new DOMModal(this, 'controls', {
         cancelButtonSelector: '.exit',
+        closeOnBackdropClick: true,
         onCancel: (modal) => {
           modal.close();
         }
