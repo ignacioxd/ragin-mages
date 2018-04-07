@@ -42,25 +42,22 @@ export default class TitleScene extends BaseScene {
     //controls, credits, offline mode buttons
     if(ServiceWorker.isSupported()) {
       const assets = this.cache.json.get('assets');
-      let offlineMode = localStorage.getItem('offlineStatus');
-      offlineMode = (offlineMode == 'true')
-      if (offlineMode == null) {
-        offlineMode = false;
-      }
       let serviceWorker = new ServiceWorker();
       let settingsButton = new Button(this, 450, 350, 'SETTINGS', serviceWorker.isRegistered());
+      let offlineMode = false;
       settingsButton.buttonDown(() => {
         new DOMModal(this, 'settings', {
           cancelButtonSelector: '.exit',
           acceptButtonSelector: '#settingsCheck',
           onCancel: (modal) => {
-            localStorage.setItem('offlineStatus' , offlineMode)
+
             modal.close();
           },
           onAccept: (modal) => {
-            offlineMode = modal.modal.querySelector('#settingsCheck').checked;        
-            if (offlineMode == true) {
-              serviceWorker.register().then(function() {
+              offlineMode = true;
+            
+              if (modal.modal.querySelector('#settingsCheck').checked) {
+                serviceWorker.register().then(function() {
                 serviceWorker.cacheAssets(assets);
               })
             }
@@ -68,7 +65,7 @@ export default class TitleScene extends BaseScene {
               serviceWorker.unregister();
             }
           },
-          data: {swCheck: offlineMode}
+          data: {offlineMode: serviceWorker.isRegistered()}
         });
       });
     }
