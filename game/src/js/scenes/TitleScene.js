@@ -44,23 +44,20 @@ export default class TitleScene extends BaseScene {
       const assets = this.cache.json.get('assets');
       let serviceWorker = new ServiceWorker();
       let settingsButton = new Button(this, 450, 350, 'SETTINGS', serviceWorker.isRegistered());
-      let offlineMode = false;
+
       settingsButton.buttonDown(() => {
         new DOMModal(this, 'settings', {
           cancelButtonSelector: '.exit',
           acceptButtonSelector: '#settingsCheck',
           onCancel: (modal) => {
-
             modal.close();
           },
-          onAccept: (modal) => {
-              offlineMode = true;
-            
+          onAccept: (modal) => {            
               if (modal.modal.querySelector('#settingsCheck').checked) {
                 serviceWorker.register().then(function() {
                 serviceWorker.cacheAssets(assets);
-              })
-            }
+                });
+              }
             else {
               serviceWorker.unregister();
             }
