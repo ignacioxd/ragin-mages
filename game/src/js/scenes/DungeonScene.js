@@ -22,8 +22,8 @@ export default class DungeonScene extends BaseScene {
     this.enemy_characters = this.add.group();
     this.player_projectiles = this.add.group();
     this.enemy_projectiles = this.add.group();
-    this.physics.add.overlap(this.player_projectiles, this.enemy_characters, this.enemyHit, null, this);
-    this.physics.add.overlap(this.enemy_projectiles, this.player_character, this.playerHit, null, this);
+    this.physics.add.overlap(this.player_projectiles, this.enemy_characters, this.enemyHit, this.collisionLayer, null, this);
+    this.physics.add.overlap(this.enemy_projectiles, this.player_character, this.playerHit, this.collisionLayer, null, this);
 
     this.controller = new Controller(this);
     this.scene.manager.keys.GamepadScene.start();
@@ -69,6 +69,7 @@ export default class DungeonScene extends BaseScene {
     this.tileset1 = this.map1.addTilesetImage('stone-tiles', 'stone-tiles');
     this.layer1 = this.map1.createStaticLayer('Dungeon Map', this.tileset1, -1000, -600);
     this.collisionLayer = this.map1.createStaticLayer('Collision', this.tileset1, -1000, -600);
+    this.layer1.setCollisionByExclusion([5,0], true);
   }
 
   playerHit(projectile, character) {
@@ -109,7 +110,7 @@ export default class DungeonScene extends BaseScene {
     this.delay = 100;
     this.enemyList = [];
     this.virtualTime = 0;
-    this.physics.add.collider(this.player, this.collisionLayer);
+    this.physics.add.collider(this.localCharacter, this.layer1);
   }
 
   update() {
@@ -142,6 +143,7 @@ export default class DungeonScene extends BaseScene {
       const vector = this.controller.getWASDVector();
       this.localCharacter.setMotion(vector);
     }
+
   }
 
   spawn(x, y) {
