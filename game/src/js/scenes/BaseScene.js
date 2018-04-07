@@ -8,6 +8,7 @@ export default class BaseScene extends Phaser.Scene {
   }
 
   changeToScene(key, data = null) {
+    this.scene.manager.keys.GamepadScene.stop();
     this.input.keyboard.removeAllListeners();
     this.input.removeAllListeners();
     this.server.removeAllListeners();
