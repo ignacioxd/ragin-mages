@@ -1,5 +1,4 @@
 import Projectile from 'objects/Projectile';
-const FLOATDIFF = 0.000000000001;
 
 export default class Character extends Phaser.Physics.Arcade.Sprite {
   constructor(scene, x, y, key, handle = null, options = {}) {
@@ -190,35 +189,61 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
     }
     return false;
   }
-  isVelocityPathClear(x,y){
-    let tile = this.scene.map1.getTileAtWorldXY(this.x, this.y);
-    if (tile){ 
-      let width = tile.getRight() - tile.getLeft();
-      let height = tile.getTop() - tile.getBottom();
-    
-    }
 
+  adjustVelocityXforMapLimits(x) {
+    const updatesPerUnit=60;
+    let retX = x;
+
+    if (x < 0) {
+      // get the left side position of scaled sprite
+      const left = this.x - this.originX * this.width * this.scaleX;
+      const endX = left + x/updatesPerUnit ;       
+      if (endX <= this.scene.layer1.x) {
+        retX = 10 * (this.scene.layer1.x - left) ;
+        console.log('at',this.x,'end x', endX ,'new',x);     
+      }
+    }
+    if (x > 0) {
+      const right = this.x + this.originX * this.width * this.scaleX;
+      const endX =  right +  x/updatesPerUnit  ;       
+      if (endX >= this.scene.layer1.x + this.scene.layer1.width){
+        retX = 10 * (this.scene.layer1.x + this.scene.layer1.width - right); // * updatesPerUnit; 
+        console.log('at',this.x,'endX',endX, 'new',x);     
+      }
+    }
+    return retX;
   }
+
+  adjustVelocityYforMapLimits(y) {
+    const updatesPerUnit=60;
+    let retY = y;
+    if (y < 0) {
+      // moving up so check "top" of sprite
+      const top = this.y - (this.height * this.originY * this.scaleY);
+      const endY = top + y/updatesPerUnit;
+      if (endY <= this.scene.layer1.y) {
+        retY = 10 * (this.scene.layer1.y - top ) ;
+      }
+    }
+    if (y > 0) {
+      //buffer of 32 pixels let's character "stand" on bottom edge
+      const bottom = this.y + 32;
+      const endY = bottom + y/updatesPerUnit;
+      // console.log('positive y',this.y,'endy',endY);
+      if (endY >= this.scene.layer1.y + this.scene.layer1.height){
+        console.log('greater');
+        retY = 10 * (this.scene.layer1.y + this.scene.layer1.height - bottom)  ;
+      }
+  
+    }
+    return retY;
+  }    
+  
   setGroupVelocity(x, y) {
-    //get current tile dimensions
-    // let tile = this.scene.map1.getTileAtWorldXY(this.x + x, this.y + y);
-    // // var tile = this.scene.map1.getTileAtWorldXY(this.x + x, this.y + y);
-    // if (tile)
-    // { 
-    //   if (tile.collides) {
-    //     console.log('x',this.x,'vel x',x,'y',this.y,'vel y',y);
-    //     console.log('Tile Center Position: ' + tile.getCenterX() + ', ' + tile.getCenterY());
-    //     console.log('Tile Bounds: ' + tile.getLeft() + ', ' + tile.getTop() + ' -> ' + tile.getRight() + ', ' + tile.getBottom());
-    //   }
-    // }
-    // if (this.x-this.handleText.x!=0) {
-    //   console.log('handle',this.x-this.handleText.x)  
-    // }
-    // if (this.y-this.handleText.y!=0) {
-    //   console.log('handley',this.y-this.handleText.y)  
-    // }
-    // console.log(this.x-this.handleText.x,this.x - this.healthBar.x);
-    // console.log(this.y-this.handleText.y,this.y-  this.healthBar.y);   
+    
+    x = this.adjustVelocityXforMapLimits(x);
+    y = this.adjustVelocityYforMapLimits(y);
+
     this.setVelocity(x, y);
     // if (Math.abs(diffX) <FLOATDIFF && Math.abs(diffY) < FLOATDIFF) {
     if(this.handleText && this.handleText.body) {
