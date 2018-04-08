@@ -81,7 +81,10 @@ export default class DOMModal {
 
   // Hide/Show the dialog window
   close() {
-    document.body.removeChild(this.root);
+    if(this.root) {
+      document.body.removeChild(this.root);
+      this.root = null;
+    }
   }
 }
 

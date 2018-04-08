@@ -128,13 +128,7 @@ body {
     padding-left: 15px;
       }
 
-.controlsContainer {
-  display: grid;
-  grid-gap: 5px;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: auto 1fr;
-}
-.controlsContainer .title {
+.modal .title {
   display: grid;
   grid-column: 1 / -1;
   border-bottom: var(--modal-border-color) 1px solid;
