@@ -110,6 +110,14 @@ body {
     border-bottom: var(--modal-border-color) solid 1px;
         }
 /**controls**/
+  .controlsTable {
+    display:flex; 
+    align-content: space-around;
+    align-items: top;
+    justify-content: space-around;
+    margin-top: 20px;
+    flex-wrap: wrap;
+  }
   .tableControls table, .tableControls tr {
     width:100%;
       }
@@ -127,10 +135,46 @@ body {
     background: var(--modal-light-bg-color);
     padding-left: 15px;
       }
+  .modal .title {
+    display: grid;
+    grid-column: 1 / -1;
+    border-bottom: var(--modal-border-color) 1px solid;
+    line-height: 70px;
+  }
+  .controlsClose {
+    display:flex; 
+    align-content: space-around; 
+    align-items: center; 
+    justify-content: space-around; 
+    margin-top: 20px;
+  }
 
-.modal .title {
-  display: grid;
-  grid-column: 1 / -1;
-  border-bottom: var(--modal-border-color) 1px solid;
-  line-height: 70px;
+/**media queries**/
+@media all and (max-width: 896px) {
+  .modal {
+    font-size: 14px;
+  }
+  .modal h1 {
+    font-size: 22px;
+    margin-bottom: 5px;
+  }
+  .modal .button {
+    padding: 5px;
+  }
+  .tableControls .descript {
+    padding-left: 10px;
+  }
+  .tableControls td {
+    height: 20px;
+  }
+  .modal .title {
+    line-height: 150%;
+  }
+  .controlsTable {
+    margin-top: 5px;
+  }
+  .controlsClose {
+    margin-top: 10px;
+  }
+
 }
