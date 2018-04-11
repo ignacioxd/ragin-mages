@@ -2,13 +2,13 @@
   "knight_hero":  {
     "name": "Valiant Knight",
     "key": "knight_hero",
-    "health": 200,
+    "health": 250,
     "scale": 0.35,
     "orientation": "E",
     "baseSpeed": 200,
     "projectile": {
       "type": "light",
-      "baseRange": 1000,
+      "baseRange": 700,
       "fireOffset": {"x": 0, "y": -150}
     },
     "collider": {
@@ -28,10 +28,10 @@
     "health": 150,
     "scale": 0.35,
     "orientation": "E",
-    "baseSpeed": 200,
+    "baseSpeed": 300,
     "projectile": {
       "type": "orb",
-      "baseRange": 1000,
+      "baseRange": 1300,
       "fireOffset": {"x": 0, "y": -150}
     },
     "collider": {
@@ -51,10 +51,10 @@
     "health": 150,
     "scale": 0.35,
     "orientation": "E",
-    "baseSpeed": 200,
+    "baseSpeed": 300,
     "projectile": {
       "type": "orb_p",
-      "baseRange": 1000,
+      "baseRange": 1300,
       "fireOffset": {"x": 0, "y": -150}
     },
     "collider": {
@@ -69,15 +69,15 @@
     }
   },
   "fire_monster":{
-    "name": "Fire Monster",
+    "name": "Burning Banshee",
     "key": "fire_monster",
-    "health": 151,
+    "health": 200,
     "scale": 0.35,
     "orientation": "E",
-    "baseSpeed": 200,
+    "baseSpeed": 250,
     "projectile": {
       "type": "fire",
-      "baseRange": 1000,
+      "baseRange": 700,
       "fireOffset": {"x": 0, "y": -150}
     },
     "collider": {
@@ -92,15 +92,15 @@
     }
   },
   "ice_monster":{
-    "name": "Ice Monster",
+    "name": "Freezing Wraith",
     "key": "ice_monster",
-    "health": 180,
+    "health": 150,
     "scale": 0.35,
     "orientation": "E",
-    "baseSpeed": 200,
+    "baseSpeed": 300,
     "projectile": {
       "type": "ice",
-      "baseRange": 1000,
+      "baseRange": 1300,
       "fireOffset": {"x": 0, "y": -150}
     },
     "collider": {
@@ -117,13 +117,13 @@
   "golem_monster":{
     "name": "Rock Golem",
     "key": "golem_monster",
-    "health": 220,
+    "health": 250,
     "scale": 0.35,
     "orientation": "E",
     "baseSpeed": 200,
     "projectile": {
       "type": "rock",
-      "baseRange": 1000,
+      "baseRange": 700,
       "fireOffset": {"x": 0, "y": -150}
     },
     "collider": {
@@ -140,13 +140,13 @@
   "spider_monster":{
     "name": "Menacing Spider",
     "key": "spider_monster",
-    "health": 150,
+    "health": 200,
     "scale": 0.35,
     "orientation": "E",
-    "baseSpeed": 200,
+    "baseSpeed": 250,
     "projectile": {
       "type": "ven",
-      "baseRange": 1000,
+      "baseRange": 700,
       "fireOffset": {"x": 0, "y": -50}
     },
     "collider": {
