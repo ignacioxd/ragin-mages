@@ -238,12 +238,73 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
     }
     return retY;
   }    
+  setOverlapTile(tile){
+    this.overlapTile=tile;
+  }  
+
+  adjustVelocityYforOverlapTile(y){
+    let retY = y;
+    if (!this.overlapTile) return retY;
+    if (y < 0) {
+      // moving up so check "top" of sprite -Y is up 
+      const top = this.getTopRight().y;
+      if ( Math.abs(top) > Math.abs(this.overlapTile.getBottom())) {
+        retY = 10 * (this.overlapTile.getBottom() - top ) ;
+        console.log('top changed from ',y,retY);
+      } else this.overlapTile = null;
+    }
+    if (y > 0) {
+      // moving down so check "bottom" of sprite +Y is Down 
+      const bottom = this.getBottomRight().y;
+      if (Math.abs(bottom) > Math.abs(this.overlapTile.getTop())) {
+        retY = 10 * (this.overlapTile.getTop() - bottom ) ;
+        console.log('bottom changed from ',y,retY);
+      } else this.overlapTile = null;
+    }
+    
+    return retY;
+  }
+
   
+  adjustVelocityXforOverlapTile(x){
+    let retX = x;
+    if (!this.overlapTile) return retX;
+    if (x < 0) {
+      // moving left so check "left" of sprite  
+      const left = this.getTopLeft().x;
+      if ( Math.abs(left) > Math.abs(this.overlapTile.getRight())) {
+        retX = 10 * (this.overlapTile.getRight() - left ) ;
+        console.log('left changed from ',x,retX);
+      } else this.overlapTile = null;
+    }
+    if (x > 0) {
+      // moving right so check "right" of sprite  
+      const right = this.getBottomRight().x;
+      if (Math.abs(right) > Math.abs(this.overlapTile.getLeft())) {
+        retX = 10 * (this.overlapTile.getLeft() - right ) ;
+        console.log('bottom changed from ',x,retX);
+      } else this.overlapTile = null;
+    }
+    
+    return retX;
+  }
+
+  overlapX(){
+    if (!this.overlapTile) return false;
+    return (Math.abs(this.getTopLeft().x) < Math.abs(this.overlapTile.getRight())) || (Math.abs(this.getTopRight().x) > Math.abs(this.overlapTile.getLeft()))
+  }
+
+  overlapY(){
+    if (!this.overlapTile) return false;
+    return (Math.abs(this.getTopLeft().y) > Math.abs(this.overlapTile.getBottom())) || (Math.abs(this.getBottomRight().y) < Math.abs(this.overlapTile.getTop()))
+  }
+
   setGroupVelocity(x, y) {
     
-    x = this.adjustVelocityXforMapLimits(x);
-    y = this.adjustVelocityYforMapLimits(y);
-
+    // x = this.adjustVelocityXforMapLimits(x);
+    // y = this.adjustVelocityYforMapLimits(y);
+    y=this.adjustVelocityYforOverlapTile(y);
+    x=this.adjustVelocityXforOverlapTile(x);
     this.setVelocity(x, y);
     // if (Math.abs(diffX) <FLOATDIFF && Math.abs(diffY) < FLOATDIFF) {
     if(this.handleText && this.handleText.body) {

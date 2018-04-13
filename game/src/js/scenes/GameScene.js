@@ -22,6 +22,7 @@ export default class GameScene extends BaseScene {
     //Create collision groups and event handling
     this.projectiles = this.add.group();
     this.characters = this.add.group();
+    this.huds = this.add.group();
     this.physics.add.overlap(this.projectiles, this.characters, this.localCollision, null, this);
     this.scene.manager.keys.GamepadScene.start();
 
@@ -71,8 +72,9 @@ export default class GameScene extends BaseScene {
     this.map1 = this.add.tilemap('grass_area');
     this.tileset1 = this.map1.addTilesetImage('Map_tileset', 'map_tiles');
     this.layer1 = this.map1.createStaticLayer('Grass Layer', this.tileset1, -800, -600);
-    // this.layer1.setCollision([213, 78, 187],true);
-    // this.physics.add.collider(this.characters, this.layer1, this.wallCollision,null,this);
+    this.layer1.setCollision([213, 78, 187, 197],true);
+    this.physics.add.overlap(this.characters, this.layer1, this.wallCollision,this.checkWallCollision,this);
+    // this.physics.add.collider(this.huds,this.layer1,this.wallCollision,null,this);  
   }
 
   create() {
@@ -101,12 +103,28 @@ export default class GameScene extends BaseScene {
     }
   }
   
-  wallCollision(character){
-    console.log('hit wall');
-    character.setMotion(new Phaser.Math.Vector2(0, 0));
-    this.server.send('move', this.localCharacter.x, this.localCharacter.y, 0, 0);
-  }
-  
+  wallCollision(obj1,tile){
+    console.log('set overlap tile');
+    //tell character it overlaps with a tile
+    //this will intercept setGroupVelocity to keep character from going over tile
+    obj1.setOverlapTile(tile);
+  }	
+
+  checkWallCollision(obj1,tile){
+    //check if it's a tile we're interested in
+    //sparse tile maps - empty spots wiill have index=-1 or index=0
+    //we can test by tile indes or collision or other tile property
+    //using collide up/down will allow one way passages
+    if ([213, 78, 187].includes(tile.index)) {
+      //console.log('collide up-d-l-r',tile.collideUp,tile.collideDown,tile.collideLeft,tile.collideRight);
+      console.log('collision index',tile.index);
+      return true;
+    }
+    return false;
+    // console.log('hit wall',this.localCharacter.x,this.localCharacter.y);
+    // this.localCharacter.setMotion(new Phaser.Math.Vector2(0, 0));
+    // this.server.send('move', this.localCharacter.x, this.localCharacter.y, 0, 0);
+  }	
   localCollision(projectile, character) {
     projectile.destroy();
     if(character.hit(projectile.props.damage)) { //If the hit causes the player to die
@@ -148,11 +166,12 @@ export default class GameScene extends BaseScene {
   }
 
   spawn(x, y) {
+    // y=15000;
     this.localCharacter = new Character(this, x, y, this.characterType, this.playerHandle);
     this.characters.add(this.localCharacter); //this is us.
     this.cameras.main.startFollow(this.localCharacter);
     //set bounds on camera so we don't get black areas around map
-    this.cameras.main.setBounds(-800,-600,this.map1.widthInPixels, this.map1.heightInPixels);
+    // this.cameras.main.setBounds(-800,-600,this.map1.widthInPixels, this.map1.heightInPixels);
   }
 
   playerJoined(id, character, handle, x, y) {
