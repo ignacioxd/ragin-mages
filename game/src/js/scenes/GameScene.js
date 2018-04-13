@@ -71,6 +71,8 @@ export default class GameScene extends BaseScene {
     this.map1 = this.add.tilemap('grass_area');
     this.tileset1 = this.map1.addTilesetImage('Map_tileset', 'map_tiles');
     this.layer1 = this.map1.createStaticLayer('Grass Layer', this.tileset1, -800, -600);
+    // this.layer1.setCollision([213, 78, 187],true);
+    // this.physics.add.collider(this.characters, this.layer1, this.wallCollision,null,this);
   }
 
   create() {
@@ -98,7 +100,13 @@ export default class GameScene extends BaseScene {
       }
     }
   }
-
+  
+  wallCollision(character){
+    console.log('hit wall');
+    character.setMotion(new Phaser.Math.Vector2(0, 0));
+    this.server.send('move', this.localCharacter.x, this.localCharacter.y, 0, 0);
+  }
+  
   localCollision(projectile, character) {
     projectile.destroy();
     if(character.hit(projectile.props.damage)) { //If the hit causes the player to die
@@ -143,6 +151,8 @@ export default class GameScene extends BaseScene {
     this.localCharacter = new Character(this, x, y, this.characterType, this.playerHandle);
     this.characters.add(this.localCharacter); //this is us.
     this.cameras.main.startFollow(this.localCharacter);
+    //set bounds on camera so we don't get black areas around map
+    this.cameras.main.setBounds(-800,-600,this.map1.widthInPixels, this.map1.heightInPixels);
   }
 
   playerJoined(id, character, handle, x, y) {
