@@ -3,6 +3,9 @@ import BaseScene from '../scenes/BaseScene';
 export default class GamepadScene extends BaseScene {
   constructor() {
     super({ key: 'GamepadScene' });
+
+    this.pointerMove = this.pointerMove.bind(this);
+    this.pointerUp = this.pointerUp.bind(this);
   }
 
   create() {
@@ -15,32 +18,43 @@ export default class GamepadScene extends BaseScene {
     this.joystickBase = this.add
       .image(this.START_X, this.START_Y, 'joystick_base')
       .setAlpha(0.5);
+    this.joystickBase.setInteractive();
     this.joystick = this.add
       .image(this.START_X, this.START_Y, 'joystick')
       .setAlpha(0.5);
-    this.joystick.setInteractive();
-    this.input.setDraggable(this.joystick);
+    this.touchpad = this.add
+      .image(this.START_X, this.START_Y, 'joystick')
+      .setAlpha(0.01);
+    this.touchpad.setInteractive();
 
-    this.joystick.on('drag', (pointer, x, y) => {
-      const xDist = Math.abs(this.START_X - x);
-      const yDist = Math.abs(this.START_Y - y);
-      this.joystick.x =
-        xDist < this.MAX_DIST
-          ? x
-          : x > this.START_X ? this.START_X + this.MAX_DIST : this.START_X - this.MAX_DIST;
-      this.joystick.y =
-        yDist < this.MAX_DIST
-          ? y
-          : y > this.START_Y ? this.START_Y + this.MAX_DIST : this.START_Y - this.MAX_DIST;
+    this.joystickBase.on('pointerdown', this.pointerMove);
+    this.touchpad.on('pointermove', this.pointerMove);
+    this.touchpad.on('pointerup', this.pointerUp);
+  }
 
-      this.updateController(x, y);
-    });
+  pointerMove(pointer) {
+    const { x, y } = pointer.position;
+    const xDist = Math.abs(this.START_X - x);
+    const yDist = Math.abs(this.START_Y - y);
+    this.touchpad.x = x;
+    this.touchpad.y = y;
+    this.joystick.x =
+      xDist < this.MAX_DIST
+        ? x
+        : x > this.START_X ? this.START_X + this.MAX_DIST : this.START_X - this.MAX_DIST;
+    this.joystick.y =
+      yDist < this.MAX_DIST
+        ? y
+        : y > this.START_Y ? this.START_Y + this.MAX_DIST : this.START_Y - this.MAX_DIST;
 
-    this.joystick.on('dragend', () => {
-      this.joystick.x = this.START_X;
-      this.joystick.y = this.START_Y;
-      this.updateController(this.START_X, this.START_Y);
-    });
+    this.updateController(x, y);
+  }
+
+  pointerUp() {
+    this.joystick.x = this.START_X;
+    this.joystick.y = this.START_Y;
+    this.updateController(this.START_X, this.START_Y);
+    this.pointer = null;
   }
 
   updateController(x, y) {
