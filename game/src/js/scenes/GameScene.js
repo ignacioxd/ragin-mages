@@ -158,7 +158,6 @@ export default class GameScene extends BaseScene {
     console.log('serverConnected in game scene');
   }
 
-
   existingPlayers(existingPlayers) {
     existingPlayers.forEach(value => {
       this.playerJoined(value.id, value.character, value.handle, value.x, value.y);
@@ -166,12 +165,11 @@ export default class GameScene extends BaseScene {
   }
 
   spawn(x, y) {
-    // y=15000;
     this.localCharacter = new Character(this, x, y, this.characterType, this.playerHandle);
     this.characters.add(this.localCharacter); //this is us.
     this.cameras.main.startFollow(this.localCharacter);
     //set bounds on camera so we don't get black areas around map
-    // this.cameras.main.setBounds(-800,-600,this.map1.widthInPixels, this.map1.heightInPixels);
+    this.cameras.main.setBounds(-800,-600,this.map1.widthInPixels, this.map1.heightInPixels);
   }
 
   playerJoined(id, character, handle, x, y) {
