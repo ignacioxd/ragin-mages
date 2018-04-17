@@ -1,4 +1,5 @@
 import Projectile from 'objects/Projectile';
+const collisonRecoverFactor = 15; //this is the rate to move away from tile that we overlap with
 
 export default class Character extends Phaser.Physics.Arcade.Sprite {
   constructor(scene, x, y, key, handle = null, options = {}) {
@@ -190,69 +191,93 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
     return false;
   }
 
-  adjustVelocityXforMapLimits(x) {
-    const updatesPerUnit=60;
-    let retX = x;
+  setOverlapTile(tile){
+    this.overlapTile=tile;
+  }  
 
+  adjustVelocityYforOverlapTile(y){
+    let retY = y;
+    this.checkIfStillOverlapTile();
+    if (!this.overlapTile) return retY;
+    if (y < 0) {
+      // moving up so check "top" of sprite -Y is up 
+      const top = this.getTopRight().y;
+      if ( Math.abs(top) > Math.abs(this.overlapTile.getBottom())) {
+        retY = collisonRecoverFactor * (this.overlapTile.getBottom() - top ) ;
+        console.log('top changed from ',y,retY);
+      } 
+    }
+    if (y > 0) {
+      // moving down so check "bottom" of sprite +Y is Down 
+      const bottom = this.getBottomRight().y;
+      if (Math.abs(bottom) > Math.abs(this.overlapTile.getTop())) {
+        retY = collisonRecoverFactor * (this.overlapTile.getTop() - bottom ) ;
+        console.log('bottom changed from ',y,retY);
+      } 
+    }
+    
+    return retY;
+  }
+
+  
+  adjustVelocityXforOverlapTile(x){
+    let retX = x;
+    this.checkIfStillOverlapTile();
+    if (!this.overlapTile) return retX;
     if (x < 0) {
-      // get the left side position of scaled sprite
-      const left = this.x - this.originX * this.width * this.scaleX;
-      const endX = left + x/updatesPerUnit ;       
-      if (endX <= this.scene.layer1.x) {
-        retX = 10 * (this.scene.layer1.x - left) ;
-        console.log('at',this.x,'end x', endX ,'new',x);     
-      }
+      // moving left so check "left" of sprite  
+      const left = this.getTopLeft().x;
+      if ( Math.abs(left) > Math.abs(this.overlapTile.getRight())) {
+        retX = collisonRecoverFactor * (this.overlapTile.getRight() - left ) ;
+        console.log('left changed from ',x,retX);
+      } 
     }
     if (x > 0) {
-      const right = this.x + this.originX * this.width * this.scaleX;
-      const endX =  right +  x/updatesPerUnit  ;       
-      if (endX >= this.scene.layer1.x + this.scene.layer1.width){
-        retX = 10 * (this.scene.layer1.x + this.scene.layer1.width - right); // * updatesPerUnit; 
-        console.log('at',this.x,'endX',endX, 'new',x);     
-      }
+      // moving right so check "right" of sprite  
+      const right = this.getBottomRight().x;
+      if (Math.abs(right) > Math.abs(this.overlapTile.getLeft())) {
+        retX = collisonRecoverFactor * (this.overlapTile.getLeft() - right ) ;
+        console.log('bottom changed from ',x,retX);
+      } 
     }
+    
     return retX;
   }
 
-  adjustVelocityYforMapLimits(y) {
-    const updatesPerUnit=60;
-    let retY = y;
-    if (y < 0) {
-      // moving up so check "top" of sprite
-      const top = this.y - (this.height * this.originY * this.scaleY);
-      const endY = top + y/updatesPerUnit;
-      if (endY <= this.scene.layer1.y) {
-        retY = 10 * (this.scene.layer1.y - top ) ;
-      }
-    }
-    if (y > 0) {
-      //buffer of 32 pixels let's character "stand" on bottom edge
-      const bottom = this.y + 32;
-      const endY = bottom + y/updatesPerUnit;
-      // console.log('positive y',this.y,'endy',endY);
-      if (endY >= this.scene.layer1.y + this.scene.layer1.height){
-        console.log('greater');
-        retY = 10 * (this.scene.layer1.y + this.scene.layer1.height - bottom)  ;
-      }
-  
-    }
-    return retY;
-  }    
-  
+  checkIfStillOverlapTile(){
+    if (!this.overlapTile) return false;
+    const topLeftVector = this.getTopLeft();
+    const bottomRightVector = this.getBottomRight();
+    const charAbsTop=Math.abs(topLeftVector.y);
+    const charAbsBottom=Math.abs(bottomRightVector.y);
+    const charAbsLeft=Math.abs(topLeftVector.x);
+    const charAbsRight=Math.abs(bottomRightVector.x);
+    const tileAbsTop=Math.abs(this.overlapTile.getTop());
+    const tileAbsBottom=Math.abs(this.overlapTile.getBottom());
+    const tileAbsLeft=Math.abs(this.overlapTile.getLeft());
+    const tileAbsRight=Math.abs(this.overlapTile.getRight());
+
+    const stillOverlap =( (Math.max(charAbsRight,charAbsLeft)> Math.min(tileAbsRight,tileAbsLeft)) 
+      && (Math.min(charAbsRight,charAbsLeft)< Math.max(tileAbsRight,tileAbsLeft)) 
+      && (Math.max(charAbsTop,charAbsBottom)> Math.min(tileAbsBottom,tileAbsTop)) 
+      && (Math.min(charAbsTop,charAbsBottom)< Math.max(tileAbsBottom,tileAbsTop)));
+    
+    if ( !stillOverlap){
+      this.overlapTile=null;
+    } 
+  }
+
   setGroupVelocity(x, y) {
     
-    x = this.adjustVelocityXforMapLimits(x);
-    y = this.adjustVelocityYforMapLimits(y);
-
+    y=this.adjustVelocityYforOverlapTile(y);
+    x=this.adjustVelocityXforOverlapTile(x);
     this.setVelocity(x, y);
-    // if (Math.abs(diffX) <FLOATDIFF && Math.abs(diffY) < FLOATDIFF) {
     if(this.handleText && this.handleText.body) {
       this.handleText.body.setVelocity(x, y);
     }
     if(this.healthBar && this.healthBar.body) {
       this.healthBar.body.setVelocity(x, y);
     }
-    // }
   }
   
   destroy() {
