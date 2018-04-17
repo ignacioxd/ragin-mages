@@ -257,24 +257,11 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
     const tileAbsLeft=Math.abs(this.overlapTile.getLeft());
     const tileAbsRight=Math.abs(this.overlapTile.getRight());
 
-    // console.log('variables set');
-    // if (Math.max(charAbsRight,charAbsLeft)> Math.min(tileAbsRight,tileAbsLeft)) {
-    //   console.log('charmax x > tile min X');
-    // }
-    // if (Math.min(charAbsRight,charAbsLeft)< Math.max(tileAbsRight,tileAbsLeft)) {
-    //   console.log('charmin x < tile max X');
-    // }
-    // if (Math.max(charAbsTop,charAbsBottom)> Math.min(tileAbsBottom,tileAbsTop)) {
-    //   console.log('charmax Y > tile min Y');
-    // }
-    // if (Math.min(charAbsTop,charAbsBottom)< Math.max(tileAbsBottom,tileAbsTop)) {
-    //   console.log('charmin Y > tile max Y');
-    // }
-    
     const stillOverlap =( (Math.max(charAbsRight,charAbsLeft)> Math.min(tileAbsRight,tileAbsLeft)) 
-    && (Math.min(charAbsRight,charAbsLeft)< Math.max(tileAbsRight,tileAbsLeft)) 
-    && (Math.max(charAbsTop,charAbsBottom)> Math.min(tileAbsBottom,tileAbsTop)) 
-    && (Math.min(charAbsTop,charAbsBottom)< Math.max(tileAbsBottom,tileAbsTop)));
+      && (Math.min(charAbsRight,charAbsLeft)< Math.max(tileAbsRight,tileAbsLeft)) 
+      && (Math.max(charAbsTop,charAbsBottom)> Math.min(tileAbsBottom,tileAbsTop)) 
+      && (Math.min(charAbsTop,charAbsBottom)< Math.max(tileAbsBottom,tileAbsTop)));
+    
     if ( !stillOverlap){
       this.overlapTile=null;
     } 
