@@ -72,7 +72,7 @@ export default class GameScene extends BaseScene {
     this.tileset1 = this.map1.addTilesetImage('Map_tileset', 'map_tiles');
     this.layer1 = this.map1.createStaticLayer('Grass Layer', this.tileset1, -800, -600);
     this.layer1.setCollision([213, 78, 187],true);
-    this.physics.add.overlap(this.characters, this.layer1, this.wallCollision,this.checkWallCollision,this);
+    this.physics.add.collider(this.characters, this.layer1); //, this.wallCollision,this.checkWallCollision,this);
   }
 
   create() {
@@ -101,28 +101,6 @@ export default class GameScene extends BaseScene {
     }
   }
   
-  wallCollision(obj1,tile){
-    console.log('set overlap tile');
-    //tell character it overlaps with a tile
-    //this will intercept setGroupVelocity to keep character from going over tile
-    obj1.setOverlapTile(tile);
-  }	
-
-  checkWallCollision(obj1,tile){
-    //check if it's a tile we're interested in
-    //sparse tile maps - empty spots wiill have index=-1 or index=0
-    //we can test by tile indes or collision or other tile property
-    //using collide up/down will allow one way passages
-    if ([213, 78, 187].includes(tile.index)) {
-      //console.log('collide up-d-l-r',tile.collideUp,tile.collideDown,tile.collideLeft,tile.collideRight);
-      console.log('collision index',tile.index);
-      return true;
-    }
-    return false;
-    // console.log('hit wall',this.localCharacter.x,this.localCharacter.y);
-    // this.localCharacter.setMotion(new Phaser.Math.Vector2(0, 0));
-    // this.server.send('move', this.localCharacter.x, this.localCharacter.y, 0, 0);
-  }	
   localCollision(projectile, character) {
     projectile.destroy();
     if(character.hit(projectile.props.damage)) { //If the hit causes the player to die

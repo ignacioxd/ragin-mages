@@ -1,5 +1,4 @@
 import Projectile from 'objects/Projectile';
-const collisonRecoverFactor = 15; //this is the rate to move away from tile that we overlap with
 
 export default class Character extends Phaser.Physics.Arcade.Sprite {
   constructor(scene, x, y, key, handle = null, options = {}) {
@@ -13,29 +12,7 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
       ...options
     };
     this.props.maxHealth = this.props.health;
-    
-    /*
-    This was an attempt to have accuracy and timeAlive as calculated properties
-    this worked when output immediately after creation
-    but didn't work when passed into DOMModal
-    when passed in I would get "cannot access kills on undefined"
-    so it seems to be a scope/this issue, but not sure how to solve
-
-    var stats={
-      kills :0,
-      shots: 0,
-      accuracy2() {return this.shots>0 ? Math.round(this.kills/this.shots * 100 * 100) / 100 : 0},
-      accuracy:0,
-      timeBorn: Date.now(),
-      timeAlive2() {return Math.round((Date.now() - this.timeBorn) / 1000 * 10)/10},
-      timeAlive:0,
-      highestRanking: 'Coming Soon',
-      hitsReceived: 0
-    };
-    this.stats=stats;
-    console.log(this.stats.accuracy2); // outputs function definition
-    console.log(this.stats.accurracy2()) //outputs numeric value
-  */
+ 
     this.stats = {
       kills: 0,
       hitsInflicted: 0,
@@ -136,7 +113,7 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
     }
     
     this.setAnimation(animation, this.props.orientation);
-    
+    this.SyncPosition();
   }
 
   fire(targetX, targetY) {
@@ -191,86 +168,9 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
     return false;
   }
 
-  setOverlapTile(tile){
-    this.overlapTile=tile;
-  }  
-
-  adjustVelocityYforOverlapTile(y){
-    let retY = y;
-    this.checkIfStillOverlapTile();
-    if (!this.overlapTile) return retY;
-    if (y < 0) {
-      // moving up so check "top" of sprite -Y is up 
-      const top = this.getTopRight().y;
-      if ( Math.abs(top) > Math.abs(this.overlapTile.getBottom())) {
-        retY = collisonRecoverFactor * (this.overlapTile.getBottom() - top ) ;
-        console.log('top changed from ',y,retY);
-      } 
-    }
-    if (y > 0) {
-      // moving down so check "bottom" of sprite +Y is Down 
-      const bottom = this.getBottomRight().y;
-      if (Math.abs(bottom) > Math.abs(this.overlapTile.getTop())) {
-        retY = collisonRecoverFactor * (this.overlapTile.getTop() - bottom ) ;
-        console.log('bottom changed from ',y,retY);
-      } 
-    }
-    
-    return retY;
-  }
-
-  
-  adjustVelocityXforOverlapTile(x){
-    let retX = x;
-    this.checkIfStillOverlapTile();
-    if (!this.overlapTile) return retX;
-    if (x < 0) {
-      // moving left so check "left" of sprite  
-      const left = this.getTopLeft().x;
-      if ( Math.abs(left) > Math.abs(this.overlapTile.getRight())) {
-        retX = collisonRecoverFactor * (this.overlapTile.getRight() - left ) ;
-        console.log('left changed from ',x,retX);
-      } 
-    }
-    if (x > 0) {
-      // moving right so check "right" of sprite  
-      const right = this.getBottomRight().x;
-      if (Math.abs(right) > Math.abs(this.overlapTile.getLeft())) {
-        retX = collisonRecoverFactor * (this.overlapTile.getLeft() - right ) ;
-        console.log('bottom changed from ',x,retX);
-      } 
-    }
-    
-    return retX;
-  }
-
-  checkIfStillOverlapTile(){
-    if (!this.overlapTile) return false;
-    const topLeftVector = this.getTopLeft();
-    const bottomRightVector = this.getBottomRight();
-    const charAbsTop=Math.abs(topLeftVector.y);
-    const charAbsBottom=Math.abs(bottomRightVector.y);
-    const charAbsLeft=Math.abs(topLeftVector.x);
-    const charAbsRight=Math.abs(bottomRightVector.x);
-    const tileAbsTop=Math.abs(this.overlapTile.getTop());
-    const tileAbsBottom=Math.abs(this.overlapTile.getBottom());
-    const tileAbsLeft=Math.abs(this.overlapTile.getLeft());
-    const tileAbsRight=Math.abs(this.overlapTile.getRight());
-
-    const stillOverlap =( (Math.max(charAbsRight,charAbsLeft)> Math.min(tileAbsRight,tileAbsLeft)) 
-      && (Math.min(charAbsRight,charAbsLeft)< Math.max(tileAbsRight,tileAbsLeft)) 
-      && (Math.max(charAbsTop,charAbsBottom)> Math.min(tileAbsBottom,tileAbsTop)) 
-      && (Math.min(charAbsTop,charAbsBottom)< Math.max(tileAbsBottom,tileAbsTop)));
-    
-    if ( !stillOverlap){
-      this.overlapTile=null;
-    } 
-  }
 
   setGroupVelocity(x, y) {
     
-    y=this.adjustVelocityYforOverlapTile(y);
-    x=this.adjustVelocityXforOverlapTile(x);
     this.setVelocity(x, y);
     if(this.handleText && this.handleText.body) {
       this.handleText.body.setVelocity(x, y);
@@ -280,6 +180,19 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
     }
   }
   
+  SyncPosition(){
+    // console.log('touching',this.body.touching,this.body.wasTouching);
+    if(this.handleText && this.handleText.body) {
+      this.handleText.x = this.x;
+      this.handleText.y = this.y;
+    }
+    if(this.healthBar && this.healthBar.body) {
+      this.healthBar.x = this.x + this.props.healthBar.offset.x;
+      this.healthBar.y = this.y + this.props.healthBar.offset.y;
+    }
+    
+  }
+
   destroy() {
     super.destroy();
     if(this.handleText) {

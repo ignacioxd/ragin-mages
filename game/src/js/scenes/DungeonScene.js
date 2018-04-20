@@ -69,7 +69,10 @@ export default class DungeonScene extends BaseScene {
     this.tileset1 = this.map1.addTilesetImage('stone-tiles', 'stone-tiles');
     this.layer1 = this.map1.createStaticLayer('Dungeon Map', this.tileset1, -1000, -600);
     this.cameras.main.setBounds(-1000,-600,this.map1.widthInPixels, this.map1.heightInPixels);
-    // this.layer1.setCollisionByExclusion([5,0], true);
+    this.layer1.setCollisionByExclusion([5,0], true);
+    
+    this.physics.add.collider(this.player_character, this.layer1);
+    this.physics.add.collider(this.enemy_characters, this.layer1);
   }
 
   playerHit(projectile, character) {
@@ -143,8 +146,6 @@ export default class DungeonScene extends BaseScene {
       const vector = this.controller.getWASDVector();
       this.localCharacter.setMotion(vector);
     }
-    this.physics.add.collider(this.localCharacter, this.layer1);
-    this.physics.add.collider(this.enemy_characters, this.layer1);
   }
 
   spawn(x, y) {
