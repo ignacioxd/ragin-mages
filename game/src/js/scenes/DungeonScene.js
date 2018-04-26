@@ -129,11 +129,12 @@ export default class DungeonScene extends BaseScene {
       } else if (monsterDeterminer < 0.75) {
         monsterName = 'golem_monster';
       }
-      var newMonster = new Character(this, 450 * (Math.random() - 0.5), 450 * (Math.random() - 0.5), monsterName);
-      newMonster.setAI(this.localCharacter);
-      this.enemyList.push(newMonster);
-      this.enemy_characters.add(newMonster);
-
+      if(!this.localCharacter.isDead) {
+        var newMonster = new Character(this, 450 * (Math.random() - 0.5), 450 * (Math.random() - 0.5), monsterName);
+        newMonster.setAI(this.localCharacter);
+        this.enemyList.push(newMonster);
+        this.enemy_characters.add(newMonster);
+      }
       // Set new delay for next monster.  Starts at 1 every 250 updates but increases over time.
       this.delay = 250 - Math.sqrt(this.virtualTime/2);
     }
