@@ -93,6 +93,11 @@ export default class LoaderScene extends BaseScene {
       this.load.text(html.key, html.data);
     }
 
+    //Load Audio files
+    for(let audio of assets.audio) {
+      this.load.audio(audio.key, audio.data);
+    }
+
     // Hack to fix progress loaders
     this.load.totalToLoad = this.load.list.size;
 
@@ -125,6 +130,7 @@ export default class LoaderScene extends BaseScene {
    * Called when the loader has completed loading all assets.
    */
   loadCompleted() {
+    this.registry.set('soundDisabled', !!localStorage.getItem('soundDisabled'));
     //Build animations
     Character.buildAnimations(this);
     Projectile.buildAnimations(this);

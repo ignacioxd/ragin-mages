@@ -25,7 +25,6 @@ export default class GameScene extends BaseScene {
     this.physics.add.overlap(this.projectiles, this.characters, this.localCollision, null, this);
     this.scene.manager.keys.GamepadScene.start();
 
-
     this.controller = new Controller(this);
     this.input.keyboard.on('keydown_ESC', () => {
       if(this.currentModal) return;
@@ -35,6 +34,7 @@ export default class GameScene extends BaseScene {
         cancelButtonSelector: '#stay',
         onAccept: (modal) => {
           modal.close();
+          this.music.stop();
           this.currentModal = null;
           this.server.send('leaveGame');
           this.changeToScene('TitleScene');
@@ -76,6 +76,9 @@ export default class GameScene extends BaseScene {
   }
 
   create() {
+    this.deathSound = this.sound.add('death');
+    this.music = this.sound.add('battle', { loop: true });
+    this.playMusic();
     this.server.requestEvents();
     this.server.on('serverConnected', this.serverConnected.bind(this));
     this.server.on('existingPlayers', this.existingPlayers.bind(this));
@@ -100,7 +103,13 @@ export default class GameScene extends BaseScene {
       }
     }
   }
-  
+
+  playMusic() {
+    if (!this.registry.get('soundDisabled')) {
+      this.music.play();
+    }
+  }
+
   localCollision(projectile, character) {
     projectile.destroy();
     if(character.hit(projectile.props.damage)) { //If the hit causes the player to die
@@ -111,11 +120,13 @@ export default class GameScene extends BaseScene {
         cancelButtonSelector: '.exit',
         onAccept: (modal) => {
           modal.close();
+          this.playMusic();
           this.currentModal = null;
           this.server.send('respawn');
         },
         onCancel: (modal) => {
           modal.close();
+          this.music.stop();
           this.currentModal = null;
           this.server.send('leaveGame');
           this.changeToScene('TitleScene');

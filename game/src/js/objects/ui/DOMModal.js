@@ -30,7 +30,7 @@ export default class DOMModal {
     if(this.props.showBackdrop) { //Add backdrop if requested
       this.root = document.createElement('div');
       this.root.className = 'backdrop';
-      
+
       this.root.appendChild(this.modal);
       if(this.props.closeOnBackdropClick) {
         this.root.addEventListener('click', () => {
@@ -74,10 +74,10 @@ export default class DOMModal {
         else {
           element.innerHTML = objResolve(this.props.data, element.getAttribute('data-value'));
         }
-  
+
       });
     }
-  } 
+  }
 
   // Hide/Show the dialog window
   close() {
