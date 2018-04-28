@@ -160,7 +160,7 @@ export default class DungeonScene extends BaseScene {
   }
 
   spawn(x, y) {
-    this.localCharacter = new Character(this, x, y, this.characterType);
+    this.localCharacter = new Character(this, x, y, this.characterType, undefined, { local: true });
     this.player_character.add(this.localCharacter); //this is us.
     this.cameras.main.startFollow(this.localCharacter);
   }

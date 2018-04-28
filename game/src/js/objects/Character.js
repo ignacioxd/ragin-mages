@@ -149,9 +149,11 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
 
   die() {
     this.isDead = true;
-    this.scene.music.stop();
-    if (!this.scene.registry.get('soundDisabled')) {
-      this.scene.deathSound.play();
+    if (this.props.local) {
+      this.scene.music.stop();
+      if (!this.scene.registry.get('soundDisabled')) {
+        this.scene.deathSound.play();
+      }
     }
     this.stats.accuracy = this.stats.shots > 0 ? Math.round(this.stats.hitsInflicted / this.stats.shots * 100 * 100) / 100 : 0;
     this.stats.timeAlive = Math.round((Date.now() - this.stats.timeBorn) / 1000 * 10)/10;

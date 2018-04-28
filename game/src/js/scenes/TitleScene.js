@@ -20,7 +20,9 @@ export default class TitleScene extends BaseScene {
   }
 
   create() {
-    this.music = this.sound.add('title', { loop: true });
+    if (!this.music) {
+      this.music = this.sound.add('title', { loop: true });
+    }
     this.playMusic();
     let background = this.add.image(800, 330, 'title_background');
     this.cameras.main.startFollow(background);
@@ -110,7 +112,7 @@ export default class TitleScene extends BaseScene {
   }
 
   playMusic() {
-    if (!this.registry.get('soundDisabled')) {
+    if (!this.registry.get('soundDisabled') && !this.music.isPlaying) {
       this.music.play();
     }
   }

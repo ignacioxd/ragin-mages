@@ -152,7 +152,7 @@ export default class GameScene extends BaseScene {
   }
 
   spawn(x, y) {
-    this.localCharacter = new Character(this, x, y, this.characterType, this.playerHandle);
+    this.localCharacter = new Character(this, x, y, this.characterType, this.playerHandle, { local: true });
     this.characters.add(this.localCharacter); //this is us.
     this.cameras.main.startFollow(this.localCharacter);
     //set bounds on camera so we don't get black areas around map
