@@ -20,6 +20,10 @@ export default class TitleScene extends BaseScene {
   }
 
   create() {
+    if (!this.music) {
+      this.music = this.sound.add('title', { loop: true });
+    }
+    this.playMusic();
     let background = this.add.image(800, 330, 'title_background');
     this.cameras.main.startFollow(background);
 
@@ -50,11 +54,11 @@ export default class TitleScene extends BaseScene {
       settingsButton.buttonDown(() => {
         new DOMModal(this, 'settings', {
           cancelButtonSelector: '.exit',
-          acceptButtonSelector: '#settingsCheck',
+          acceptButtonSelector: 'input[type=checkbox]',
           onCancel: (modal) => {
             modal.close();
           },
-          onAccept: (modal) => {            
+          onAccept: (modal) => {
             if (modal.modal.querySelector('#settingsCheck').checked) {
               serviceWorker.register().then(() => {
                 serviceWorker.cacheAssets(assets);
@@ -63,8 +67,20 @@ export default class TitleScene extends BaseScene {
             else {
               serviceWorker.unregister();
             }
+            if (modal.modal.querySelector('#soundDisabled').checked) {
+              this.music.stop();
+              this.registry.set('soundDisabled', true);
+              localStorage.setItem('soundDisabled', 'true');
+            } else {
+              this.registry.set('soundDisabled', false);
+              localStorage.removeItem('soundDisabled');
+              this.playMusic();
+            }
           },
-          data: {offlineMode: serviceWorker.isRegistered()}
+          data: {
+            offlineMode: serviceWorker.isRegistered(),
+            soundDisabled: !!localStorage.getItem('soundDisabled')
+          }
         });
       });
     }
@@ -93,6 +109,12 @@ export default class TitleScene extends BaseScene {
   }
 
   update() {
+  }
+
+  playMusic() {
+    if (!this.registry.get('soundDisabled') && !this.music.isPlaying) {
+      this.music.play();
+    }
   }
 
   serverConnected() {

@@ -3,7 +3,7 @@ import Projectile from 'objects/Projectile';
 export default class Character extends Phaser.Physics.Arcade.Sprite {
   constructor(scene, x, y, key, handle = null, options = {}) {
     super(scene, x, y, key);
-    
+
     //pull specific character config information from characters.json
     this.props = {
       type: key,
@@ -12,7 +12,7 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
       ...options
     };
     this.props.maxHealth = this.props.health;
- 
+
     this.stats = {
       kills: 0,
       hitsInflicted: 0,
@@ -32,7 +32,7 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
     };
 
     scene.physics.world.enable(this);
-    
+
     //make the physics body a circle instead of box
     this.body.isCircle = true;
     //set the size based on the constructor parameter set from the scene constructor
@@ -94,7 +94,7 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
   /*motionChanged(vector) {
     return this.props.motionVector.x !== vector.x || this.props.motionVector.y !== vector.y;
   }*/
-  
+
   /**
    * Moves the character in the specified direction and animates it appropriately
    * @param {Vector2} vector Specifies the direction of motion
@@ -111,7 +111,7 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
       this.props.orientation = vector.y > 0 ? 'S' : (vector.y < 0 ? 'N' : '');
       this.props.orientation += vector.x > 0  ? 'E' : (vector.x < 0  ? 'W' : '');
     }
-    
+
     this.setAnimation(animation, this.props.orientation);
     this.SyncPosition();
   }
@@ -132,7 +132,7 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
 
   /**
    * Inflict damage to player. Returns true if this hit causes the player to die or false otherwise.
-   * @param {Number} damage 
+   * @param {Number} damage
    */
   hit(damage) {
     this.stats.hitsReceived++;
@@ -149,6 +149,12 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
 
   die() {
     this.isDead = true;
+    if (this.props.local) {
+      this.scene.music.stop();
+      if (!this.scene.registry.get('soundDisabled')) {
+        this.scene.deathSound.play();
+      }
+    }
     this.stats.accuracy = this.stats.shots > 0 ? Math.round(this.stats.hitsInflicted / this.stats.shots * 100 * 100) / 100 : 0;
     this.stats.timeAlive = Math.round((Date.now() - this.stats.timeBorn) / 1000 * 10)/10;
     this.setAnimation('death', this.props.orientation, true);
@@ -170,7 +176,7 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
 
 
   setGroupVelocity(x, y) {
-    
+
     this.setVelocity(x, y);
     if(this.handleText && this.handleText.body) {
       this.handleText.body.setVelocity(x, y);
@@ -179,7 +185,7 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
       this.healthBar.body.setVelocity(x, y);
     }
   }
-  
+
   SyncPosition(){
     // console.log('touching',this.body.touching,this.body.wasTouching);
     if(this.handleText && this.handleText.body) {
@@ -190,7 +196,7 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
       this.healthBar.x = this.x + this.props.healthBar.offset.x;
       this.healthBar.y = this.y + this.props.healthBar.offset.y;
     }
-    
+
   }
 
   destroy() {
@@ -253,7 +259,7 @@ export default class Character extends Phaser.Physics.Arcade.Sprite {
       character.destroy();
     }
   }
-  
+
   // sets the character to use an AI, stalking and aiming at the player.
   // doesn't deal with multiple opponents yet.
   setAI(player) {

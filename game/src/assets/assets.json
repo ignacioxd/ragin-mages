@@ -130,6 +130,20 @@
       "data": "html/nameSelection.html"
     }
   ],
+  "audio": [
+    {
+      "key": "title",
+      "data": "audio/title.mp3"
+    },
+    {
+      "key": "battle",
+      "data": "audio/battle.mp3"
+    },
+    {
+      "key": "death",
+      "data": "audio/death.mp3"
+    }
+  ],
   "cache": [
     "/index.html",
     "js/phaser.min.js",

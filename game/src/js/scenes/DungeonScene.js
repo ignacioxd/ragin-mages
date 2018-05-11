@@ -35,6 +35,7 @@ export default class DungeonScene extends BaseScene {
         cancelButtonSelector: '#stay',
         onAccept: (modal) => {
           modal.close();
+          this.music.stop();
           this.currentModal = null;
           this.changeToScene('TitleScene');
         },
@@ -70,7 +71,7 @@ export default class DungeonScene extends BaseScene {
     this.layer1 = this.map1.createStaticLayer('Dungeon Map', this.tileset1, -1000, -600);
     this.cameras.main.setBounds(-1000,-600,this.map1.widthInPixels, this.map1.heightInPixels);
     this.layer1.setCollisionByExclusion([5,0], true);
-    
+
     this.physics.add.collider(this.player_character, this.layer1);
     this.physics.add.collider(this.enemy_characters, this.layer1);
   }
@@ -86,6 +87,7 @@ export default class DungeonScene extends BaseScene {
         cancelButtonSelector: '.exit',
         onAccept: (modal) => {
           modal.close();
+          this.playMusic();
           this.spawn(0, 0);
         },
         onCancel: (modal) => {
@@ -109,11 +111,13 @@ export default class DungeonScene extends BaseScene {
   }
 
   create() {
+    this.deathSound = this.sound.add('death');
+    this.music = this.sound.add('battle', { loop: true });
+    this.playMusic();
     this.spawn(0,0);
     this.delay = 100;
     this.enemyList = [];
     this.virtualTime = 0;
-
   }
 
   update() {
@@ -149,8 +153,14 @@ export default class DungeonScene extends BaseScene {
     }
   }
 
+  playMusic() {
+    if (!this.registry.get('soundDisabled')) {
+      this.music.play();
+    }
+  }
+
   spawn(x, y) {
-    this.localCharacter = new Character(this, x, y, this.characterType);
+    this.localCharacter = new Character(this, x, y, this.characterType, undefined, { local: true });
     this.player_character.add(this.localCharacter); //this is us.
     this.cameras.main.startFollow(this.localCharacter);
   }
